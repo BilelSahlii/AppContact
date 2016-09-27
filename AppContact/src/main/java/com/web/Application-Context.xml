@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/appcontactmybuild?zeroDateTimeBehavior=convertToNull" />
+		<property name="username" value="root" />
+		<property name="password" value="" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.model.Chefresponsable</value>
+					<value>com.model.Contact</value>
+						<value>com.model.Groupecontact</value>
+							<value>com.model.Morale</value>
+								<value>com.model.Physique</value>
+									<value>com.model.Produit</value>
+										<value>com.model.Region</value>
+											<value>com.model.Secteur</value>
+												<value>com.model.Typemoral</value>
+													<value>com.model.Fonction</value>
+												<value>com.model.Membre</value>
+					
+				
+	
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">true</prop>
+
+			</props>
+		</property>
+	</bean>
+
+
+	
+
+
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+
+		<property name="dataSource" ref="dataSource" />
+
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<context:annotation-config />
+	<context:component-scan base-package="com"></context:component-scan>
+
+
+		
+		
+		
+		<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	<property name="host" value="smtp.gmail.com" />
+	<property name="port" value="587" />
+<property name="username" value="bilell.sahli@gmail.com" />
+<property name="password" value="bilel20313475" />
+
+	<property name="javaMailProperties">
+	   <props>
+       	      <prop key="mail.smtp.auth">true</prop>
+       	      <prop key="mail.smtp.starttls.enable">true</prop>
+       	       <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+       	        <prop key="mail.debug">true</prop>
+                <prop key="mail.transport.protocol">smtp</prop>
+<!--                 <prop key="mail.smtp.from">xxx@gmail.com</prop> -->
+       	   </props>
+	</property>
+</bean>
+
+
+
+<bean id="mailMail" class="com.util.MailMail">
+	<property name="mailSender" ref="mailSender" />
+</bean>
+		
+		
+		
+
+
+</beans>

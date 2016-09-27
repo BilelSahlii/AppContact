@@ -1,0 +1,961 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<body>
+
+	<h:head>
+		<title>Contact Morale</title>
+		<meta charset="utf-8" />
+		<!--      <link rel="icon" href="images/favicon.ico"/> -->
+		<!--      <link rel="shortcut icon" href="images/favicon.ico" /> -->
+		<!--      <link rel="stylesheet" href="css/style.css"/> -->
+
+	</h:head>
+
+	<h:body>
+		<!--==============================header=================================-->
+		<header> </header>
+
+
+
+
+
+		<h:form id="formMorale">
+
+
+
+
+
+
+
+
+
+			<!--=======datatable================================-->
+
+
+
+			<p:dataTable var="m" value="#{moraleBean.list_Morale}" id="tab"
+				widgetVar="moraleTable" paginator="true" rows="14"
+				selectionMode="single" selection="#{moraleBean.selectMorale}"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowKey="#{m.idContact}" scrollable="true" scrollHeight="300">
+
+
+				<f:facet name="header">
+Liste de Contact 
+
+       <p:columnGroup>
+
+
+						<p:commandButton id="btEmailG" value="Email"
+							icon="fa fa-fw fa-envelope-o"
+							action="#{moraleBean.EmmailingGroupe}"
+							style="float:left ; height : 30px ">
+						</p:commandButton>
+
+
+
+						<p:spacer width="10" />
+
+						<p:commandButton value="Xcl" icon="fa fa-fw fa-file-excel-o"
+							id="exel" ajax="false" style="float:left ; height : 30px ">
+							<!--          <p:graphicImage value="/images/excel-icon.png" />   -->
+							<p:dataExporter type="xls" target="tab" fileName="cars" />
+						</p:commandButton>
+
+						<p:spacer width="10" />
+
+						<p:commandButton value="Pdf" icon="fa fa-fw fa-file-pdf-o"
+							id="pdf" ajax="false" style="float:left ;height : 30px">
+
+							<p:dataExporter type="pdf" target="tab" fileName="cars" />
+						</p:commandButton>
+
+						<p:spacer width="10" />
+
+						<p:commandButton value="Xml" id="xml"
+							icon="fa fa-fw fa-file-code-o" ajax="false"
+							style="float:left ; height : 30px">
+							<!--          <p:graphicImage value="/images/xml-small.gif"/>   -->
+							<p:dataExporter type="xml" target="tab" fileName="cars" />
+						</p:commandButton>
+
+					</p:columnGroup>
+
+
+					<p:spacer width="10" />
+
+
+
+<p:growl id="AjoutDialog" showDetail="true" />
+
+					<p:commandButton id="ajouter" value="Nouvel contact" actionListener="#{moraleBean.AjouterMembreContact}"
+						style="float:right;height : 30px" icon="ui-icon-plus" />
+
+					<p:commandButton id="toggler" type="button" value="Columns"
+						style="float:right ;height : 30px" icon="ui-icon-calculator" />
+
+
+
+					<p:inputText id="globalFilter" onkeyup="PF('moraleTable').filter()"
+						style="float:right ; width: 200px;">
+					</p:inputText>
+
+					<p:columnToggler datasource="tab" trigger="toggler">
+						<p:ajax event="toggle" listener="#{moraleBean.onToggle}" />
+					</p:columnToggler>
+
+				</f:facet>
+
+
+
+
+
+				<p:column headerText="Nom" sortBy="#{m.contact.nom}"
+					filterBy="#{m.contact.nom}">
+
+
+					<h:outputText value="#{m.contact.nom}" />
+
+				</p:column>
+
+				<p:column headerText="Type" filterBy="#{m.typemoral.libelleMorale}">
+
+
+					<h:outputText value="#{m.typemoral.libelleMorale}" />
+
+				</p:column>
+
+
+
+				<p:column headerText="Secteur"
+					sortBy="#{m.contact.secteur.libelleSecteur}"
+					filterBy="#{m.contact.secteur.libelleSecteur}">
+					<h:outputText value="#{m.contact.secteur.libelleSecteur}" />
+				</p:column>
+
+				<p:column headerText="Groupe"
+					sortBy="#{m.contact.groupecontact.libelleGroupe}"
+					filterBy="#{m.contact.groupecontact.libelleGroupe}">
+					<h:outputText value="#{m.contact.groupecontact.libelleGroupe}" />
+				</p:column>
+
+
+				<p:column headerText="Region"
+					filterBy="#{m.contact.region.libelleRegion}">
+
+					<h:outputText value="#{m.contact.region.libelleRegion}" />
+
+
+
+				</p:column>
+
+
+
+				<p:column headerText="Operations" exportable="false">
+				
+									
+						<p:growl id="MembreDialog" showDetail="true" />
+					
+ <p:commandButton icon="ui-icon-zoomin" id="btview"
+        actionListener="#{moraleBean.MembreContact}"    />
+				
+					<p:growl id="EmaileDialog" showDetail="true" />
+
+					<p:commandButton id="btEmail" icon="fa fa-fw fa-envelope-o"
+						actionListener="#{moraleBean.EmmailingSelectMorale}">
+					</p:commandButton>
+
+					<p:growl id="deleteDialog" showDetail="true" />
+
+					<p:commandButton icon="ui-icon-trash"
+						action="#{moraleBean.suprimer(m)}" update="deleteDialog">
+						<p:confirm header="Confirmation"
+							message="Êtes-vous sûr pour supprimer #{m.contact.nom} "
+							icon="ui-icon-alert" />
+
+
+					</p:commandButton>
+
+
+				
+
+
+
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Oui" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Non" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+
+				</p:column>
+
+
+			</p:dataTable>
+
+
+		</h:form>
+
+
+		<!--     Dialog Suppression Un Contact Moral  -->
+
+
+
+
+		<!--     Dialog Email Groupe  -->
+
+		<h:form id="edmailGroupe">
+
+			<p:growl id="growl2" sticky="true" showDetail="true" life="3000" />
+
+			<p:dialog header="Envoyer Email" height="600px" width="600px"
+				id="dViewMembreG" widgetVar="ViewEmailG" modal="true"
+				resizable="false" draggable="false" closable="true"
+				closeOnEscape="true">
+  
+    
+            
+        
+ Destinateur(*):        
+   <center>
+					<p:selectManyMenu id="Email"
+						value="#{moraleBean.selected_list_Morale}" required="true"
+						requiredMessage="il faut sélectionner un email"
+						converter="omnifaces.SelectItemsConverter" scrollHeight="80"
+						var="t" filter="true" filterMatchMode="contains"
+						showCheckbox="true" style="  margin-right:10px ; width : 350px ">
+
+
+
+
+						<f:selectItems value="#{moraleBean.list_Morale}" var="theme"
+							itemLabel="#{theme.contact.nom}#{theme.contact.email}"
+							itemValue="#{theme}" />
+
+
+						<p:column>
+							<h:outputText value="#{t.contact.nom}" />
+						</p:column>
+
+						<p:column>
+							<h:outputText value="#{t.contact.email}" />
+						</p:column>
+
+					</p:selectManyMenu>
+				</center>
+				<p:message for="Email" id="msgLastname" display="icon" />
+				<p></p>
+  
+  
+        
+           Objet:   <center>
+					<p:inputText value="#{moraleBean.objet}"
+						style="  margin-right:10px ; width : 350px;height : 28px;" />
+				</center>
+
+
+
+
+
+
+				<p></p>
+				<center>
+					<p:editor id="editor" value="#{moraleBean.msg}" width="350" />
+				</center>
+				<p:spacer height="10px"></p:spacer>
+
+				<center>
+					<p:commandButton value="Envoyer"
+						actionListener="#{moraleBean.EnvoiGroupe}" update="growl2"
+						oncomplete="if((args.validationFailed) || (!args.envoyer)){} else{PF('ViewEmailG').hide();}"
+						icon="ui-icon-disk" />
+
+
+					<p:columnGroup>
+
+						<p:commandButton icon="fa fa-fw fa-font" type="button" />
+						<p:commandButton icon="fa fa-fw fa-ils" type="button" />
+						<p:commandButton icon="fa fa-fw fa-camera" type="button" />
+						<p:commandButton icon="fa fa-fw fa-smile-o" type="button" />
+						<p:commandButton icon="fa fa-fw fa-link" type="button" />
+
+					</p:columnGroup>
+				</center>
+
+			</p:dialog>
+
+
+
+
+		</h:form>
+
+
+
+
+
+
+
+
+
+		<h:form id="SelectedmailContactMorale">
+
+			<p:growl id="growl3" sticky="true" showDetail="true" life="3000" />
+			<p:dialog header="Envoyer Email" height="400px" id="dViewMembre"
+				widgetVar="ViewEmail" modal="true" resizable="false"
+				draggable="false" closable="true" closeOnEscape="true">
+
+
+
+
+
+
+				<p:outputLabel
+					value="Destinataire: Raison social #{moraleBean.selectMorale.contact.nom}"
+					style=" margin-right:10px ; width : 250px; height : 28px;" />
+
+
+
+
+				<p></p>
+
+
+ Objet:<p:inputText value="#{moraleBean.objet}"
+					style="  margin-right:10px ; width : 250px;height : 28px;" />
+
+
+
+				<p></p>
+				<center>
+					<p:editor id="editor" value="#{moraleBean.msg}" width="350" />
+				</center>
+				<p:spacer height="10px"></p:spacer>
+
+				<p:commandButton value="Envoyer"
+					actionListener="#{moraleBean.EnvoiEmail}" update="growl3"
+					oncomplete="if((args.validationFailed) || (!args.envoyer)){} else{PF('ViewEmail').hide();}"
+					icon="ui-icon-disk" />
+
+				<p:columnGroup>
+
+					<p:commandButton icon="fa fa-fw fa-font" type="button" />
+					<p:commandButton icon="fa fa-fw fa-ils" type="button" />
+					<p:commandButton icon="fa fa-fw fa-camera" type="button" />
+					<p:commandButton icon="fa fa-fw fa-smile-o" type="button" />
+					<p:commandButton icon="fa fa-fw fa-link" type="button" />
+
+				</p:columnGroup>
+
+				<!--     </p:panelGrid> -->
+
+
+
+			</p:dialog>
+		</h:form>
+		
+		
+		
+<!-- 		les membres d'un contact morale -->
+
+
+		<h:form id="MembreMorale">
+		
+		
+		<p:dialog header="#{moraleBean.selectMorale.contact.nom}" width="1000" id="dViewMorale" widgetVar="Viewmorale"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true">
+
+
+
+<h:panelGrid columns="2"  style="color:White;text-align:justify;font-style:normal;background-color:White;border-style:hidden;border-color:White;font-weight:normal;border-width:medium;">
+
+
+           
+                
+    <h:panelGrid  columns="2"  title="Contact" style="color:White;text-align:justify;font-style:normal;background-color:White;border-style:solid;border-color:Black;font-weight:bold;border-width:medium;">
+         
+   
+
+
+
+                <h:outputLabel value=" Adresse:        " style="COLOR: #000000; BACKGROUND-COLOR: #ffffff; FONT-SIZE: small; FONT-WEIGHT: bold;"/>
+                <h:outputLabel value="#{moraleBean.selectMorale.contact.adresse}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
+      
+
+                <h:outputLabel value="Code Postale:     " style="FONT-WEIGHT: bold; FONT-SIZE: small; COLOR: #000000;"/>
+                <h:outputLabel value="#{moraleBean.selectMorale.contact.codePostal}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
+              
+                
+                   
+
+                <h:outputLabel value="Telephone Number:    " style="FONT-WEIGHT: bold; FONT-SIZE: small; COLOR: #000000;"/>
+                <h:outputLabel value="#{moraleBean.selectMorale.contact.telephonne}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
+                
+ 
+ 
+                <h:outputLabel value="Mobile Number:      " style="COLOR: #000000; FONT-WEIGHT: bold; FONT-SIZE: small;"/>
+                <h:outputLabel value="#{moraleBean.selectMorale.contact.mobile}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
+            
+                
+
+                <h:outputLabel value="Email:             " style="COLOR: #000000; FONT-WEIGHT: bold; FONT-SIZE: small;"/>
+                <h:outputLabel value="#{moraleBean.selectMorale.contact.email}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
+                
+              
+                
+                </h:panelGrid>
+                
+                           <h:graphicImage value="/images/#{moraleBean.selectMorale.contact.nom}.png" width="200" height="200" style="height : 143px; width : 316px;"/>
+                
+                
+                </h:panelGrid>
+         
+                  <p:dataTable var="membre" value="#{moraleBean.list_Membre_Morale}"      id="tabMembre" paginator="true" rows="4" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+   rowKey="#{m.idContact}" scrollable="true"  scrollHeight="100"  
+             
+                emptyMessage="aucun membre"  >
+ 
+ 
+ <f:facet name="header">
+Liste de Membre
+
+       <p:columnGroup>
+     <p:commandButton  icon="fa fa-fw fa-file-excel-o" id="exel" ajax="false" style="float:left;height : 20px" >  
+<!--          <p:graphicImage value="/images/excel-icon.png" />   -->
+        <p:dataExporter  type="xls" target="tabMembre" fileName="membre"/>
+     </p:commandButton> 
+  
+     <p:spacer width="10"/>  
+  
+     <p:commandButton icon="fa fa-fw fa-file-pdf-o" id="pdf" ajax="false" style="float:left;height : 20px"  >  
+
+         <p:dataExporter type="pdf" target="tabMembre" fileName="membre"/>
+</p:commandButton> 
+     
+          <p:spacer width="10"/>  
+  
+     <p:commandButton id="xml" icon="fa fa-fw fa-file-code-o" ajax="false" style="float:left;height : 20px" >  
+         <p:dataExporter  type="xml" target="tabMembre" fileName="membre"/>
+</p:commandButton> 
+</p:columnGroup>
+
+
+
+
+<p:commandButton id="ajouterM"  value="Nouvel Membre"
+style="float:right"  icon="ui-icon-plus" />
+
+<p:commandButton id="toggler1" type="button" value="Columns"
+style="float:right;"  icon="ui-icon-calculator" />
+
+
+ <p:commandButton icon="ui-icon-search"  style="float:right" 
+      />
+          <p:inputText  style="float:right ; width: 200px;"   >
+</p:inputText>
+
+<p:columnToggler datasource="tabMembre"  trigger="toggler1" >
+   <p:ajax event="toggle" listener="#{moraleBean.onToggle}" />
+   </p:columnToggler>
+
+</f:facet>
+
+ 
+
+ 
+
+ 
+    <p:column headerText="Nom"  sortBy="#{membre.nom}" filterBy="#{membre.nom}">
+    
+
+        <h:outputText value="#{membre.nom}" />
+    
+    
+
+    </p:column>
+ 
+    <p:column headerText="Prénom" sortBy="#{membre.prenom}" filterBy="#{membre.prenom}">
+    
+  
+
+    
+        <h:outputText value="#{membre.prenom}" />
+       
+         
+         </p:column>
+         
+         
+
+
+         
+         
+         
+ 
+         
+         
+                      <p:column style="width:200px;"  headerText="Fonction" sortBy="#{membre.fonction.libelleFonction}" filterBy="#{membre.fonction.libelleFonction}">
+    
+  
+
+    
+        <h:outputText value="#{membre.fonction.libelleFonction}" style="text-align:justify;font-style:normal;font-size: small;font-weight:normal;"/>
+       
+         
+         </p:column>
+         
+         
+                 
+                      <p:column style="width:200px;" headerText="Email" sortBy="#{membre.email}"  filterBy="#{membre.email}">
+    
+  
+
+    
+        <h:outputText value="#{membre.email}" style="text-align:justify;font-style:normal;font-size: small;font-weight:normal;"/>
+       
+         
+         </p:column>
+
+
+                      <p:column headerText="Telephone" sortBy="#{membre.telephone}" filterBy="#{membre.telephone}">
+    
+  
+
+    
+        <h:outputText  value="#{membre.telephone}" style="text-align:justify;font-style:normal;font-size: small;font-weight:normal;"/>
+       
+         
+         </p:column>
+    
+
+    <p:column headerText="Oprération"   exportable="false">
+
+ 
+
+    
+     <p:commandButton id="btviewMembreCon" icon="ui-icon-pencil" actionListener="#{membreBean.selectmembre}"    > 
+    
+     
+    </p:commandButton>
+    
+     <p:commandButton icon="ui-icon-trash" > 
+            <p:confirm header="Confirmation" message="Êtes-vous sûr?" icon="ui-icon-alert"  />
+    </p:commandButton>
+ 
+        </p:column>
+    
+</p:dataTable>
+         
+         
+  	
+  		
+  		
+
+  		    
+        
+        </p:dialog>
+
+
+
+
+</h:form>
+
+
+
+
+
+
+
+
+
+	<!--=======Ajouter Contact================================-->
+
+
+
+	<h:form id="AjouterMorale">
+	<p:growl id="growl4" sticky="true" showDetail="true" life="3000" />
+
+<!--  dualog ajouter -->
+<p:dialog header="ajouter contact" id="daddMorale" widgetVar="addmorale"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="1310px">         
+
+        
+
+
+<p:panelGrid id="panelAdd" columns="2" layout="grid" style="width: 1280px;"  >
+		
+
+<p:panelGrid id="pSecteur" columns="3" layout="grid" style="width: 600px;"  >
+
+<p:outputLabel value="Secteur(*):" style="width: 100px;"/>
+<p:selectOneMenu id="secteur" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="il faut sélectionner un secteur" value="#{moraleBean.secteur.idSecteur}"  style="width: 100px;">
+								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
+								<f:selectItems value="#{secteurBean.list_Secteur}" var="entry"
+									itemValue="#{entry.idSecteur}" itemLabel="#{entry.libelleSecteur}" />
+</p:selectOneMenu>
+<p:panelGrid id="OSecteur" columns="3" layout="grid" style="width: 150px;"  >
+<p:commandButton id="ajouterS" style="float:right"  icon="ui-icon-plus" oncomplete="PF('addSecteur').show()" />
+<p:commandButton id="ModifierS" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
+<p:commandButton id="SuprimerS" style="float:right"  icon="ui-icon-trash">
+
+<p:confirm header="Confirmation" message="Êtes-vous sûr?" icon="ui-icon-alert"
+/>
+</p:commandButton>
+</p:panelGrid>
+</p:panelGrid>
+
+
+
+<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >
+				
+							<p:outputLabel value="Groupe:" style="width: 100px;" />
+										
+							<p:selectOneMenu id="groupe" value="#{moraleBean.groupe.idGroupe}" filter="true" filterMatchMode="startsWith"  style="width: 100px;">
+								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
+								<f:selectItems value="#{groupeContactBean.list_GroupeContact}" var="entry"
+									itemValue="#{entry.idGroupe}" itemLabel="#{entry.libelleGroupe}" />
+							</p:selectOneMenu>
+		<p:panelGrid id="OGroupe" columns="3" layout="grid" style="width: 150px;"  >					
+<p:commandButton id="ajouterG" style="float:right"  icon="ui-icon-plus" oncomplete="PF('addGroupe2').show()" />
+<p:commandButton id="ModifierG" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
+<p:commandButton id="SuprimerG" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" />
+</p:panelGrid>
+</p:panelGrid>
+							
+			<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >			
+							<p:outputLabel value="Region(*):"   style="width: 100px;"/>
+									
+							<p:selectOneMenu id="region" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="il faut sélectionner une region" value="#{moraleBean.region.idRegion}" style="width: 100px;">
+								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
+								<f:selectItems value="#{regionBean.list_Region}" var="entry"
+									itemValue="#{entry.idRegion}" itemLabel="#{entry.libelleRegion}" />
+							</p:selectOneMenu>
+							
+							<p:panelGrid id="ORegion" columns="3" layout="grid" style="width: 150px;"  >	
+							<p:commandButton id="ajouterR" 
+style="float:right"  icon="
+ui-icon-plus" oncomplete="PF('addRegion').show()" />
+<p:commandButton id="ModifierR" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
+<p:commandButton id="SuprimerR" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" />
+</p:panelGrid>
+</p:panelGrid>
+
+							
+							
+						<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >	
+							
+									<p:outputLabel value="Chef Responsable:" style="width: 100px;"/>
+									
+									
+							<p:selectOneMenu id="chef" value="#{moraleBean.chef.idChefResponsable}" filter="true" filterMatchMode="startsWith"  style="width: 100px;">
+								<f:selectItem itemLabel="Select..." itemValue="" noSelectionOption="true" />
+								<f:selectItems value="#{chefResponsableBean.list_ChefResponsable}" var="entry"
+									itemValue="#{entry.idChefResponsable}" itemLabel="#{entry.prenomChefResponsable}  #{entry.nomChefResponsable}" />
+									
+									<p:column>     <p:graphicImage value="/images/excel-icon.png" />  
+									</p:column>
+									
+							</p:selectOneMenu>
+								<p:panelGrid id="OChef" columns="3" layout="grid" style="width: 150px;"  >
+														<p:commandButton id="ajouterChef" 
+style="float:right"  icon="ui-icon-plus" oncomplete="PF('addChef').show()" />
+<p:commandButton id="ModifierC" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
+<p:commandButton id="SuprimerC" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" />
+</p:panelGrid>
+</p:panelGrid>
+							<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >	
+											<p:outputLabel value="Activité:" style="width: 100px;"/>
+									
+							<p:selectOneMenu id="produit" value="#{moraleBean.produit.idProduit}"   filter="true" filterMatchMode="startsWith"  style="width: 100px;">
+								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
+								<f:selectItems value="#{produitBean.list_Produit}" var="entry"
+									itemValue="#{entry.idProduit}" itemLabel="#{entry.libelle}" />
+							</p:selectOneMenu>
+								<p:panelGrid id="OProduit" columns="3" layout="grid" style="width: 150px;"  >
+							<p:commandButton id="ajouterP" 
+style="float:right"  icon="ui-icon-plus" oncomplete="PF('addProduit').show()" />
+<p:commandButton id="ModifierP" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
+<p:commandButton id="SuprimerP" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" />
+</p:panelGrid>
+</p:panelGrid>
+				
+
+		<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >
+									<p:outputLabel value="Type(*):" style="width: 100px;"/>
+						
+							<p:selectOneMenu id="Type" value="#{moraleBean.type.idMoral}" required="true" requiredMessage="il faut sélectionner un type"  filter="true" filterMatchMode="startsWith"  style="width: 100px;">
+								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
+								<f:selectItems value="#{typeMoraleBean.list_TypeMoral}" var="entry"
+									itemValue="#{entry.idMoral}" itemLabel="#{entry.libelleMorale}" />
+							</p:selectOneMenu>
+						<p:panelGrid id="OType" columns="3" layout="grid" style="width: 150px;"  >
+							<p:commandButton id="ajouterType" 
+style="float:right"  icon="ui-icon-plus" oncomplete="PF('addType').show()" />
+<p:commandButton id="ModifierT" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
+<p:commandButton id="SuprimerT" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" />
+</p:panelGrid>
+</p:panelGrid>
+				
+
+		
+		
+
+
+					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  > 
+			<p:outputLabel value="Nom/Raison Social(*):" style="width: 100px;"/>
+			<p:inputText label="Nomraison Social " value="#{moraleBean.contact.nom}" required="true" requiredMessage="il faut saisir le nom de l'organisation" style="width: 150px;" >
+			<f:validateLength minimum="2" maximum="15" />
+			</p:inputText>
+			</p:panelGrid>
+			
+					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
+			
+			<p:outputLabel value="Addresse(*):" style="width: 100px;"/>
+			<p:inputText label="Adresse " value="#{moraleBean.contact.adresse}" required="true" requiredMessage="il faut saisir l'adresse" style="width: 150px;" />
+			</p:panelGrid>
+			
+			 		<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
+			
+			<p:outputLabel value="téléphone Mobile:" style="width: 100px;" /> 
+			<p:inputText label="Numero telephone mobile:" value="#{moraleBean.contact.mobile}" style="width: 150px;" >
+			<f:convertNumber integerOnly="true" type="number" />
+			<f:validateLength minimum="8" maximum="8" />
+			</p:inputText>
+			
+			</p:panelGrid>
+			
+					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
+				<p:outputLabel value="téléphone fixe:" style="width: 100px;" /> 
+			<p:inputText label="Numero telephone fixe " value="#{moraleBean.contact.telephonne}"  style="width: 150px;" >
+			<f:convertNumber integerOnly="true" type="number" />
+			<f:validateLength minimum="8" maximum="8" />
+			</p:inputText>
+			
+			</p:panelGrid>
+			
+					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
+					<p:outputLabel value="Code Postale:" style="width: 100px;"/> 
+			<p:inputText label="code postale " value="#{moraleBean.contact.codePostal}"  style="width: 150px;" >
+			<f:convertNumber integerOnly="true" type="number" />
+			<f:validateLength minimum="4" maximum="4" />
+			</p:inputText>
+			
+</p:panelGrid>
+				
+								<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
+								<p:outputLabel value="Email(*):" style="width: 100px;" />
+			<p:inputText label="email(*):" value="#{moraleBean.contact.email}" required="true" requiredMessage="il faut saisir l'email" style="width: 150px;" >
+			<f:validateLength minimum="2" maximum="100" />
+			</p:inputText>
+			</p:panelGrid>
+			
+			<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
+			
+										<p:outputLabel value="Ville:" style="width: 100px;" />
+			<p:inputText label="ville" value="#{moraleBean.contact.ville}" style="width: 150px;">
+			<f:validateLength minimum="2" maximum="35" />
+			
+			</p:inputText>
+			</p:panelGrid>
+			
+
+<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >			
+	
+				<p id="text">vous devez remplir tous les champs</p>
+
+			<p:commandButton value="enregistrer" actionListener="#{moraleBean.ajout}"  update="growl4"
+						oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addmorale').hide();}" ></p:commandButton>
+</p:panelGrid>
+			
+		</p:panelGrid>
+		
+		
+		
+		
+		<p:spacer height="30"/> 
+		
+ 
+		</p:dialog>
+		
+		
+<p:dialog header="ajouter Secteur"  widgetVar="addSecteur"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
+
+        
+
+
+<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
+
+									<p:outputLabel value="Nouveau secteur:" style="width: 100px;" />
+			<p:inputText label="sect" value="#{secteurBean.secteur.libelleSecteur}" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="15" />
+			
+			
+			</p:inputText>
+				<p:commandButton value="enregistrer" actionListener="#{secteurBean.ajout()}" update="formMorale"  oncomplete="PF('addmorale').show()"></p:commandButton>
+				
+					<p:commandButton value="Annuler" ></p:commandButton>
+
+</p:panelGrid>
+
+</p:dialog>
+		
+
+
+<p:dialog header="ajouter Type"  widgetVar="addType"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
+
+        
+
+
+<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
+
+									<p:outputLabel value="Nouveau Type:" style="width: 100px;" />
+			<p:inputText label="sect" value="#{typeMoraleBean.typemoral.libelleMorale}" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="15" />
+			
+			</p:inputText>
+				<p:commandButton value="enregistrer" actionListener="#{typeMoraleBean.ajout()}" update="formMorale"  oncomplete="PF('addmorale').show()"></p:commandButton>
+				
+					<p:commandButton value="Annuler" ></p:commandButton>
+
+</p:panelGrid>
+
+</p:dialog>
+
+
+
+<p:dialog header="ajouter Groupe"  widgetVar="addGroupe2"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
+
+        
+
+
+<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
+
+									<p:outputLabel value="Nouveau Groupe:" style="width: 100px;" />
+			<p:inputText label="groupela" value="#{groupeContactBean.groupecontact.libelleGroupe}" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="15" />
+			
+			</p:inputText>
+				<p:commandButton value="enregistrer" actionListener="#{groupeContactBean.ajout()}" update="formMorale"  oncomplete="PF('addmorale').show()"></p:commandButton>
+				
+					<p:commandButton value="Annuler" ></p:commandButton>
+
+</p:panelGrid>
+
+</p:dialog>
+
+<p:dialog header="ajouter Produit"  widgetVar="addProduit"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
+
+        
+
+
+<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
+
+									<p:outputLabel value="Nouveau Produit:" style="width: 100px;" />
+			<p:inputText label="produit1" value="#{produitBean.produit.libelle}" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="15" />
+			
+			</p:inputText>
+				<p:commandButton value="enregistrer" actionListener="#{produitBean.ajout}" update="formMorale"  oncomplete="PF('addmorale').show()"></p:commandButton>
+				
+					<p:commandButton value="Annuler" ></p:commandButton>
+
+</p:panelGrid>
+
+</p:dialog>
+	
+
+
+		
+     
+      
+
+
+		<p:dialog header="ajouter Chef Responsable"  widgetVar="addChef"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
+      
+        
+
+
+<p:panelGrid  columns="2" layout="grid" style="width: 310px;"  >
+
+									<p:outputLabel value="Nom:" style="width: 100px;" />
+			<p:inputText label="chefnom" value="#{chefResponsableBean.chefresponsable.nomChefResponsable}" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="15" />
+			
+			</p:inputText>
+			
+										<p:outputLabel value="Prenom:" style="width: 100px;" />
+			<p:inputText label="chefprenom" value="#{chefResponsableBean.chefresponsable.prenomChefResponsable}" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="15" />
+			
+			</p:inputText>
+			
+										<p:outputLabel value="Adresse:" style="width: 100px;" />
+			<p:inputText label="chefAdd" value="#{chefResponsableBean.chefresponsable.adresse}" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="15" />
+			
+			</p:inputText>
+			
+				
+										<p:outputLabel value="Email:" style="width: 100px;" />
+			<p:inputText label="chefEmail" value="#{chefResponsableBean.chefresponsable.email}" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="100" />
+			
+			</p:inputText>
+				
+										<p:outputLabel value="Telephone:" style="width: 100px;" />
+			<p:inputText label="cheftel" value="#{chefResponsableBean.chefresponsable.telephone}" required="false" style="width: 100px;" >
+	
+			
+			</p:inputText>
+			
+			
+						<p:commandButton value="Enregistrer" actionListener="#{chefResponsableBean.ajout()}"   update="formMorale"  oncomplete="PF('addmorale').show()"> ></p:commandButton>
+					<p:commandButton value="Annuler" ></p:commandButton>
+			
+			
+
+</p:panelGrid>
+
+
+</p:dialog>
+
+
+
+
+
+
+
+
+
+
+<p:dialog header="ajouter Region"  widgetVar="addRegion"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
+
+        
+
+
+<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
+
+									<p:outputLabel value="Nouveau Region:" style="width: 100px;" />
+			<p:inputText label="sect" value="#{regionBean.region.libelleRegion}" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="15" />
+			
+			</p:inputText>
+				<p:commandButton value="enregistrer" actionListener="#{regionBean.ajout}" update="formMorale"  oncomplete="PF('addmorale').hide"></p:commandButton>
+				
+					<p:commandButton value="Annuler" ></p:commandButton>
+
+</p:panelGrid>
+
+</p:dialog>
+</h:form>
+
+
+
+
+	</h:body>
+
+
+
+</body>
+</html>
