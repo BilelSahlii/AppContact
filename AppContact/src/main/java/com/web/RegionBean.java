@@ -7,6 +7,7 @@ import java.util.List;
 
 import  org.primefaces.*;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -96,12 +97,44 @@ public void init()
 
 public void ajout()
 
-{	regionDao.saveOrUpdate(region);
+{	
+	RequestContext context = RequestContext.getCurrentInstance();
+	FacesMessage message = null;
+	boolean add = false;
+	
+
+try {
+	regionDao.saveOrUpdate(region);
+
+message = new FacesMessage(FacesMessage.SEVERITY_INFO, "la region "+region.getLibelleRegion()+" est bien enregistré", "");
+add = true;
+
+
 init();
 
 
+} 
+catch (Exception e)
 
+{
+
+add = false;
+	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout erroné", "");
+	init();
+	
 }
+
+
+
+FacesContext.getCurrentInstance().addMessage(null, message);
+context.addCallbackParam("add",add);
+context.update("AjouterMorale:addmorale");
+
+init();
+}
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 package com.web;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,6 +8,7 @@ import java.util.List;
 
 import  org.primefaces.*;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -97,6 +99,13 @@ SecteurBean.secteur = secteur;
 }
 
 
+public void AjouterSecteur() throws IOException {
+
+	RequestContext context = RequestContext.getCurrentInstance();
+	context.update("ajouterSecteur");
+	context.execute("PF('addSecteur').show();");
+}
+
 public void init_secteur()
 {secteur=new Secteur() ;
 	secteur.setLibelleSecteur("");
@@ -105,17 +114,80 @@ public void init_secteur()
 
 public void ajout()
 
-{System.out.println("secteut");
-	secteurDao.saveOrUpdate(secteur);
+{
+	RequestContext context = RequestContext.getCurrentInstance();
+	FacesMessage message = null;
+	boolean add = false;
+	
+	
+	try {secteurDao.saveOrUpdate(secteur);
+
+
+	message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le Secteur "+secteur.getLibelleSecteur()+" est bien enregistré", "");
+	add = true;
+
+
 	init_secteur();
-	System.out.println("secteut" + secteur.getIdSecteur());
+
+
+	} 
+	catch (Exception e)
+
+	{
+
+	add = false;
+		message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout erroné", "");
+		init_secteur();
+		
+	}
+
+
+
+	FacesContext.getCurrentInstance().addMessage(null, message);
+	context.addCallbackParam("add",add);
+	context.update("AjouterMorale:addmorale");
+//	context.execute("PF('addmorale').hide();");
+//	context.execute("PF('addmorale').show();");
+	init_secteur();
+	}
+
+
+
+
+public void suprimer()
+{RequestContext context = RequestContext.getCurrentInstance();
+FacesMessage message = null;
+boolean deleted = false;
+	try {
+		
+		if(secteur==null)
+		{
+			deleted = false;
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sellectionner un secteur", "");
+		}
+		else
+		{
+		secteurDao.delete(secteur);
+		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Supprimé", secteur.getLibelleSecteur());
+		deleted = true;
+		}
+	
+	
+	
+
+
+	
+}catch (Exception e)
+
+{
+	deleted = false;
+	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Supression erroné", "");
 }
 
-
-
-public void suprimer(Secteur secteur)
-{
-	secteurDao.delete(secteur);
+FacesContext.getCurrentInstance().addMessage(null, message);
+context.addCallbackParam("deleted", deleted);
+context.update("AjouterMorale:addmorale");
+init_secteur();
 }
 
 

@@ -11,9 +11,6 @@
 	<h:head>
 		<title>Contact Morale</title>
 		<meta charset="utf-8" />
-		<!--      <link rel="icon" href="images/favicon.ico"/> -->
-		<!--      <link rel="shortcut icon" href="images/favicon.ico" /> -->
-		<!--      <link rel="stylesheet" href="css/style.css"/> -->
 
 	</h:head>
 
@@ -176,7 +173,7 @@ Liste de Contact
 					<p:commandButton icon="ui-icon-trash"
 						action="#{moraleBean.suprimer(m)}" update="deleteDialog">
 						<p:confirm header="Confirmation"
-							message="Êtes-vous sûr pour supprimer #{m.contact.nom} "
+							message="Êtes-vous sûr de supprimer #{m.contact.nom} "
 							icon="ui-icon-alert" />
 
 
@@ -186,13 +183,6 @@ Liste de Contact
 				
 
 
-
-					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-						<p:commandButton value="Oui" type="button"
-							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-						<p:commandButton value="Non" type="button"
-							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-					</p:confirmDialog>
 
 				</p:column>
 
@@ -207,6 +197,13 @@ Liste de Contact
 
 
 
+
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Oui" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Non" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
 
 		<!--     Dialog Email Groupe  -->
 
@@ -249,7 +246,7 @@ Liste de Contact
 
 					</p:selectManyMenu>
 				</center>
-				<p:message for="Email" id="msgLastname" display="icon" />
+		
 				<p></p>
   
   
@@ -565,8 +562,233 @@ style="float:right;"  icon="ui-icon-calculator" />
 
 
 
+<!--    Dialogue ajouter Secteur -->
+		<h:form id="ajouterSecteur">
+			<p:growl id="growlSecteur" sticky="true" showDetail="true" life="3000" />
+
+		
+<p:dialog header="ajouter Secteur"  widgetVar="addSecteur"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
+
+        
 
 
+<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
+
+									<p:outputLabel value="Nouveau secteur:" style="width: 100px;" />
+			<p:inputText label="sect" value="#{secteurBean.secteur.libelleSecteur}" required="true" validatorMessage="saisir non valide" requiredMessage="il faut saisir un secteur"  style="width: 100px;">
+			<f:validateLength minimum="2" maximum="100" />
+						<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
+
+
+
+
+
+					</p:inputText>
+				<p:commandButton value="enregistrer" actionListener="#{secteurBean.ajout()}" update="growlSecteur" 	oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addSecteur').hide();}"
+				></p:commandButton>
+				
+					<p:commandButton value="Annuler" oncomplete="PF('addSecteur').hide()"></p:commandButton>
+
+</p:panelGrid>
+
+</p:dialog>
+</h:form>
+
+<!--  Ajouter une Region  -->
+
+
+		<h:form id="ajouterRegion">
+			<p:growl id="growlRegion" sticky="true" showDetail="true" life="3000" />
+
+
+<p:dialog header="ajouter Region"  widgetVar="addRegion"  modal="true"   resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
+
+        
+
+
+<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
+
+									<p:outputLabel value="Nouveau Region:" style="width: 100px;" />
+			<p:inputText label="sect" value="#{regionBean.region.libelleRegion}" required="true" validatorMessage="saisir non valide" requiredMessage="il faut saisir une region" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="100" />
+				<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
+			
+			</p:inputText>
+				<p:commandButton value="enregistrer" actionListener="#{regionBean.ajout}" update="growlRegion"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addRegion').hide();}"></p:commandButton>
+				
+					<p:commandButton value="Annuler"  oncomplete="PF('addRegion').hide()"></p:commandButton>
+
+</p:panelGrid>
+
+</p:dialog>
+
+</h:form>
+
+
+	<!--=======Ajouter Activité================================-->
+
+<h:form id="ajouterProduit">
+			<p:growl id="growlProduit" sticky="true" showDetail="true" life="3000" />
+
+<p:dialog header="ajouter Activité"  widgetVar="addProduit"  modal="true" resizable="false"   draggable="false" closable="true" closeOnEscape="true" width="350px">         
+
+        
+
+
+<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
+
+									<p:outputLabel value="Nouveau Produit:" style="width: 100px;" />
+			<p:inputText label="produit1" requiredMessage="il faut saisir un activité" validatorMessage="saisir non valide"  value="#{produitBean.produit.libelle}" style="width: 100px;" >
+			<f:validateLength minimum="2" maximum="150" />
+				<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
+			
+			</p:inputText>
+				<p:commandButton value="enregistrer" actionListener="#{produitBean.ajout}" update="growlProduit"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addProduit').hide();}"></p:commandButton>
+				
+					<p:commandButton value="Annuler" oncomplete="PF('addProduit').hide()"></p:commandButton>
+
+</p:panelGrid>
+
+</p:dialog>
+</h:form>
+
+
+
+
+	<!--=======Ajouter Type================================-->
+
+<h:form id="ajouterType">
+			<p:growl id="growlType" sticky="true" showDetail="true" life="3000" />
+<p:dialog header="ajouter Type"  widgetVar="addType"  modal="true"  resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
+
+        
+
+
+<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
+
+									<p:outputLabel value="Nouveau Type:" style="width: 100px;" />
+			<p:inputText label="sect" required="true" validatorMessage="saisir non valide" requiredMessage="il faut saisir un type" value="#{typeMoraleBean.typemoral.libelleMorale}" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="150" />
+					<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
+			
+			</p:inputText>
+				<p:commandButton value="enregistrer" actionListener="#{typeMoraleBean.ajout()}" update="growlType"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addType').hide();}"></p:commandButton>
+				
+					<p:commandButton value="Annuler"  oncomplete="PF('addType').hide()" ></p:commandButton>
+
+</p:panelGrid>
+
+</p:dialog>
+</h:form>
+
+
+
+
+	<!--=======Ajouter Groupe================================-->
+
+<h:form id="ajouterGroupe">
+			<p:growl id="growlGroupe" sticky="true" showDetail="true" life="3000" />
+
+<p:dialog header="ajouter Groupe"  widgetVar="addGroupe2"  modal="true"   resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
+
+        
+
+
+<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
+
+									<p:outputLabel value="Nouveau Groupe:" style="width: 100px;" />
+			<p:inputText label="groupela" value="#{groupeContactBean.groupecontact.libelleGroupe}" required="true" requiredMessage="il faut saisir un groupe" validatorMessage="saisir non valide" style="width: 100px;">
+			<f:validateLength minimum="2" maximum="150" />
+			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
+			
+			</p:inputText>
+				<p:commandButton value="enregistrer" actionListener="#{groupeContactBean.ajout()}" update="growlGroupe"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addGroupe2').hide();}"></p:commandButton>
+				
+					<p:commandButton value="Annuler" oncomplete="PF('addGroupe2').hide()" ></p:commandButton>
+
+</p:panelGrid>
+
+</p:dialog>
+</h:form>
+
+
+
+
+
+
+
+
+	<!--=======AjouterChef Responsable================================-->
+
+<h:form id="ajouterChef">
+			<p:growl id="growlChef" sticky="true" showDetail="true" life="3000" />
+
+
+	<p:dialog header="ajouter Chef Responsable"  widgetVar="addChef"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="550px">         
+      
+        
+
+
+<p:panelGrid  columns="2" layout="grid" style="width: 510px;"  >
+
+									<p:outputLabel value="Nom(*):" style="width: 100px;" />
+			<p:inputText label="chefnom" value="#{chefResponsableBean.chefresponsable.nomChefResponsable}" required="true" validatorMessage="nom non valide" requiredMessage="il faut saisir le nom" style="width: 	200px;">
+		<f:validateLength minimum="2" maximum="150" />
+			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
+			
+			</p:inputText>
+			
+										<p:outputLabel value="Prenom(*):" style="width: 100px;" />
+			<p:inputText label="chefprenom" value="#{chefResponsableBean.chefresponsable.prenomChefResponsable}" required="true" validatorMessage="prenom non valide" requiredMessage="il faut saisir le prenom" style="width: 200px;">
+				<f:validateLength minimum="2" maximum="150" />
+			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*"  />
+			
+			</p:inputText>
+			
+										<p:outputLabel value="Adresse:" style="width: 100px;" />
+			<p:inputText label="chefAdd" value="#{chefResponsableBean.chefresponsable.adresse}" validatorMessage="adresse non valide" style="width: 200px;">
+			<f:validateLength minimum="2" maximum="150" />
+			<f:validateRegex pattern="[a-zA-Z0-9ùéèçàäöüÄÖÜ \\s]*"  />
+			
+			</p:inputText>
+			
+				
+										<p:outputLabel value="Email:" style="width: 100px;" />
+			<p:inputText label="chefEmail" value="#{chefResponsableBean.chefresponsable.email}" validatorMessage="email non valide" style="width: 200px;">
+			<f:validateLength minimum="2" maximum="100" />
+			 <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+			
+			</p:inputText>
+				
+										<p:outputLabel value="Téléphone:" style="width: 100px;" />
+			<p:inputText label="cheftel" value="#{chefResponsableBean.chefresponsable.telephone}" required="false" type="numbre" validatorMessage="numéro de téléphone non valide" style="width: 200px;" >
+	<f:validateLength minimum="8" maximum="8" />
+			
+			</p:inputText>
+			
+			
+						<p:commandButton value="Enregistrer" actionListener="#{chefResponsableBean.ajout()}"   update="growlChef"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addChef').hide();}"> </p:commandButton>
+					<p:commandButton value="Annuler" oncomplete="PF('addChef').hide()" ></p:commandButton>
+				
+			
+			
+
+</p:panelGrid>
+
+
+</p:dialog>
+
+
+
+
+
+
+
+
+
+
+
+</h:form>
 
 
 
@@ -589,20 +811,22 @@ style="float:right;"  icon="ui-icon-calculator" />
 <p:panelGrid id="pSecteur" columns="3" layout="grid" style="width: 600px;"  >
 
 <p:outputLabel value="Secteur(*):" style="width: 100px;"/>
-<p:selectOneMenu id="secteur" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="il faut sélectionner un secteur" value="#{moraleBean.secteur.idSecteur}"  style="width: 100px;">
+<p:selectOneMenu id="secteur" filter="true" filterMatchMode="startsWith"  required="true" requiredMessage="il faut sélectionner un secteur" value="#{moraleBean.secteur.idSecteur}"  style="width: 100px;">
 								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
 								<f:selectItems value="#{secteurBean.list_Secteur}" var="entry"
 									itemValue="#{entry.idSecteur}" itemLabel="#{entry.libelleSecteur}" />
 </p:selectOneMenu>
-<p:panelGrid id="OSecteur" columns="3" layout="grid" style="width: 150px;"  >
-<p:commandButton id="ajouterS" style="float:right"  icon="ui-icon-plus" oncomplete="PF('addSecteur').show()" />
-<p:commandButton id="ModifierS" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
-<p:commandButton id="SuprimerS" style="float:right"  icon="ui-icon-trash">
 
-<p:confirm header="Confirmation" message="Êtes-vous sûr?" icon="ui-icon-alert"
-/>
-</p:commandButton>
-</p:panelGrid>
+
+<p:commandButton id="ajouterS" style="float:right"  icon="ui-icon-plus"  oncomplete="PF('addSecteur').show()"/>
+<!-- <p:commandButton id="ModifierS" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
+<!-- <p:growl id="deleteDialog" showDetail="true" /> -->
+
+
+<!-- <p:confirm header="Confirmation" message="Êtes-vous sûr pour supprimer le secteur ?"  icon="ui-icon-alert" -->
+<!-- /> -->
+<!-- </p:commandButton> -->
+
 </p:panelGrid>
 
 
@@ -616,11 +840,11 @@ style="float:right;"  icon="ui-icon-calculator" />
 								<f:selectItems value="#{groupeContactBean.list_GroupeContact}" var="entry"
 									itemValue="#{entry.idGroupe}" itemLabel="#{entry.libelleGroupe}" />
 							</p:selectOneMenu>
-		<p:panelGrid id="OGroupe" columns="3" layout="grid" style="width: 150px;"  >					
+					
 <p:commandButton id="ajouterG" style="float:right"  icon="ui-icon-plus" oncomplete="PF('addGroupe2').show()" />
-<p:commandButton id="ModifierG" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
-<p:commandButton id="SuprimerG" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" />
-</p:panelGrid>
+<!-- <p:commandButton id="ModifierG" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
+<!-- <p:commandButton id="SuprimerG" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" /> -->
+
 </p:panelGrid>
 							
 			<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >			
@@ -632,13 +856,13 @@ style="float:right;"  icon="ui-icon-calculator" />
 									itemValue="#{entry.idRegion}" itemLabel="#{entry.libelleRegion}" />
 							</p:selectOneMenu>
 							
-							<p:panelGrid id="ORegion" columns="3" layout="grid" style="width: 150px;"  >	
+				
 							<p:commandButton id="ajouterR" 
 style="float:right"  icon="
 ui-icon-plus" oncomplete="PF('addRegion').show()" />
-<p:commandButton id="ModifierR" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
-<p:commandButton id="SuprimerR" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" />
-</p:panelGrid>
+<!-- <p:commandButton id="ModifierR" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
+<!-- <p:commandButton id="SuprimerR" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" /> -->
+
 </p:panelGrid>
 
 							
@@ -657,13 +881,13 @@ ui-icon-plus" oncomplete="PF('addRegion').show()" />
 									</p:column>
 									
 							</p:selectOneMenu>
-								<p:panelGrid id="OChef" columns="3" layout="grid" style="width: 150px;"  >
+								
 														<p:commandButton id="ajouterChef" 
 style="float:right"  icon="ui-icon-plus" oncomplete="PF('addChef').show()" />
-<p:commandButton id="ModifierC" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
-<p:commandButton id="SuprimerC" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" />
+<!-- <p:commandButton id="ModifierC" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
+<!-- <p:commandButton id="SuprimerC" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" /> -->
 </p:panelGrid>
-</p:panelGrid>
+
 							<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >	
 											<p:outputLabel value="Activité:" style="width: 100px;"/>
 									
@@ -672,12 +896,12 @@ style="float:right"  icon="ui-icon-plus" oncomplete="PF('addChef').show()" />
 								<f:selectItems value="#{produitBean.list_Produit}" var="entry"
 									itemValue="#{entry.idProduit}" itemLabel="#{entry.libelle}" />
 							</p:selectOneMenu>
-								<p:panelGrid id="OProduit" columns="3" layout="grid" style="width: 150px;"  >
+				
 							<p:commandButton id="ajouterP" 
 style="float:right"  icon="ui-icon-plus" oncomplete="PF('addProduit').show()" />
-<p:commandButton id="ModifierP" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
-<p:commandButton id="SuprimerP" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" />
-</p:panelGrid>
+<!-- <p:commandButton id="ModifierP" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
+<!-- <p:commandButton id="SuprimerP" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" /> -->
+
 </p:panelGrid>
 				
 
@@ -689,12 +913,12 @@ style="float:right"  icon="ui-icon-plus" oncomplete="PF('addProduit').show()" />
 								<f:selectItems value="#{typeMoraleBean.list_TypeMoral}" var="entry"
 									itemValue="#{entry.idMoral}" itemLabel="#{entry.libelleMorale}" />
 							</p:selectOneMenu>
-						<p:panelGrid id="OType" columns="3" layout="grid" style="width: 150px;"  >
+					
 							<p:commandButton id="ajouterType" 
 style="float:right"  icon="ui-icon-plus" oncomplete="PF('addType').show()" />
-<p:commandButton id="ModifierT" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" />
-<p:commandButton id="SuprimerT" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" />
-</p:panelGrid>
+<!-- <p:commandButton id="ModifierT" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
+<!-- <p:commandButton id="SuprimerT" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" /> -->
+
 </p:panelGrid>
 				
 
@@ -705,20 +929,25 @@ style="float:right"  icon="ui-icon-plus" oncomplete="PF('addType').show()" />
 					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  > 
 			<p:outputLabel value="Nom/Raison Social(*):" style="width: 100px;"/>
 			<p:inputText label="Nomraison Social " value="#{moraleBean.contact.nom}" required="true" requiredMessage="il faut saisir le nom de l'organisation" style="width: 150px;" >
-			<f:validateLength minimum="2" maximum="15" />
+			<f:validateLength minimum="2" maximum="150" />
+			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*" />
 			</p:inputText>
 			</p:panelGrid>
 			
 					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
 			
-			<p:outputLabel value="Addresse(*):" style="width: 100px;"/>
-			<p:inputText label="Adresse " value="#{moraleBean.contact.adresse}" required="true" requiredMessage="il faut saisir l'adresse" style="width: 150px;" />
+			<p:outputLabel value="Addresse:" style="width: 100px;"/>
+			<p:inputText label="Adresse " value="#{moraleBean.contact.adresse}"  validatorMessage="adresse non valide" style="width: 150px;" >
+				<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*" />
+						<f:validateLength minimum="2" maximum="150" />
+				</p:inputText>
+			
 			</p:panelGrid>
 			
 			 		<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
 			
 			<p:outputLabel value="téléphone Mobile:" style="width: 100px;" /> 
-			<p:inputText label="Numero telephone mobile:" value="#{moraleBean.contact.mobile}" style="width: 150px;" >
+			<p:inputText label="Numero telephone mobile:" value="#{moraleBean.contact.mobile}" type="number" style="width: 150px;" >
 			<f:convertNumber integerOnly="true" type="number" />
 			<f:validateLength minimum="8" maximum="8" />
 			</p:inputText>
@@ -727,7 +956,7 @@ style="float:right"  icon="ui-icon-plus" oncomplete="PF('addType').show()" />
 			
 					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
 				<p:outputLabel value="téléphone fixe:" style="width: 100px;" /> 
-			<p:inputText label="Numero telephone fixe " value="#{moraleBean.contact.telephonne}"  style="width: 150px;" >
+			<p:inputText label="Numero telephone fixe " value="#{moraleBean.contact.telephonne}" type="number" style="width: 150px;" >
 			<f:convertNumber integerOnly="true" type="number" />
 			<f:validateLength minimum="8" maximum="8" />
 			</p:inputText>
@@ -736,7 +965,7 @@ style="float:right"  icon="ui-icon-plus" oncomplete="PF('addType').show()" />
 			
 					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
 					<p:outputLabel value="Code Postale:" style="width: 100px;"/> 
-			<p:inputText label="code postale " value="#{moraleBean.contact.codePostal}"  style="width: 150px;" >
+			<p:inputText label="code postale " value="#{moraleBean.contact.codePostal}" type="number" style="width: 150px;" >
 			<f:convertNumber integerOnly="true" type="number" />
 			<f:validateLength minimum="4" maximum="4" />
 			</p:inputText>
@@ -746,26 +975,48 @@ style="float:right"  icon="ui-icon-plus" oncomplete="PF('addType').show()" />
 								<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
 								<p:outputLabel value="Email(*):" style="width: 100px;" />
 			<p:inputText label="email(*):" value="#{moraleBean.contact.email}" required="true" requiredMessage="il faut saisir l'email" style="width: 150px;" >
-			<f:validateLength minimum="2" maximum="100" />
+			<f:validateLength minimum="2" maximum="200" />
+			<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
 			</p:inputText>
 			</p:panelGrid>
 			
 			<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
 			
-										<p:outputLabel value="Ville:" style="width: 100px;" />
-			<p:inputText label="ville" value="#{moraleBean.contact.ville}" style="width: 150px;">
+										<p:outputLabel value="Ville:" style="width: 100px;"  />
+			<p:inputText label="ville" value="#{moraleBean.contact.ville}" style="width: 150px;" validatorMessage="ville non valide" >
 			<f:validateLength minimum="2" maximum="35" />
+					<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*" />
 			
 			</p:inputText>
 			</p:panelGrid>
 			
 
-<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >			
+<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >			
 	
-				<p id="text">vous devez remplir tous les champs</p>
 
-			<p:commandButton value="enregistrer" actionListener="#{moraleBean.ajout}"  update="growl4"
-						oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addmorale').hide();}" ></p:commandButton>
+
+			<p:commandButton value="enregistrer" actionListener="#{moraleBean.ajout}"  update="growl4" 
+						oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addmorale').hide();}" >
+						
+						
+							<p:confirm header="Confirmation"
+							message="Êtes-vous sûr d'ajouter #{moraleBean.contact.nom} "
+							icon="ui-icon-alert" />
+						
+						
+						</p:commandButton>
+						
+						<p:commandButton value="annuler"  
+						oncomplete="PF('addmorale').hide()" >
+						
+						
+						
+						
+						</p:commandButton>
+						
+							<p:commandButton value="reset"  type="reset"
+						></p:commandButton>
+						
 </p:panelGrid>
 			
 		</p:panelGrid>
@@ -778,176 +1029,14 @@ style="float:right"  icon="ui-icon-plus" oncomplete="PF('addType').show()" />
  
 		</p:dialog>
 		
-		
-<p:dialog header="ajouter Secteur"  widgetVar="addSecteur"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
 
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
-
-									<p:outputLabel value="Nouveau secteur:" style="width: 100px;" />
-			<p:inputText label="sect" value="#{secteurBean.secteur.libelleSecteur}" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="15" />
-			
-			
-			</p:inputText>
-				<p:commandButton value="enregistrer" actionListener="#{secteurBean.ajout()}" update="formMorale"  oncomplete="PF('addmorale').show()"></p:commandButton>
-				
-					<p:commandButton value="Annuler" ></p:commandButton>
-
-</p:panelGrid>
-
-</p:dialog>
-		
-
-
-<p:dialog header="ajouter Type"  widgetVar="addType"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
-
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
-
-									<p:outputLabel value="Nouveau Type:" style="width: 100px;" />
-			<p:inputText label="sect" value="#{typeMoraleBean.typemoral.libelleMorale}" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="15" />
-			
-			</p:inputText>
-				<p:commandButton value="enregistrer" actionListener="#{typeMoraleBean.ajout()}" update="formMorale"  oncomplete="PF('addmorale').show()"></p:commandButton>
-				
-					<p:commandButton value="Annuler" ></p:commandButton>
-
-</p:panelGrid>
-
-</p:dialog>
-
-
-
-<p:dialog header="ajouter Groupe"  widgetVar="addGroupe2"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
-
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
-
-									<p:outputLabel value="Nouveau Groupe:" style="width: 100px;" />
-			<p:inputText label="groupela" value="#{groupeContactBean.groupecontact.libelleGroupe}" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="15" />
-			
-			</p:inputText>
-				<p:commandButton value="enregistrer" actionListener="#{groupeContactBean.ajout()}" update="formMorale"  oncomplete="PF('addmorale').show()"></p:commandButton>
-				
-					<p:commandButton value="Annuler" ></p:commandButton>
-
-</p:panelGrid>
-
-</p:dialog>
-
-<p:dialog header="ajouter Produit"  widgetVar="addProduit"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
-
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
-
-									<p:outputLabel value="Nouveau Produit:" style="width: 100px;" />
-			<p:inputText label="produit1" value="#{produitBean.produit.libelle}" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="15" />
-			
-			</p:inputText>
-				<p:commandButton value="enregistrer" actionListener="#{produitBean.ajout}" update="formMorale"  oncomplete="PF('addmorale').show()"></p:commandButton>
-				
-					<p:commandButton value="Annuler" ></p:commandButton>
-
-</p:panelGrid>
-
-</p:dialog>
 	
 
 
-		
-     
-      
-
-
-		<p:dialog header="ajouter Chef Responsable"  widgetVar="addChef"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
-      
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 310px;"  >
-
-									<p:outputLabel value="Nom:" style="width: 100px;" />
-			<p:inputText label="chefnom" value="#{chefResponsableBean.chefresponsable.nomChefResponsable}" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="15" />
-			
-			</p:inputText>
-			
-										<p:outputLabel value="Prenom:" style="width: 100px;" />
-			<p:inputText label="chefprenom" value="#{chefResponsableBean.chefresponsable.prenomChefResponsable}" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="15" />
-			
-			</p:inputText>
-			
-										<p:outputLabel value="Adresse:" style="width: 100px;" />
-			<p:inputText label="chefAdd" value="#{chefResponsableBean.chefresponsable.adresse}" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="15" />
-			
-			</p:inputText>
-			
-				
-										<p:outputLabel value="Email:" style="width: 100px;" />
-			<p:inputText label="chefEmail" value="#{chefResponsableBean.chefresponsable.email}" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="100" />
-			
-			</p:inputText>
-				
-										<p:outputLabel value="Telephone:" style="width: 100px;" />
-			<p:inputText label="cheftel" value="#{chefResponsableBean.chefresponsable.telephone}" required="false" style="width: 100px;" >
-	
-			
-			</p:inputText>
-			
-			
-						<p:commandButton value="Enregistrer" actionListener="#{chefResponsableBean.ajout()}"   update="formMorale"  oncomplete="PF('addmorale').show()"> ></p:commandButton>
-					<p:commandButton value="Annuler" ></p:commandButton>
-			
-			
-
-</p:panelGrid>
-
-
-</p:dialog>
 
 
 
 
-
-
-
-
-
-
-<p:dialog header="ajouter Region"  widgetVar="addRegion"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
-
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
-
-									<p:outputLabel value="Nouveau Region:" style="width: 100px;" />
-			<p:inputText label="sect" value="#{regionBean.region.libelleRegion}" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="15" />
-			
-			</p:inputText>
-				<p:commandButton value="enregistrer" actionListener="#{regionBean.ajout}" update="formMorale"  oncomplete="PF('addmorale').hide"></p:commandButton>
-				
-					<p:commandButton value="Annuler" ></p:commandButton>
-
-</p:panelGrid>
-
-</p:dialog>
 </h:form>
 
 

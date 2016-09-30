@@ -7,6 +7,7 @@ import java.util.List;
 
 import  org.primefaces.*;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -94,11 +95,40 @@ public void initP()
 
 public void ajout()
 
-{	produitDao.saveOrUpdate(produit);
+{	
+
+RequestContext context = RequestContext.getCurrentInstance();
+FacesMessage message = null;
+boolean add = false;
+
+
+try {
+	produitDao.saveOrUpdate(produit);
+
+message = new FacesMessage(FacesMessage.SEVERITY_INFO, "l'activité "+produit.getLibelle()+" est bien enregistré", "");
+add = true;
+
+
+initP();
+
+
+} 
+catch (Exception e)
+
+{
+
+add = false;
+message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout erroné", "");
 initP();
 
 }
 
+FacesContext.getCurrentInstance().addMessage(null, message);
+context.addCallbackParam("add",add);
+context.update("AjouterMorale:addmorale");
+
+initP();
+}
 
 
 public void suprimer(Produit produit)

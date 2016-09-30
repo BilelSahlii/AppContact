@@ -7,6 +7,7 @@ import java.util.List;
 
 import  org.primefaces.*;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -32,7 +33,6 @@ import org.springframework.stereotype.Component;
 import org.w3c.dom.events.EventException;
 
 import com.model.Groupecontact;
-
 import com.idao.GroupeContactDao;
 
 
@@ -84,8 +84,38 @@ public void ajout()
 
 {	
 
+
+
+
+RequestContext context = RequestContext.getCurrentInstance();
+FacesMessage message = null;
+boolean add = false;
+
+
+try {
+
 	groupecontactDao.saveOrUpdate(groupecontact);
-	initG();
+message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le groupe "+groupecontact.getLibelleGroupe()+" est bien enregistré", "");
+add = true;
+
+
+initG();
+
+} 
+catch (Exception e)
+
+{
+
+add = false;
+message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout erroné", "");
+initG();
+
+}
+
+FacesContext.getCurrentInstance().addMessage(null, message);
+context.addCallbackParam("add",add);
+context.update("AjouterMorale:addmorale");
+initG();	
 	
 
 }

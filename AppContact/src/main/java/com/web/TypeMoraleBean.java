@@ -7,6 +7,7 @@ import java.util.List;
 
 import  org.primefaces.*;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -69,15 +70,52 @@ static private Typemoral typemoral=new Typemoral();
 void initM()
 {
 	typemoral=new Typemoral() ;
-//	typemoral.setLibelleMorale("");
-//	typemoral.setIdMoral(null);
+	typemoral.setLibelleMorale("");
+	typemoral.setIdMoral(null);
 }
 
 public void ajout()
 
-{	typeMoralDao.saveOrUpdate(typemoral);
+{	
+	
+
+
+
+
+RequestContext context = RequestContext.getCurrentInstance();
+FacesMessage message = null;
+boolean add = false;
+
+
+try {
+	typeMoralDao.saveOrUpdate(typemoral);
+
+message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le type "+typemoral.getLibelleMorale()+" est bien enregistré", "");
+add = true;
+
+
+initM();
+
+} 
+catch (Exception e)
+
+{
+
+add = false;
+message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout erroné", "");
+initM();
+
+}
+
+FacesContext.getCurrentInstance().addMessage(null, message);
+context.addCallbackParam("add",add);
+context.update("AjouterMorale:addmorale");
 initM();
 }
+
+
+
+
 
 
 

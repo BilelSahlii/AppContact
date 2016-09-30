@@ -7,6 +7,7 @@ import java.util.List;
 
 import  org.primefaces.*;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -72,7 +73,7 @@ static private Chefresponsable chefresponsable =new Chefresponsable();
 
 		chefresponsable.setNomChefResponsable("");
 		chefresponsable.setPrenomChefResponsable("");
-		chefresponsable.setTelephone(0);
+		chefresponsable.setTelephone(null);
 }
 
  
@@ -80,8 +81,43 @@ static private Chefresponsable chefresponsable =new Chefresponsable();
 
 public void ajout()
 
-{	chefResponsableDao.saveOrUpdate(chefresponsable);
+{	
+
+
+
+
+
+RequestContext context = RequestContext.getCurrentInstance();
+FacesMessage message = null;
+boolean add = false;
+
+
+try {
+
+	chefResponsableDao.saveOrUpdate(chefresponsable);
+message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le chef responsable  "+chefresponsable.getPrenomChefResponsable()+" "+chefresponsable.getNomChefResponsable()+" est bien enregistré", "");
+add = true;
+
+
 initchef();
+
+} 
+catch (Exception e)
+
+{
+
+add = false;
+message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout erroné", "");
+initchef();
+
+}
+
+FacesContext.getCurrentInstance().addMessage(null, message);
+context.addCallbackParam("add",add);
+context.update("AjouterMorale:addmorale");
+initchef();
+
+
 }
 
 

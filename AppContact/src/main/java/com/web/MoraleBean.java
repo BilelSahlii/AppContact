@@ -216,7 +216,16 @@ MailMail mm = (MailMail) contextEmail.getBean("mailMail");
 
 
 
-try{ mm.sendMail("bilell.sahli@gmail.com",
+try{ 
+	if(	selectMorale==null)
+	{
+		envoyer = false;
+		message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Il faut selectionner un contact", "");
+	}
+	
+	else
+	{
+	mm.sendMail("bilell.sahli@gmail.com",
 	selectMorale.getContact().getEmail(),
 	  objet,
 	msg);
@@ -224,6 +233,7 @@ message = new FacesMessage(FacesMessage.SEVERITY_INFO, "est bien envoyé à", sele
 envoyer = true;
 
 		}
+}
 		catch(Exception e)
 		{
 	envoyer = false;
@@ -267,10 +277,12 @@ public void EnvoiGroupe()
 			try{	Morale ctmorale = (Morale) iter.next();
 			
 
-		
+			System.out.println("id morale "+ ctmorale.getIdContact());
 		EnvoiEmailGroupe(ctmorale) ;
-		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "est bien envoyé à", morale.getContact().getNom());
+		System.out.println("id morale "+ ctmorale.getIdContact());
+		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "est bien envoyé à", ctmorale.getContact().getNom());
 	envoyer = true;
+	initMailinig();
 	
 			}
 			catch(Exception e)
@@ -301,12 +313,10 @@ public void EnvoiEmailGroupe(Morale ctmorale)
 MailMail mm = (MailMail) contextEmail.getBean("mailMail");
 mm.sendMail("bilell.sahli@gmail.com",
 	ctmorale.getContact().getEmail(),
-	  objet,
-	msg);
+	 objet,
+msg);
 
-msg="";
-destinateur="";
-objet="";
+initMailinig();
 
 }
 
@@ -469,6 +479,8 @@ public void AjouterMembreContact() throws IOException {
 	RequestContext context = RequestContext.getCurrentInstance();
 	context.update("AjouterMorale");
 	context.execute("PF('addmorale').show();");
+	init();
+	
 }
 
 
@@ -525,8 +537,8 @@ morale=new Morale();
 	contact.setEmail("");
 	
 	contact.setNom("");
-	contact.setTelephonne(0);
-	contact.setMobile(0);
+	contact.setTelephonne(null);
+	contact.setMobile(null);
 	contact.setVille("");
 	contact.setRegion(region);
 	contact.setGroupecontact(groupe);
@@ -547,8 +559,12 @@ public void ajout()
 	RequestContext context = RequestContext.getCurrentInstance();
 	FacesMessage message = null;
 	boolean add = false;
+	if((groupe!=null)&&(groupe.getIdGroupe()!=0))
+	{
+		contact.setGroupecontact((Groupecontact) groupecontactDao.findById(Groupecontact.class, groupe.getIdGroupe())); 	
+	}
 	
-	contact.setGroupecontact((Groupecontact) groupecontactDao.findById(Groupecontact.class, groupe.getIdGroupe())); 
+
 	contact.setSecteur((Secteur)secteurDao.findById(Secteur.class, secteur.getIdSecteur()));
 	contact.setRegion((Region) regionDao.findById(Region.class,region.getIdRegion()));
 	contactDao.saveOrUpdate(contact);
@@ -558,7 +574,11 @@ public void ajout()
  morale.setContact((Contact)contactDao.findById(Contact.class, contact.getIdContact()));
  morale.setProduit((Produit)produitDao.findById(Produit.class, produit.getIdProduit()));
  morale.setTypemoral((Typemoral)typeMoralDao.findById(Typemoral.class, type.getIdMoral()));
+ 
+	if((chef!=null)&&(chef.getIdChefResponsable()!=0))
+	{
  morale.setChefresponsable((Chefresponsable)chefResponsableDao.findById(Chefresponsable.class, chef.getIdChefResponsable()));
+	}
 
 
 try {moraleDao.saveOrUpdate(morale);
@@ -598,6 +618,12 @@ public void modifier(Morale moralEdit)
 
 
 
+
+
+
+
+
+
 public void suprimer(Morale morale)
 {
 	RequestContext context = RequestContext.getCurrentInstance();
@@ -606,11 +632,18 @@ public void suprimer(Morale morale)
 	
 try{
 	
-
-	moraleDao.delete(morale);
+if(morale==null)
+{
+	deleted = false;
+	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sellectionner un contact", "");
+}
+else
+{
+moraleDao.delete(morale);
 
 	message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Supprimé", morale.getContact().getNom());
 	deleted = true;
+}
 	
 }catch (Exception e)
 
@@ -640,16 +673,6 @@ public void setList_Morale(List<Morale> list_Morale) {
 }
 
 
-//
-//public static Morale getMorale() {
-//	return morale;
-//}
-//
-//
-//
-//public static void setMorale(Morale morale) {
-//	MoraleBean.morale = morale;
-//}
 
 
 
@@ -709,8 +732,7 @@ public void setList_Membre_Morale(List<Membre> list_Membre_Morale) {
 public List<Membre> getList_Membre_Morale() {
 	List list=null;
 	Criterion critere1;
-//	critere1 = Restrictions.eq("idContact",membre.getMorale().getContact().getIdContact());
-//	morale.setGroupecontact((Groupecontact) groupecontactDao.findById(Groupecontact.class, groupe.getIdGroupe())); 
+
 	critere1 = Restrictions.eq("idContact",37);
 	
 	
