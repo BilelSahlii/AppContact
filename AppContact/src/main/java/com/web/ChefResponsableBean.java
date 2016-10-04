@@ -1,5 +1,6 @@
 package com.web;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -77,9 +78,16 @@ static private Chefresponsable chefresponsable =new Chefresponsable();
 }
 
  
+ public void AjouterMembreContact() throws IOException {
 
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.update("AjouterMorale");
+		context.execute("PF('addmorale').show();");
 
-public void ajout()
+		
+	}
+
+public void ajout() throws IOException
 
 {	
 
@@ -116,6 +124,7 @@ FacesContext.getCurrentInstance().addMessage(null, message);
 context.addCallbackParam("add",add);
 context.update("AjouterMorale:addmorale");
 initchef();
+AjouterMembreContact();
 
 
 }

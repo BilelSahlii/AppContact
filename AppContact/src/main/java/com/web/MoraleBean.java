@@ -68,6 +68,8 @@ import org.w3c.dom.events.EventException;
 
 
 
+
+
 import com.model.Contact;
 import com.model.Groupecontact;
 import com.model.Membre;
@@ -93,6 +95,7 @@ public class MoraleBean implements Serializable {
 private static final long serialVersionUID = -954873828500119175L;
 private	List <Morale> list_Morale;
 private	List <Morale> selected_list_Morale;
+
 
 
 
@@ -139,9 +142,44 @@ private static Secteur secteur=new Secteur();
  private static Chefresponsable chef=new Chefresponsable();
  private static Produit produit=new Produit();
  private List<Boolean> list;
+ static Contact lastContact ;
  
  
  
+ 
+public static Contact getLastContact() {
+	Contact ctmorale = null;
+	List<Object> list=moraleDao.findAll(Contact.class);
+	Iterator<Object> iter = list.iterator();
+	if (!iter.hasNext()) { 
+
+		return (Contact) iter;
+	}
+		else
+	
+		{
+			while (iter.hasNext()) {
+			
+				
+ ctmorale = (Contact) iter.next();
+
+			}
+		}
+
+	
+	return ctmorale;
+}
+
+
+
+
+
+
+public static void setLastContact(Contact lastContact) {
+	MoraleBean.lastContact = lastContact;
+}
+
+
 static private UploadedFile file ;
 
 public String getDestinateur() {
@@ -330,33 +368,57 @@ public UploadedFile getFile() {
 public void setFile(UploadedFile file) {
     this.file = file;
 }
+
+
+
  
-public void upload() {
+public void upload() throws IOException {
+	RequestContext context = RequestContext.getCurrentInstance();
+	FacesMessage message = null;
+	boolean add = false;
+	
     if(file != null) {
     	try {
-    		System.out.println("image");
-    		File file2=new File("/images/image.jpg");
+    		
+    	     byte[] data = file.getContents();
+    	     contact.setPhoto(data);
+    	     int Idct=contactDao.findAll(Contact.class).size();
+    	   		Contact ct=(Contact) contactDao.findAll(Contact.class).get(Idct-2);
+    	   		int id=ct.getIdContact()+1;
+
+    		File file2=new File("c:\\tmp\\"+id+".jpg");
+
+
+    
 			InputStream inputstream= file.getInputstream() ;
 			moraleDao.saveFile(inputstream, file2);
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-        FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, message);}
-    
-    else 
-    	System.out.println("non image");
+//	 message = new FacesMessage("la photo ", file.getFileName() + "est enregistrée ");
+
+
+} 
+catch (Exception e)
+
+{
+
+add = false;
+	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout d'mage erroné", "");
+
+}
+
+//
+//
+//FacesContext.getCurrentInstance().addMessage(null, message);
+context.addCallbackParam("add",add);
+context.update("AjouterMorale:daddMorale");
+
+AjouterMembreContactsansInit();
+}
+
+	        
+	        
     }
 
-public void handleFileUpload(FileUploadEvent event) {
-    FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-    FacesContext.getCurrentInstance().addMessage(null, msg);
-	System.out.println("image");
-}
+
 
 
  private static Membre selectmembre= new Membre();
@@ -484,12 +546,50 @@ public void AjouterMembreContact() throws IOException {
 }
 
 
+public void AjouterMembreContactsansInit() throws IOException {
+
+	RequestContext context = RequestContext.getCurrentInstance();
+	context.update("AjouterMorale");
+	context.execute("PF('addmorale').show();");
+
+	
+}
+
+
+
+
+
+public void AjouterImage() throws IOException {
+
+	RequestContext context = RequestContext.getCurrentInstance();
+	context.update("ajoutImage");
+	context.execute("PF('UploadImage').show();");
+
+	
+}
+
+
 
 public void EmmailingSelectMorale() throws IOException {
 
+	  if(selectMorale!=null)
+	     {
 	RequestContext context = RequestContext.getCurrentInstance();
 	context.update("SelectedmailContactMorale");
 	context.execute("PF('ViewEmail').show();");
+//	selectMorale=null;
+	     }
+    else
+    {
+	FacesMessage message = null;
+
+
+	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "il faut sélectionner un ligne ", "");
+	FacesContext.getCurrentInstance().addMessage(null, message);
+	RequestContext context = RequestContext.getCurrentInstance();
+	context.update("formMorale:tab");
+    }
+	
 }
 
 
@@ -503,10 +603,26 @@ public void EmmailingGroupe() throws IOException {
 
 
 public void MembreContact() throws IOException {
-
+     if(selectMorale!=null)
+     {
 	RequestContext context = RequestContext.getCurrentInstance();
 	context.update("MembreMorale");
 	context.execute("PF('Viewmorale').show();");
+//	selectMorale=null;
+     }
+     
+     else
+     {
+ 	FacesMessage message = null;
+
+
+	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "il faut sélectionner un ligne ", "");
+	FacesContext.getCurrentInstance().addMessage(null, message);
+	RequestContext context = RequestContext.getCurrentInstance();
+	context.update("formMorale:tab");
+     }
+     
+ 	
 }
 
 
@@ -531,7 +647,7 @@ morale=new Morale();
 
 	chef.setNomChefResponsable("");
 	chef.setPrenomChefResponsable("");
-	chef.setTelephone(0);
+	chef.setTelephone(null);
 	contact.setAdresse("");
 	contact.setCodePostal("");
 	contact.setEmail("");
@@ -544,50 +660,78 @@ morale=new Morale();
 	contact.setGroupecontact(groupe);
 	produit.setIdProduit(null);
 	produit.setLibelle("");
-	
+	contact.setPhoto(null);
 
-	morale.setFax(0);
+	morale.setFax(null);
 	morale.setDescription("");
 	morale.setProduit(produit);
 	morale.setChefresponsable(chef);
 
 }
 
-public void ajout()
+public void ajout() throws IOException
 
 {	
 	RequestContext context = RequestContext.getCurrentInstance();
 	FacesMessage message = null;
 	boolean add = false;
+	
+
+
+
+	
+	
 	if((groupe!=null)&&(groupe.getIdGroupe()!=0))
 	{
 		contact.setGroupecontact((Groupecontact) groupecontactDao.findById(Groupecontact.class, groupe.getIdGroupe())); 	
 	}
 	
+	else
+		{contact.setGroupecontact(null);}
+	
+	
 
 	contact.setSecteur((Secteur)secteurDao.findById(Secteur.class, secteur.getIdSecteur()));
 	contact.setRegion((Region) regionDao.findById(Region.class,region.getIdRegion()));
 	contactDao.saveOrUpdate(contact);
+	
+
+
 
 
 
  morale.setContact((Contact)contactDao.findById(Contact.class, contact.getIdContact()));
- morale.setProduit((Produit)produitDao.findById(Produit.class, produit.getIdProduit()));
+
  morale.setTypemoral((Typemoral)typeMoralDao.findById(Typemoral.class, type.getIdMoral()));
+ 
+ 
+ if((produit!=null)&&(produit.getIdProduit()!=0))
+ {
+ morale.setProduit((Produit)produitDao.findById(Produit.class, produit.getIdProduit()));
+ }
+ 
+ else
+ {morale.setProduit(null);}
  
 	if((chef!=null)&&(chef.getIdChefResponsable()!=0))
 	{
  morale.setChefresponsable((Chefresponsable)chefResponsableDao.findById(Chefresponsable.class, chef.getIdChefResponsable()));
 	}
+	else
+	{
+		morale.setChefresponsable(null);
+	}
 
 
 try {moraleDao.saveOrUpdate(morale);
+
+
 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le contact "+contact.getNom()+" est bien enregistré", "");
 add = true;
 
-
-
 init();
+
+
 
 
 } 
@@ -602,9 +746,14 @@ add = false;
 
 
 
+
+
+
 FacesContext.getCurrentInstance().addMessage(null, message);
 context.addCallbackParam("add",add);
 context.update("formMorale:tab");
+
+
 init();
 }
 
@@ -635,7 +784,9 @@ try{
 if(morale==null)
 {
 	deleted = false;
-	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sellectionner un contact", "");
+
+	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "il faut sélectionner un ligne ", "");
+
 }
 else
 {
@@ -655,6 +806,7 @@ moraleDao.delete(morale);
 FacesContext.getCurrentInstance().addMessage(null, message);
 context.addCallbackParam("deleted", deleted);
 context.update("formMorale:tab");
+morale=null;
 
 
 }
@@ -694,18 +846,17 @@ public  void afficheSelectMorale(List selectLMoral) {
 	List<Morale> list= selectLMoral;
 	Iterator<Morale> iter = list.iterator();
 	if (!iter.hasNext()) { 
-		System.out.println("la liste ets vide");
+
 		return;
 	}
 		else
 	
 		{
 			while (iter.hasNext()) {
-				System.out.println("la liste non vide");
+			
 				
 		Morale ctmorale = (Morale) iter.next();
-		System.out.println("value "+ctmorale.getIdContact());
-	
+
 			}
 		}
 }
@@ -739,17 +890,18 @@ public List<Membre> getList_Membre_Morale() {
 	try{
 		if(selectMorale.getIdContact()!=null)
 		{
-	System.out.println("ID Contact "+selectMorale.getIdContact());
+
 	
  list= membreDao.findByCriteria(Membre.class, critere1,selectMorale.getIdContact()) ;
 	
-	System.out.print("size = " +list.size());}
+	}
+		selectMorale=null;
 		return list;
 	}
 	
 	catch(Exception e)
 	{
-		System.out.println("ID Contact null");
+		
 	}
 	return list;
 	

@@ -106,6 +106,18 @@ public void AjouterSecteur() throws IOException {
 	context.execute("PF('addSecteur').show();");
 }
 
+
+
+public void AjouterMembreContact() throws IOException {
+
+	RequestContext context = RequestContext.getCurrentInstance();
+	context.update("AjouterMorale");
+	context.execute("PF('addmorale').show();");
+
+	
+}
+
+
 public void init_secteur()
 {secteur=new Secteur() ;
 	secteur.setLibelleSecteur("");
@@ -145,10 +157,20 @@ public void ajout()
 
 	FacesContext.getCurrentInstance().addMessage(null, message);
 	context.addCallbackParam("add",add);
-	context.update("AjouterMorale:addmorale");
-//	context.execute("PF('addmorale').hide();");
-//	context.execute("PF('addmorale').show();");
+	context.update("AjouterMorale:daddMorale");
+
 	init_secteur();
+	
+	
+	try {
+		AjouterMembreContact();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	
+	
 	}
 
 

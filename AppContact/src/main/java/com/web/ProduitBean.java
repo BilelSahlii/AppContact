@@ -1,5 +1,6 @@
 package com.web;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -93,7 +94,19 @@ public void initP()
 	
 }
 
-public void ajout()
+
+
+public void AjouterMembreContact() throws IOException {
+
+	RequestContext context = RequestContext.getCurrentInstance();
+	context.update("AjouterMorale");
+	context.execute("PF('addmorale').show();");
+
+	
+}
+
+
+public void ajout() throws IOException
 
 {	
 
@@ -128,6 +141,7 @@ context.addCallbackParam("add",add);
 context.update("AjouterMorale:addmorale");
 
 initP();
+AjouterMembreContact();
 }
 
 

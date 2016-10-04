@@ -1,5 +1,8 @@
 package com.web;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,12 +10,14 @@ import java.util.List;
 
 import  org.primefaces.*;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.UploadedFile;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -53,7 +58,7 @@ import com.idao.TypeMoralDao;
 
 public class ContactBean implements Serializable {
 private static final long serialVersionUID = -954873828500119177L;
-private	List <Contact> list_Contact;
+private static	List <Contact> list_Contact;
 
 
 
@@ -88,6 +93,7 @@ private static Groupecontact groupe=new Groupecontact();
 
 
 private Integer age ;
+
 
 
 private String destinateur;

@@ -45,7 +45,7 @@
   
   <context-param>
   <param-name>primefaces.UPLOADER</param-name>
-  <param-value>auto|native|commons</param-value>
+  <param-value>auto</param-value>
 </context-param>
   
 
@@ -84,5 +84,26 @@
   <welcome-file-list>
     <welcome-file>index.xhtml</welcome-file>
   </welcome-file-list>
+  
+  
+  <mime-mapping>
+    <extension>jpeg</extension>
+    <mime-type>image/jpeg</mime-type>
+</mime-mapping>
+<mime-mapping>
+    <extension>jpg</extension>
+    <mime-type>image/jpeg</mime-type>
+</mime-mapping>
+  
+  
+   <mime-mapping>
+        <extension>java</extension>
+        <mime-type>text/plain</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>cpp</extension>
+        <mime-type>text/plain</mime-type>
+    </mime-mapping>
+  
   
 </web-app>
