@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,6 +43,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.events.EventException;
+
 
 
 
@@ -371,6 +373,70 @@ public void setFile(UploadedFile file) {
 
 
 
+
+
+public void handleFileUpload(FileUploadEvent event) throws IOException {
+	RequestContext context = RequestContext.getCurrentInstance();
+	FacesMessage message = null;
+	boolean add = false;
+	
+	if(event.getFile()!= null) {
+    	try {
+    		
+   
+    	     int Idct=contactDao.findAll(Contact.class).size();
+    	   		Contact ct=(Contact) contactDao.findAll(Contact.class).get(Idct-1);
+    	   		int id=ct.getIdContact();
+
+    		File file2=new File("c:\\Users\\bilel\\git\\localToolsRepository\\AppContact\\src\\main\\webapp\\images\\contact\\"+id+".jpg");
+
+
+
+    
+			InputStream inputstream= event.getFile().getInputstream() ;
+			moraleDao.saveFile(inputstream, file2);
+			if((contact.getTelephonne()==null) ||(contact.getTelephonne()==0))
+			{
+				contact.setTelephonne(null);
+			}
+			
+			
+			if((contact.getMobile()==null) ||(contact.getMobile()==0))
+			{
+				contact.setMobile(null);
+			}
+//	 message = new FacesMessage("la photo ", file.getFileName() + "est enregistrée ");
+
+
+} 
+catch (Exception e)
+
+{
+
+add = false;
+	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout d'mage erroné", "");
+
+}
+
+//
+//
+//FacesContext.getCurrentInstance().addMessage(null, message);
+context.addCallbackParam("add",add);
+context.update("AjouterMorale:daddMorale");
+
+AjouterMembreContactsansInit();
+}
+
+	        
+	
+	
+
+}
+
+
+
+
+
  
 public void upload() throws IOException {
 	RequestContext context = RequestContext.getCurrentInstance();
@@ -384,7 +450,7 @@ public void upload() throws IOException {
     	     contact.setPhoto(data);
     	     int Idct=contactDao.findAll(Contact.class).size();
     	   		Contact ct=(Contact) contactDao.findAll(Contact.class).get(Idct-2);
-    	   		int id=ct.getIdContact()+1;
+    	   		int id=ct.getIdContact()+2;
 
     		File file2=new File("c:\\tmp\\"+id+".jpg");
 
@@ -392,6 +458,16 @@ public void upload() throws IOException {
     
 			InputStream inputstream= file.getInputstream() ;
 			moraleDao.saveFile(inputstream, file2);
+			if((contact.getTelephonne()==null) ||(contact.getTelephonne()==0))
+			{
+				contact.setTelephonne(null);
+			}
+			
+			
+			if((contact.getMobile()==null) ||(contact.getMobile()==0))
+			{
+				contact.setMobile(null);
+			}
 //	 message = new FacesMessage("la photo ", file.getFileName() + "est enregistrée ");
 
 
@@ -550,9 +626,9 @@ public void AjouterMembreContactsansInit() throws IOException {
 
 	RequestContext context = RequestContext.getCurrentInstance();
 	context.update("AjouterMorale");
-	context.execute("PF('addmorale').show();");
+//	context.execute("PF('addmorale').show();");
+	context.execute("PF('UploadImage').hide();");
 
-	
 }
 
 
@@ -666,6 +742,7 @@ morale=new Morale();
 	morale.setDescription("");
 	morale.setProduit(produit);
 	morale.setChefresponsable(chef);
+	contact.setDate(null);
 
 }
 
@@ -693,6 +770,9 @@ public void ajout() throws IOException
 
 	contact.setSecteur((Secteur)secteurDao.findById(Secteur.class, secteur.getIdSecteur()));
 	contact.setRegion((Region) regionDao.findById(Region.class,region.getIdRegion()));
+	java.util.Date date = new java.util.Date();
+	java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+	contact.setDate(sqlDate);
 	contactDao.saveOrUpdate(contact);
 	
 
@@ -751,7 +831,7 @@ add = false;
 
 FacesContext.getCurrentInstance().addMessage(null, message);
 context.addCallbackParam("add",add);
-context.update("formMorale:tab");
+context.update("MembreMorale:tabMembre");
 
 
 init();

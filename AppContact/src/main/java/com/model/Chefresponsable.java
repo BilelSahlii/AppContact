@@ -4,11 +4,14 @@ package com.model;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -107,4 +110,23 @@ public class Chefresponsable implements java.io.Serializable {
 		this.morales = morales;
 	}
 
+	
+	   @Override
+	    public boolean equals(Object other) {
+	        return (other instanceof Chefresponsable) && (idChefResponsable != null)
+	            ? idChefResponsable.equals(((Chefresponsable) other).idChefResponsable)
+	            : (other == this);
+	    }
+
+	    @Override
+	    public int hashCode() {
+	        return (idChefResponsable != null)
+	            ? (this.getClass().hashCode() + idChefResponsable.hashCode())
+	            : super.hashCode();
+	    }
+
+	    @Override
+	    public String toString() {
+	        return String.format("Chefresponsable[%d, %s]", idChefResponsable,nomChefResponsable);
+	    }
 }

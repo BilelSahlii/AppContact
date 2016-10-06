@@ -1,6 +1,8 @@
 package com.web;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,6 +12,7 @@ import  org.primefaces.*;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 
 
@@ -19,6 +22,7 @@ import org.primefaces.event.RowEditEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.UploadedFile;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -34,6 +38,7 @@ import org.springframework.stereotype.Component;
 import org.w3c.dom.events.EventException;
 
 import com.model.Chefresponsable;
+import com.model.Contact;
 import com.model.Groupecontact;
 import com.model.Morale;
 import com.model.Physique;
@@ -64,6 +69,15 @@ static private Chefresponsable chefresponsable =new Chefresponsable();
  private static Chefresponsable selectChefresponsable;
 
  
+ private UploadedFile file;
+
+ public UploadedFile getFile() {
+     return file;
+ }
+
+ public void setFile(UploadedFile file) {
+     this.file = file;
+ }
  
  void initchef()
 {
@@ -78,14 +92,90 @@ static private Chefresponsable chefresponsable =new Chefresponsable();
 }
 
  
- public void AjouterMembreContact() throws IOException {
+ 
+ 
+ 
+	void insererImage(Chefresponsable chefImg) throws IOException
+	{
 
-		RequestContext context = RequestContext.getCurrentInstance();
-		context.update("AjouterMorale");
-		context.execute("PF('addmorale').show();");
 
+
+		try {
+
+			File file2=new File("c:\\Users\\bilel\\git\\localToolsRepository\\AppContact\\src\\main\\webapp\\images\\ChefResponsable\\"+chefImg.getIdChefResponsable()+".jpg");
+
+
+		    
+			InputStream inputstream= file.getInputstream() ;
+			chefResponsableDao.saveFile(inputstream, file2);
+			if((chefresponsable.getTelephone()==null) ||(chefresponsable.getTelephone()==0))
+			{
+				chefresponsable.setTelephone(null);
+			}
+		}
+		catch (Exception e)
+
+		{
+
+
+
+		}
 		
 	}
+	
+ 
+ 
+ public void handleFileUpload(FileUploadEvent event) throws IOException {
+		RequestContext context = RequestContext.getCurrentInstance();
+		FacesMessage message = null;
+		boolean add = false;
+		
+		if(event.getFile()!= null) {
+	    	try {
+	    		
+	   
+	    	 file=event.getFile();
+				
+			
+		 message = new FacesMessage("la photo ", file.getFileName() + "est enregistrée ");
+
+
+	} 
+	catch (Exception e)
+
+	{
+
+	add = false;
+		message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout d'mage erroné", "");
+
+	}
+
+	//
+	//
+	FacesContext.getCurrentInstance().addMessage(null, message);
+	context.addCallbackParam("add",add);
+	context.update("ajouterChef:addChef");
+
+
+
+	}
+
+		        
+		
+		
+
+	}
+
+
+
+ 
+ 
+
+
+
+ 
+ 
+ 
 
 public void ajout() throws IOException
 
@@ -103,6 +193,7 @@ boolean add = false;
 try {
 
 	chefResponsableDao.saveOrUpdate(chefresponsable);
+	insererImage(chefresponsable);
 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le chef responsable  "+chefresponsable.getPrenomChefResponsable()+" "+chefresponsable.getNomChefResponsable()+" est bien enregistré", "");
 add = true;
 
@@ -122,9 +213,9 @@ initchef();
 
 FacesContext.getCurrentInstance().addMessage(null, message);
 context.addCallbackParam("add",add);
-context.update("AjouterMorale:addmorale");
+context.update("AjouterMorale:panelAdd");
 initchef();
-AjouterMembreContact();
+
 
 
 }

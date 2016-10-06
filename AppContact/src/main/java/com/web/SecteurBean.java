@@ -129,15 +129,14 @@ public void ajout()
 {
 	RequestContext context = RequestContext.getCurrentInstance();
 	FacesMessage message = null;
-	boolean add = false;
+	boolean adds = false;
 	
 	
 	try {secteurDao.saveOrUpdate(secteur);
 
 
 	message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le Secteur "+secteur.getLibelleSecteur()+" est bien enregistré", "");
-	add = true;
-
+	adds = true;
 
 	init_secteur();
 
@@ -147,7 +146,7 @@ public void ajout()
 
 	{
 
-	add = false;
+	adds = false;
 		message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout erroné", "");
 		init_secteur();
 		
@@ -156,20 +155,12 @@ public void ajout()
 
 
 	FacesContext.getCurrentInstance().addMessage(null, message);
-	context.addCallbackParam("add",add);
-	context.update("AjouterMorale:daddMorale");
+	context.addCallbackParam("adds",adds);
+	context.update("AjouterMorale:panelAdd");
 
 	init_secteur();
 	
-	
-	try {
-		AjouterMembreContact();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	
-	
+
 	
 	}
 

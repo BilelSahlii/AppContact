@@ -96,14 +96,6 @@ public void initP()
 
 
 
-public void AjouterMembreContact() throws IOException {
-
-	RequestContext context = RequestContext.getCurrentInstance();
-	context.update("AjouterMorale");
-	context.execute("PF('addmorale').show();");
-
-	
-}
 
 
 public void ajout() throws IOException
@@ -138,10 +130,10 @@ initP();
 
 FacesContext.getCurrentInstance().addMessage(null, message);
 context.addCallbackParam("add",add);
-context.update("AjouterMorale:addmorale");
+context.update("AjouterMorale:panelAdd");
 
 initP();
-AjouterMembreContact();
+
 }
 
 

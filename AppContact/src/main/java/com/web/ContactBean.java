@@ -95,6 +95,121 @@ private static Groupecontact groupe=new Groupecontact();
 private Integer age ;
 
 
+private static Contact lastContact ;
+
+
+private UploadedFile file;
+
+public UploadedFile getFile() {
+    return file;
+}
+
+public void setFile(UploadedFile file) {
+    this.file = file;
+}
+
+
+
+public static Contact getLastContact() {
+	Contact ctmorale = null;
+	List<Contact> list=list_Contact;
+int Idct=list_Contact.size();
+Contact ct=list_Contact.get(Idct);
+	Iterator<Contact> iter = list.iterator();
+	if (!iter.hasNext()) { 
+
+		return (Contact) iter;
+	}
+		else
+	
+		{
+			while (iter.hasNext()) {
+			
+				
+ ctmorale = (Contact) iter.next();
+
+			}
+		}
+
+	
+	return (Contact) iter;
+	
+	
+	
+	
+}
+
+
+
+
+
+public void upload() throws IOException {
+	RequestContext context = RequestContext.getCurrentInstance();
+	FacesMessage message = null;
+	boolean add = false;
+	
+   if(file != null) {
+   	try {
+   		
+//   	     byte[] data = file.getContents();
+//   	     contact.setPhoto(data);
+
+   		List<Contact> list=list_Contact;
+   		int Idct=list_Contact.size();
+   		Contact ct=list_Contact.get(Idct);
+   		
+ 
+   		File file2=new File("c:\\tmp\\"+list_Contact.size()+".jpg");
+
+
+   		InputStream inputstream= file.getInputstream() ;
+		contactDao.saveFile(inputstream, file2);
+
+
+
+} 
+catch (Exception e)
+
+{
+
+add = false;
+	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout d'mage erroné", "");
+
+}
+
+
+
+FacesContext.getCurrentInstance().addMessage(null, message);
+context.addCallbackParam("add",add);
+context.update("AjouterMorale:daddMorale");
+
+AjouterMembreContactsansInit();
+}
+
+	        
+	        
+   }
+
+
+
+
+
+public void AjouterMembreContactsansInit() throws IOException {
+
+	RequestContext context = RequestContext.getCurrentInstance();
+	context.update("AjouterMorale");
+	context.execute("PF('addmorale').show();");
+
+	
+}
+
+
+public static void setLastContact(Contact lastContact) {
+	MoraleBean.lastContact = lastContact;
+}
+
+
+
 
 private String destinateur;
 private String objet ;

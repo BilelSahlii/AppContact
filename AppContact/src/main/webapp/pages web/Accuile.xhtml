@@ -25,27 +25,87 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+	<h:form id="ajoutImageChef" enctype="multipart/form-data">
+
+			<p:growl id="growlImageChef" sticky="true" showDetail="true" life="3000" />
+				<p:dialog header="upload image" width="800px"
+				id="IUploadImage" widgetVar="UploadImageChef" modal="true"
+				resizable="false" draggable="false" closable="true"
+				closeOnEscape="true">
+			
+		
+				
+				
+				
+				
+			
+    <p:fileUpload fileUploadListener="#{chefResponsableBean.handleFileUpload}"  mode="advanced" dragDropSupport="false" update="growlImageChef"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImageChef').hide();}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" validatorMessage="type d'image non valide" />
+ 
+				
+	
+		</p:dialog>
+				 
+				</h:form>
+
+
+
+
+
+
+	<h:form id="ajoutImageMembre" enctype="multipart/form-data">
+
+			<p:growl id="growlImageMembre" sticky="true" showDetail="true" life="3000" />
+				<p:dialog header="upload image" width="800px"
+				id="IUploadImageMembre" widgetVar="UploadImageMmebre" modal="true"
+				resizable="false" draggable="false" closable="true"
+				closeOnEscape="true">
+			
+		
+				
+				<p:panelGrid  columns="2" layout="grid" style="width: 750px;"  >
+				
+		<p:outputLabel value="Vous pouvez ajouter une photo :" style="width: 100px;" />		
+			
+    <p:fileUpload fileUploadListener="#{membreBean.handleFileUpload}"  mode="advanced" dragDropSupport="false" update="growlImageMembre"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImageMembre').hide();}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" validatorMessage="type d'image non valide" />
+ 
+				</p:panelGrid>
+	
+		</p:dialog>
+				 
+				</h:form>
+
+
+
 	<h:form id="ajoutImage" enctype="multipart/form-data">
 
 			<p:growl id="growlImage" sticky="true" showDetail="true" life="3000" />
-				<p:dialog header="upload image" width="600px"
+				<p:dialog header="upload image" width="800px"
 				id="IUploadImage" widgetVar="UploadImage" modal="true"
 				resizable="false" draggable="false" closable="true"
 				closeOnEscape="true">
 			
-
 		
-				<p:outputLabel value="choisi une photo:" style="width: 100px;"  />
 				
+				<p:panelGrid  columns="2" layout="grid" style="width: 750px;"  >
 				
-				
-				
+		<p:outputLabel value="Vous pouvez ajouter un logo :" style="width: 100px;" />		
 			
-    <p:fileUpload value="#{moraleBean.file}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" validatorMessage="type d'image non valide" mode="simple" skinSimple="true"/>
+    <p:fileUpload fileUploadListener="#{moraleBean.handleFileUpload}"  mode="advanced" dragDropSupport="false" update="growlImage"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImage').hide();}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" validatorMessage="type d'image non valide" />
  
-    <p:commandButton value="Submit" ajax="false"  actionListener="#{moraleBean.upload}" update="growlImage"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImage').hide();}"  />
-				
-				
+				</p:panelGrid>
+	
 		</p:dialog>
 				 
 				</h:form>
@@ -89,7 +149,7 @@
 
 						<p:spacer width="10" />
 
-						<p:commandButton value="Xcl" icon="fa fa-fw fa-file-excel-o"
+						<p:commandButton  value="Xcl" icon="fa fa-fw fa-file-excel-o"
 							id="exel" ajax="false" style="float:left ; height : 30px ">
 							<!--          <p:graphicImage value="/images/excel-icon.png" />   -->
 							<p:dataExporter type="xls" target="tab" fileName="cars" />
@@ -121,7 +181,7 @@
 
 <p:growl id="AjoutDialog" showDetail="true" />
 
-					<p:commandButton id="ajouter" value="Nouvel contact" actionListener="#{moraleBean.AjouterMembreContact}"
+					<p:link id="ajouter" value="Nouvel contact" outcome="Ajout-ModifContactMorale"
 						style="float:right;height : 30px" icon="ui-icon-plus" />
 
 		<p:spacer width="10" />
@@ -193,6 +253,14 @@
 
 					<h:outputText value="#{m.contact.region.libelleRegion}" />
 </p:column>
+
+
+
+				<p:column headerText="Logo" 
+					>
+
+								 <p:graphicImage width="50" height="50" value="/images/contact/#{m.contact.idContact}.jpg" />  </p:column>
+
 				
 				
 				<p:column headerText="Date" 	sortBy="#{m.contact.date}"
@@ -284,7 +352,7 @@
 						requiredMessage="il faut sélectionner un email"
 						converter="omnifaces.SelectItemsConverter" scrollHeight="80"
 						var="t" filter="true" filterMatchMode="contains"
-						showCheckbox="true" style="  margin-right:10px ; width : 350px ">
+						showCheckbox="true" style="  margin-right:10px ; width : 450px ">
 
 
 
@@ -304,7 +372,7 @@
 						
 							<p:column>
 
-							<p:graphicImage url="c:\\tmp\\#{t.contact.idContact}.jpg"></p:graphicImage>
+							<p:graphicImage width="50" height="50"   value="/images/contact/#{t.contact.idContact}.jpg"></p:graphicImage>
 						</p:column>
 
 					</p:selectManyMenu>
@@ -316,7 +384,7 @@
         
            Objet:   <center>
 					<p:inputText value="#{moraleBean.objet}"
-						style="  margin-right:10px ; width : 350px;height : 28px;" />
+						style="  margin-right:10px ; width : 450px;height : 28px;" />
 				</center>
 
 
@@ -326,7 +394,7 @@
 
 				<p></p>
 				<center>
-					<p:editor id="editor" value="#{moraleBean.msg}" width="350" />
+					<p:editor id="editor" value="#{moraleBean.msg}" width="450" />
 				</center>
 				<p:spacer height="10px"></p:spacer>
 
@@ -475,7 +543,7 @@
                 
                 </h:panelGrid>
                 
-                           <h:graphicImage value="/images/#{moraleBean.selectMorale.contact.nom}.png" width="200" height="200" style="height : 143px; width : 316px;"/>
+                           <h:graphicImage  value="/images/contact/#{moraleBean.selectMorale.contact.idContact}.jpg" width="200" height="200" style="height : 143px; width : 316px;"/>
                 
                 
                 </h:panelGrid>
@@ -512,7 +580,7 @@ Liste de Membre
 
 
 
-<p:commandButton id="ajouterM"  value="Nouvel Membre"
+<p:commandButton id="ajouterM"  value="Nouvel Membre" actionListener="#{membreBean.AjouterMembreContact}"
 style="float:right"  icon="ui-icon-plus" />
 
 <p:commandButton id="toggler1" type="button" value="Columns"
@@ -797,7 +865,7 @@ style="float:right;"  icon="ui-icon-calculator" />
 			<p:growl id="growlChef" sticky="true" showDetail="true" life="3000" />
 
 
-	<p:dialog header="ajouter Chef Responsable"  widgetVar="addChef"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="550px">         
+	<p:dialog header="ajouter Chef Responsable" id="daddChef" widgetVar="addChef"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="550px">         
       
         
 
@@ -840,7 +908,12 @@ style="float:right;"  icon="ui-icon-calculator" />
 			</p:inputText>
 			
 			
-						<p:commandButton value="Enregistrer" actionListener="#{chefResponsableBean.ajout()}"   update="growlChef"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addChef').hide();}"> </p:commandButton>
+		
+	
+			
+			
+			
+						<p:commandButton value="Enregistrer" actionListener="#{chefResponsableBean.ajout()}"   update="growlChef"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImageChef').show;}"> </p:commandButton>
 					<p:commandButton value="Annuler" oncomplete="PF('addChef').hide()" ></p:commandButton>
 				
 			
@@ -945,13 +1018,13 @@ ui-icon-plus" oncomplete="PF('addRegion').show()" />
 									<p:outputLabel value="Chef Responsable:" style="width: 100px;"/>
 									
 									
-							<p:selectOneMenu id="chef" value="#{moraleBean.chef.idChefResponsable}" filter="true" filterMatchMode="startsWith"  style="width: 100px;">
+							<p:selectOneMenu id="chef" value="#{moraleBean.chef.idChefResponsable}" filter="true" converter="omnifaces.SelectItemsConverter" filterMatchMode="startsWith"   style="width: 100px;">
 								<f:selectItem itemLabel="Select..." itemValue="" noSelectionOption="true" />
 								<f:selectItems value="#{chefResponsableBean.list_ChefResponsable}" var="entry"
-									itemValue="#{entry.idChefResponsable}" itemLabel="#{entry.prenomChefResponsable}  #{entry.nomChefResponsable}" />
+									itemValue="#{entry.idChefResponsable}" itemLabel="#{entry.nomChefResponsable} #{entry.prenomChefResponsable} "  />
 									
-									<p:column>     <p:graphicImage value="/images/excel-icon.png" />  
-									</p:column>
+								
+
 									
 							</p:selectOneMenu>
 								
@@ -968,6 +1041,9 @@ style="float:right"  icon="ui-icon-plus" oncomplete="PF('addChef').show()" />
 								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
 								<f:selectItems value="#{produitBean.list_Produit}" var="entry"
 									itemValue="#{entry.idProduit}" itemLabel="#{entry.libelle}" />
+									
+									
+									
 							</p:selectOneMenu>
 				
 							<p:commandButton id="ajouterP" 
@@ -1030,7 +1106,7 @@ style="float:right"  icon="ui-icon-plus" oncomplete="PF('addType').show()" />
 			
 					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
 				<p:outputLabel value="téléphone fixe:" style="width: 100px;" /> 
-			<p:inputText label="Numero telephone fixe " value="#{moraleBean.contact.telephonne}" type="number" style="width: 150px;" >
+			<p:inputText label="Numero telephone fixe/Fax " value="#{moraleBean.contact.telephonne}" type="number" style="width: 150px;" >
 			<f:convertNumber integerOnly="true" type="number" />
 			<f:validateLength minimum="8" maximum="8" />
 			</p:inputText>
@@ -1064,33 +1140,28 @@ style="float:right"  icon="ui-icon-plus" oncomplete="PF('addType').show()" />
 			</p:inputText>
 			</p:panelGrid>
 			
-						<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
-			  <p:outputLabel for="button" value="Date:"  style="width: 100px;"/>
-        <p:calendar id="button" value="#{moraleBean.contact.date}" showOn="button" />
 			
-	
-			</p:panelGrid>
+		
+			
+					
+
 			
 
-<p:panelGrid  columns="4" layout="grid" style="width: 600px;"  >			
+			
+
+<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >			
 	
 
-     <p:fileUpload value="#{moraleBean.file}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" validatorMessage="type d'image non valide" mode="simple" skinSimple="true"/>
  
 
- 		
-						<p:commandButton value="Image"  
-				oncomplete="PF('UploadImage').show()">
-						</p:commandButton>
-						
 						
 						
 			<p:commandButton value="enregistrer"  actionListener="#{moraleBean.ajout}"   update="growl4" 
-						oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addmorale').hide();}" >
+						oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImage').show();}" >
 						
 						
 							<p:confirm header="Confirmation"
-							message="Êtes-vous sûr d'ajouter #{moraleBean.contact.nom}"
+							message="Êtes-vous sûr de l'ajouter ?   #{moraleBean.contact.nom}"
 							icon="ui-icon-alert" />
 						
 						
@@ -1134,6 +1205,166 @@ style="float:right"  icon="ui-icon-plus" oncomplete="PF('addType').show()" />
 </h:form>
 
 
+
+
+	<h:form id="AjouterMoraleMembre" enctype="multipart/form-data">
+	<p:growl id="growl4" sticky="true" showDetail="true" life="3000" />
+
+<!--  dualog ajouter -->
+<p:dialog header="Ajout d'un nouvel contact" id="daddMoraleMembre" widgetVar="addmoraleMembre"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="1100px">         
+
+        
+
+
+<p:panelGrid id="panelAddMembre" columns="2" layout="grid" style="width: 1000px;"  >
+		
+
+<p:panelGrid id="pFonction" columns="3" layout="grid" style="width: 500px;"  >
+
+<p:outputLabel value="Fonction(*):" style="width: 100px;"/>
+<p:selectOneMenu id="fonction" filter="true" filterMatchMode="startsWith"  required="true" requiredMessage="il faut sélectionner une Fonction" value="#{membreBean.fonction.idFonction}"  style="width: 100px;">
+								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
+								<f:selectItems value="#{fonctionBean.list_Fonction}" var="entry"
+									itemValue="#{entry.idFonction}" itemLabel="#{entry.libelleFonction}" />
+</p:selectOneMenu>
+
+
+<p:commandButton id="ajouterF" style="float:right"  icon="ui-icon-plus"  oncomplete="PF('addFonction').show()"/>
+<!-- <p:commandButton id="ModifierS" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
+<!-- <p:growl id="deleteDialog" showDetail="true" /> -->
+
+
+<!-- <p:confirm header="Confirmation" message="Êtes-vous sûr pour supprimer le secteur ?"  icon="ui-icon-alert" -->
+<!-- /> -->
+<!-- </p:commandButton> -->
+
+</p:panelGrid>
+
+
+
+
+
+		
+		
+
+
+					<p:panelGrid  columns="2" layout="grid" style="width: 500px;"  > 
+			<p:outputLabel value="Nom(*):" style="width: 100px;"/>
+			<p:inputText label="nom" value="#{membreBean.membre.nom}" required="true" requiredMessage="il faut saisir le nom " style="width: 150px;" >
+			<f:validateLength minimum="2" maximum="150" />
+			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*" />
+			</p:inputText>
+			
+			</p:panelGrid>
+			
+			
+						
+					<p:panelGrid  columns="2" layout="grid" style="width: 500px;"  >
+					<p:outputLabel value="Prenom(*):" style="width: 100px;"/> 
+			<p:inputText label="pre" value="#{membreBean.membre.prenom}" required="true" requiredMessage="il faut saisir le prenom " style="width: 150px;" >
+			<f:validateLength minimum="2" maximum="150" />
+			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*" />
+			</p:inputText>
+			
+</p:panelGrid>
+			
+			
+					<p:panelGrid  columns="2" layout="grid" style="width: 500px;"  >
+			
+			<p:outputLabel value="Adresse:" style="width: 100px;"/>
+			<p:inputText label="Adresse " value="#{membreBean.membre.adresse}"  validatorMessage="adresse non valide" style="width: 150px;" >
+				<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*" />
+						<f:validateLength minimum="2" maximum="150" />
+				</p:inputText>
+			
+			</p:panelGrid>
+			
+			 		<p:panelGrid  columns="2" layout="grid" style="width: 500px;"  >
+			
+			<p:outputLabel value="téléphone Mobile:" style="width: 100px;" /> 
+			<p:inputText label="Numero telephone mobile:" value="#{membreBean.membre.telephone}" type="number" style="width: 150px;" >
+			<f:convertNumber integerOnly="true" type="number" />
+			<f:validateLength minimum="8" maximum="8" />
+			</p:inputText>
+			
+			</p:panelGrid>
+			
+	
+
+				
+								<p:panelGrid  columns="2" layout="grid" style="width: 500px;"  >
+								<p:outputLabel value="Email(*):" style="width: 100px;" />
+			<p:inputText label="email(*):" value="#{membreBean.membre.email}" required="true" requiredMessage="il faut saisir l'email" style="width: 150px;" >
+			<f:validateLength minimum="2" maximum="200" />
+			<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+			</p:inputText>
+			</p:panelGrid>
+			
+	
+			
+			
+		
+			
+					
+
+			
+
+			
+
+<p:panelGrid  columns="3" layout="grid" style="width: 500px;"  >			
+	
+
+ 
+
+						
+						
+			<p:commandButton value="enregistrer"  actionListener="#{membreBean.ajout}"   update="growl4" 
+						oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImageMembre').show();}" >
+						
+						
+							<p:confirm header="Confirmation"
+							message="Êtes-vous sûr de l'ajouter ?   "
+							icon="ui-icon-alert" />
+						
+						
+						</p:commandButton>
+						
+						<p:commandButton value="annuler"  
+						oncomplete="PF('addmoraleMembre').hide()" >
+						
+						
+						
+						
+						</p:commandButton>
+						
+							<p:commandButton value="reset"  type="reset"
+						></p:commandButton>
+						
+						
+						
+						
+						
+</p:panelGrid>
+			
+		</p:panelGrid>
+		
+		
+		
+		
+		<p:spacer height="30"/> 
+		
+ 
+		</p:dialog>
+		
+
+	
+
+
+
+
+
+
+</h:form>
 
 
 	</h:body>
