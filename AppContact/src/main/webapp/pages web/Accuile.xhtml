@@ -181,8 +181,8 @@
 
 <p:growl id="AjoutDialog" showDetail="true" />
 
-					<p:link id="ajouter" value="Nouvel contact" outcome="Ajout-ModifContactMorale"
-						style="float:right;height : 30px" icon="ui-icon-plus" />
+			<p:commandButton id="ajouter" value="Nouvel contact"   update="AjoutDialog" type="button" actionListener="#{ajoutermorale.navigation}" 
+						style="float:right;height : 30px" />
 
 		<p:spacer width="10" />
 		
@@ -282,6 +282,11 @@
 					
  <p:commandButton icon="ui-icon-zoomin" id="btview"
         actionListener="#{moraleBean.MembreContact}"    />
+         <p:commandButton icon="ui-icon-zoomin" id="btEdit"
+        action="#{moraleBean.modifierMorale()}"    />
+        
+        
+        
 				
 					<p:growl id="EmaileDialog" showDetail="true" />
 
@@ -293,6 +298,7 @@
 
 					<p:commandButton icon="ui-icon-trash"
 						action="#{moraleBean.suprimer(m)}" update="deleteDialog">
+						
 						<p:confirm header="Confirmation"
 							message="Êtes-vous sûr de supprimer #{m.contact.nom} "
 							icon="ui-icon-alert" />

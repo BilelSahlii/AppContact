@@ -746,7 +746,12 @@ morale=new Morale();
 
 }
 
-public void ajout() throws IOException
+
+
+
+
+
+public String modifier2() throws IOException
 
 {	
 	RequestContext context = RequestContext.getCurrentInstance();
@@ -810,6 +815,7 @@ message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le contact "+contact.get
 add = true;
 
 init();
+return "successAjout";
 
 
 
@@ -835,6 +841,102 @@ context.update("MembreMorale:tabMembre");
 
 
 init();
+return "successAjout";
+}
+
+
+
+public String ajout() throws IOException
+
+{	
+	RequestContext context = RequestContext.getCurrentInstance();
+	FacesMessage message = null;
+	boolean add = false;
+	
+
+
+
+	
+	
+	if((groupe!=null)&&(groupe.getIdGroupe()!=0))
+	{
+		contact.setGroupecontact((Groupecontact) groupecontactDao.findById(Groupecontact.class, groupe.getIdGroupe())); 	
+	}
+	
+	else
+		{contact.setGroupecontact(null);}
+	
+	
+
+	contact.setSecteur((Secteur)secteurDao.findById(Secteur.class, secteur.getIdSecteur()));
+	contact.setRegion((Region) regionDao.findById(Region.class,region.getIdRegion()));
+	java.util.Date date = new java.util.Date();
+	java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+	contact.setDate(sqlDate);
+	contactDao.saveOrUpdate(contact);
+	
+
+
+
+
+
+ morale.setContact((Contact)contactDao.findById(Contact.class, contact.getIdContact()));
+
+ morale.setTypemoral((Typemoral)typeMoralDao.findById(Typemoral.class, type.getIdMoral()));
+ 
+ 
+ if((produit!=null)&&(produit.getIdProduit()!=0))
+ {
+ morale.setProduit((Produit)produitDao.findById(Produit.class, produit.getIdProduit()));
+ }
+ 
+ else
+ {morale.setProduit(null);}
+ 
+	if((chef!=null)&&(chef.getIdChefResponsable()!=0))
+	{
+ morale.setChefresponsable((Chefresponsable)chefResponsableDao.findById(Chefresponsable.class, chef.getIdChefResponsable()));
+	}
+	else
+	{
+		morale.setChefresponsable(null);
+	}
+
+
+try {moraleDao.saveOrUpdate(morale);
+
+
+message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le contact "+contact.getNom()+" est bien enregistré", "");
+add = true;
+
+init();
+return "successAjout";
+
+
+
+
+} 
+catch (Exception e)
+
+{
+
+add = false;
+	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout erroné", "");
+	init();
+}
+
+
+
+
+
+
+FacesContext.getCurrentInstance().addMessage(null, message);
+context.addCallbackParam("add",add);
+context.update("MembreMorale:tabMembre");
+
+
+init();
+return "successAjout";
 }
 
 
@@ -1026,6 +1128,119 @@ public void onCellEdit(CellEditEvent event) {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }
+
+
+
+
+public String modifierMorale()
+{
+	
+	if(selectMorale!=null)
+		return "successM" ;
+	else
+		return "s" ;
+}
+
+
+
+
+public String modifier1() throws IOException
+
+{	
+	RequestContext context = RequestContext.getCurrentInstance();
+	FacesMessage message = null;
+	boolean add = false;
+	
+
+
+//groupe=selectMorale.getContact().getGroupecontact();
+//	
+//	
+//	if((groupe!=null)&&(groupe.getIdGroupe()!=0))
+//	{
+//		contact.setGroupecontact((Groupecontact) groupecontactDao.findById(Groupecontact.class, groupe.getIdGroupe())); 	
+//	}
+//	
+//	else
+//		{contact.setGroupecontact(null);}
+//	
+//	
+//
+//	contact.setSecteur((Secteur)secteurDao.findById(Secteur.class, secteur.getIdSecteur()));
+//	contact.setRegion((Region) regionDao.findById(Region.class,region.getIdRegion()));
+//	java.util.Date date = new java.util.Date();
+//	java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+//	contact.setDate(sqlDate);
+
+//	
+//
+//
+//
+//
+//
+// morale.setContact((Contact)contactDao.findById(Contact.class, contact.getIdContact()));
+//
+// morale.setTypemoral((Typemoral)typeMoralDao.findById(Typemoral.class, type.getIdMoral()));
+// 
+// 
+// if((produit!=null)&&(produit.getIdProduit()!=0))
+// {
+// morale.setProduit((Produit)produitDao.findById(Produit.class, produit.getIdProduit()));
+// }
+// 
+// else
+// {morale.setProduit(null);}
+// 
+//	if((chef!=null)&&(chef.getIdChefResponsable()!=0))
+//	{
+// morale.setChefresponsable((Chefresponsable)chefResponsableDao.findById(Chefresponsable.class, chef.getIdChefResponsable()));
+//	}
+//	else
+//	{
+//		morale.setChefresponsable(null);
+//	}
+
+
+try {
+	
+//	contact=selectMorale.getContact();
+//	contactDao.saveOrUpdate(contact);
+//	moraleDao.saveOrUpdate(selectMorale);
+
+//
+//message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le contact "+selectMorale.getContact().getNom()+" est bien enregistré", "");
+add = true;
+
+//init();
+return "successModif";
+
+
+
+
+} 
+catch (Exception e)
+
+{
+
+//add = false;
+//	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout erroné", "");
+//	init();
+}
+
+
+
+
+
+
+//FacesContext.getCurrentInstance().addMessage(null, message);
+//context.addCallbackParam("add",add);
+//context.update("formMorale:tab");
+
+
+//init();
+return "successModif";
+}
+
 
 
 	
