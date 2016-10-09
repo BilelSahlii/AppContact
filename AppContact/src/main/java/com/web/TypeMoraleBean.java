@@ -36,14 +36,14 @@ import org.w3c.dom.events.EventException;
 import com.model.Groupecontact;
 import com.model.Morale;
 import com.model.Physique;
-import com.model.Produit;
+
 import com.model.Region;
 import com.model.Secteur;
 import com.model.Typemoral;
 import com.idao.MoraleDao;
 import com.idao.GroupeContactDao;
 import com.idao.PhysiqueDao;
-import com.idao.ProduitDao;
+
 import com.idao.RegionDao;
 import com.idao.SecteurDao;
 import com.idao.TypeMoralDao;
@@ -71,8 +71,7 @@ static private Typemoral typemoral=new Typemoral();
 void initM()
 {
 	typemoral=new Typemoral() ;
-	typemoral.setLibelleMorale("");
-	typemoral.setIdMoral(null);
+
 }
 
 

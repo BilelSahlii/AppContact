@@ -76,8 +76,7 @@ static private Groupecontact groupecontact=new Groupecontact();
 
 public void initG()
 {	groupecontact=new Groupecontact();
-	groupecontact.setIdGroupe(null);
-	groupecontact.setLibelleGroupe("");
+
 
 }
 

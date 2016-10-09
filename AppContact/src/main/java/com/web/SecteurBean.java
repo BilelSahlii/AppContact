@@ -33,17 +33,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.events.EventException;
 
-import com.model.Contact;
+
 import com.model.Groupecontact;
 import com.model.Morale;
 import com.model.Physique;
-import com.model.Produit;
+
 import com.model.Region;
 import com.model.Secteur;
 import com.idao.MoraleDao;
 import com.idao.GroupeContactDao;
 import com.idao.PhysiqueDao;
-import com.idao.ProduitDao;
+
 import com.idao.RegionDao;
 import com.idao.SecteurDao;
 
@@ -120,8 +120,7 @@ public void AjouterMembreContact() throws IOException {
 
 public void init_secteur()
 {secteur=new Secteur() ;
-	secteur.setLibelleSecteur("");
-	secteur.setIdSecteur(null);
+
 }
 
 public void ajout()

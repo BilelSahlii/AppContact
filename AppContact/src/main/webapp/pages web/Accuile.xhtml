@@ -88,28 +88,6 @@
 
 
 
-	<h:form id="ajoutImage" enctype="multipart/form-data">
-
-			<p:growl id="growlImage" sticky="true" showDetail="true" life="3000" />
-				<p:dialog header="upload image" width="800px"
-				id="IUploadImage" widgetVar="UploadImage" modal="true"
-				resizable="false" draggable="false" closable="true"
-				closeOnEscape="true">
-			
-		
-				
-				<p:panelGrid  columns="2" layout="grid" style="width: 750px;"  >
-				
-		<p:outputLabel value="Vous pouvez ajouter un logo :" style="width: 100px;" />		
-			
-    <p:fileUpload fileUploadListener="#{moraleBean.handleFileUpload}"  mode="advanced" dragDropSupport="false" update="growlImage"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImage').hide();}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" validatorMessage="type d'image non valide" />
- 
-				</p:panelGrid>
-	
-		</p:dialog>
-				 
-				</h:form>
-
 
 		<h:form id="formMorale">
 
@@ -128,9 +106,9 @@
 
 			<p:dataTable var="m" value="#{moraleBean.list_Morale}" id="tab"
 				widgetVar="moraleTable" paginator="true" rows="14"
-				selectionMode="single" selection="#{moraleBean.selectMorale}"
+				selectionMode="single" selection="#{moraleBean.morale}"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowKey="#{m.idContact}" scrollable="true" scrollHeight="300">
+				rowKey="#{m.idMorale}" scrollable="true" scrollHeight="300">
 
 
 				<f:facet name="header">
@@ -181,7 +159,7 @@
 
 <p:growl id="AjoutDialog" showDetail="true" />
 
-			<p:commandButton id="ajouter" value="Nouvel contact"   update="AjoutDialog" type="button" actionListener="#{ajoutermorale.navigation}" 
+			<p:button id="ajouter" value="Nouvel contact"   update="AjoutDialog"  action="#{ajoutermorale.navigation()}" 
 						style="float:right;height : 30px" />
 
 		<p:spacer width="10" />
@@ -210,11 +188,11 @@
 
 
 
-				<p:column headerText="Raison Social" sortBy="#{m.contact.nom}"
-					filterBy="#{m.contact.nom}"  filterMatchMode="contains">
+				<p:column headerText="Raison Social" sortBy="#{m.nom}"
+					filterBy="#{m.nom}"  filterMatchMode="contains">
 
 
-					<h:outputText value="#{m.contact.nom}" />
+					<h:outputText value="#{m.nom}" />
 
 				</p:column>
 
@@ -226,32 +204,32 @@
 				</p:column>
 				
 								<p:column headerText="Secteur"
-					sortBy="#{m.contact.secteur.libelleSecteur}"
-					filterBy="#{m.contact.secteur.libelleSecteur}"  filterMatchMode="contains">
-					<h:outputText value="#{m.contact.secteur.libelleSecteur}" />
+					sortBy="#{m.secteur.libelleSecteur}"
+					filterBy="#{m.secteur.libelleSecteur}"  filterMatchMode="contains">
+					<h:outputText value="#{m.secteur.libelleSecteur}" />
 				</p:column>
 				
 				
-						<p:column headerText="Activité" 	sortBy="#{m.produit.libelle}" 
-					filterBy="#{m.produit.libelle}"  filterMatchMode="contains">
+						<p:column headerText="Activité" 	sortBy="#{m.activite.libelle}" 
+					filterBy="#{m.activite.libelle}"  filterMatchMode="contains">
 
-					<h:outputText value="#{m.produit.libelle}" />
+					<h:outputText value="#{m.activite.libelle}" />
 
 
 
 				</p:column>
 						<p:column headerText="Groupe"
-					sortBy="#{m.contact.groupecontact.libelleGroupe}"
-					filterBy="#{m.contact.groupecontact.libelleGroupe}">
-					<h:outputText value="#{m.contact.groupecontact.libelleGroupe}" />
+					sortBy="#{m.groupecontact.libelleGroupe}"
+					filterBy="#{m.groupecontact.libelleGroupe}">
+					<h:outputText value="#{m.groupecontact.libelleGroupe}" />
 				</p:column>
 		
 
 
-				<p:column headerText="Region" 	sortBy="#{m.contact.region.libelleRegion}"
-					filterBy="#{m.contact.region.libelleRegion}"  filterMatchMode="contains">
+				<p:column headerText="Region" 	sortBy="#{m.region.libelleRegion}"
+					filterBy="#{m.region.libelleRegion}"  filterMatchMode="contains">
 
-					<h:outputText value="#{m.contact.region.libelleRegion}" />
+					<h:outputText value="#{m.region.libelleRegion}" />
 </p:column>
 
 
@@ -259,14 +237,14 @@
 				<p:column headerText="Logo" 
 					>
 
-								 <p:graphicImage width="50" height="50" value="/images/contact/#{m.contact.idContact}.jpg" />  </p:column>
+								 <p:graphicImage width="50" height="50" value="/images/contact/#{m.idMorale}.jpg" />  </p:column>
 
 				
 				
-				<p:column headerText="Date" 	sortBy="#{m.contact.date}"
-					filterBy="#{m.contact.date}"  filterMatchMode="contains">
+				<p:column headerText="Date" 	sortBy="#{m.date}"
+					filterBy="#{m.date}"  filterMatchMode="contains">
 
-					<h:outputText value="#{m.contact.date}" />
+					<h:outputText value="#{m.date}" />
 
 
 
@@ -282,8 +260,14 @@
 					
  <p:commandButton icon="ui-icon-zoomin" id="btview"
         actionListener="#{moraleBean.MembreContact}"    />
-         <p:commandButton icon="ui-icon-zoomin" id="btEdit"
-        action="#{moraleBean.modifierMorale()}"    />
+        
+         <p:commandButton icon="ui-icon-pencil" id="btEdit"
+        action="#{moraleBean.modifierMorale()}"    >
+        
+        	<f:setPropertyActionListener value="#{m}"
+								target="#{moraleBean.morale}" />
+								
+								</p:commandButton>
         
         
         
@@ -297,10 +281,10 @@
 					<p:growl id="deleteDialog" showDetail="true" />
 
 					<p:commandButton icon="ui-icon-trash"
-						action="#{moraleBean.suprimer(m)}" update="deleteDialog">
+						action="#{moraleBean.suprimer(m)}" update="tab">
 						
 						<p:confirm header="Confirmation"
-							message="Êtes-vous sûr de supprimer #{m.contact.nom} "
+							message="Êtes-vous sûr de supprimer #{m.nom} "
 							icon="ui-icon-alert" />
 
 
@@ -364,21 +348,21 @@
 
 
 						<f:selectItems value="#{moraleBean.list_Morale}" var="theme"
-							itemLabel="#{theme.contact.nom}#{theme.contact.email}"
+							itemLabel="#{theme.nom}#{theme.email}"
 							itemValue="#{theme}" />
 
 
 						<p:column>
-							<h:outputText value="#{t.contact.nom}" />
+							<h:outputText value="#{t.nom}" />
 						</p:column>
 
 						<p:column>
-							<h:outputText value="#{t.contact.email}" />
+							<h:outputText value="#{t.email}" />
 						</p:column>
 						
 							<p:column>
 
-							<p:graphicImage width="50" height="50"   value="/images/contact/#{t.contact.idContact}.jpg"></p:graphicImage>
+							<p:graphicImage width="50" height="50"   value="/images/contact/#{t.idMorale}.jpg"></p:graphicImage>
 						</p:column>
 
 					</p:selectManyMenu>
@@ -453,7 +437,7 @@
 
 
 				<p:outputLabel
-					value="Destinataire: Raison social #{moraleBean.selectMorale.contact.nom}"
+					value="Destinataire: Raison social #{moraleBean.morale.nom}"
 					style=" margin-right:10px ; width : 250px; height : 28px;" />
 
 
@@ -507,7 +491,7 @@
 		<h:form id="MembreMorale">
 		
 		
-		<p:dialog header="#{moraleBean.selectMorale.contact.nom}" width="1000" id="dViewMorale" widgetVar="Viewmorale"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true">
+		<p:dialog header="#{moraleBean.morale.nom}" width="1000" id="dViewMorale" widgetVar="Viewmorale"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true">
 
 
 
@@ -523,33 +507,33 @@
 
 
                 <h:outputLabel value=" Adresse:        " style="COLOR: #000000; BACKGROUND-COLOR: #ffffff; FONT-SIZE: small; FONT-WEIGHT: bold;"/>
-                <h:outputLabel value="#{moraleBean.selectMorale.contact.adresse}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
+                <h:outputLabel value="#{moraleBean.morale.adresse}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
       
 
                 <h:outputLabel value="Code Postale:     " style="FONT-WEIGHT: bold; FONT-SIZE: small; COLOR: #000000;"/>
-                <h:outputLabel value="#{moraleBean.selectMorale.contact.codePostal}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
+                <h:outputLabel value="#{moraleBean.morale.codePostale}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
               
                 
                    
 
                 <h:outputLabel value="Telephone Number:    " style="FONT-WEIGHT: bold; FONT-SIZE: small; COLOR: #000000;"/>
-                <h:outputLabel value="#{moraleBean.selectMorale.contact.telephonne}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
+                <h:outputLabel value="#{moraleBean.morale.telephone}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
                 
  
  
                 <h:outputLabel value="Mobile Number:      " style="COLOR: #000000; FONT-WEIGHT: bold; FONT-SIZE: small;"/>
-                <h:outputLabel value="#{moraleBean.selectMorale.contact.mobile}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
+                <h:outputLabel value="#{moraleBean.morale.mobile}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
             
                 
 
                 <h:outputLabel value="Email:             " style="COLOR: #000000; FONT-WEIGHT: bold; FONT-SIZE: small;"/>
-                <h:outputLabel value="#{moraleBean.selectMorale.contact.email}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
+                <h:outputLabel value="#{moraleBean.morale.email}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
                 
               
                 
                 </h:panelGrid>
                 
-                           <h:graphicImage  value="/images/contact/#{moraleBean.selectMorale.contact.idContact}.jpg" width="200" height="200" style="height : 143px; width : 316px;"/>
+                           <h:graphicImage  value="/images/contact/#{moraleBean.morale.idMorale}.jpg" width="200" height="200" style="height : 143px; width : 316px;"/>
                 
                 
                 </h:panelGrid>
@@ -705,510 +689,6 @@ style="float:right;"  icon="ui-icon-calculator" />
 
 
 
-
-<!--    Dialogue ajouter Secteur -->
-		<h:form id="ajouterSecteur">
-			<p:growl id="growlSecteur" sticky="true" showDetail="true" life="3000" />
-
-		
-<p:dialog header="ajouter Secteur"  widgetVar="addSecteur"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
-
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
-
-									<p:outputLabel value="Nouveau secteur:" style="width: 100px;" />
-			<p:inputText label="sect" value="#{secteurBean.secteur.libelleSecteur}" required="true" validatorMessage="saisir non valide" requiredMessage="il faut saisir un secteur"  style="width: 100px;">
-			<f:validateLength minimum="2" maximum="100" />
-						<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
-
-
-
-
-
-					</p:inputText>
-				<p:commandButton value="enregistrer" actionListener="#{secteurBean.ajout()}" update="growlSecteur" 	oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addSecteur').hide();}"
-				></p:commandButton>
-				
-					<p:commandButton value="Annuler" oncomplete="PF('addSecteur').hide()"></p:commandButton>
-
-</p:panelGrid>
-
-</p:dialog>
-</h:form>
-
-<!--  Ajouter une Region  -->
-
-
-		<h:form id="ajouterRegion">
-			<p:growl id="growlRegion" sticky="true" showDetail="true" life="3000" />
-
-
-<p:dialog header="ajouter Region"  widgetVar="addRegion"  modal="true"   resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
-
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
-
-									<p:outputLabel value="Nouveau Region:" style="width: 100px;" />
-			<p:inputText label="sect" value="#{regionBean.region.libelleRegion}" required="true" validatorMessage="saisir non valide" requiredMessage="il faut saisir une region" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="100" />
-				<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
-			
-			</p:inputText>
-				<p:commandButton value="enregistrer" actionListener="#{regionBean.ajout}" update="growlRegion"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addRegion').hide();}"></p:commandButton>
-				
-					<p:commandButton value="Annuler"  oncomplete="PF('addRegion').hide()"></p:commandButton>
-
-</p:panelGrid>
-
-</p:dialog>
-
-</h:form>
-
-
-	<!--=======Ajouter Activité================================-->
-
-<h:form id="ajouterProduit">
-			<p:growl id="growlProduit" sticky="true" showDetail="true" life="3000" />
-
-<p:dialog header="ajouter Activité"  widgetVar="addProduit"  modal="true" resizable="false"   draggable="false" closable="true" closeOnEscape="true" width="350px">         
-
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
-
-									<p:outputLabel value="Nouveau Produit:" style="width: 100px;" />
-			<p:inputText label="produit1" requiredMessage="il faut saisir un activité" validatorMessage="saisir non valide"  value="#{produitBean.produit.libelle}" style="width: 100px;" >
-			<f:validateLength minimum="2" maximum="150" />
-				<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
-			
-			</p:inputText>
-				<p:commandButton value="enregistrer" actionListener="#{produitBean.ajout}" update="growlProduit"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addProduit').hide();}"></p:commandButton>
-				
-					<p:commandButton value="Annuler" oncomplete="PF('addProduit').hide()"></p:commandButton>
-
-</p:panelGrid>
-
-</p:dialog>
-</h:form>
-
-
-
-
-	<!--=======Ajouter Type================================-->
-
-<h:form id="ajouterType">
-			<p:growl id="growlType" sticky="true" showDetail="true" life="3000" />
-<p:dialog header="ajouter Type"  widgetVar="addType"  modal="true"  resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
-
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
-
-									<p:outputLabel value="Nouveau Type:" style="width: 100px;" />
-			<p:inputText label="sect" required="true" validatorMessage="saisir non valide" requiredMessage="il faut saisir un type" value="#{typeMoraleBean.typemoral.libelleMorale}" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="150" />
-					<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
-			
-			</p:inputText>
-				<p:commandButton value="enregistrer" actionListener="#{typeMoraleBean.ajout()}" update="growlType"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addType').hide();}"></p:commandButton>
-				
-					<p:commandButton value="Annuler"  oncomplete="PF('addType').hide()" ></p:commandButton>
-
-</p:panelGrid>
-
-</p:dialog>
-</h:form>
-
-
-
-
-	<!--=======Ajouter Groupe================================-->
-
-<h:form id="ajouterGroupe">
-			<p:growl id="growlGroupe" sticky="true" showDetail="true" life="3000" />
-
-<p:dialog header="ajouter Groupe"  widgetVar="addGroupe2"  modal="true"   resizable="false" draggable="false" closable="true" closeOnEscape="true" width="350px">         
-
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 300px;"  >
-
-									<p:outputLabel value="Nouveau Groupe:" style="width: 100px;" />
-			<p:inputText label="groupela" value="#{groupeContactBean.groupecontact.libelleGroupe}" required="true" requiredMessage="il faut saisir un groupe" validatorMessage="saisir non valide" style="width: 100px;">
-			<f:validateLength minimum="2" maximum="150" />
-			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
-			
-			</p:inputText>
-			
-			
-			
-				<p:commandButton value="enregistrer" actionListener="#{groupeContactBean.ajout()}" update="growlGroupe"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('addGroupe2').hide();}"></p:commandButton>
-				
-					<p:commandButton value="Annuler" oncomplete="PF('addGroupe2').hide()" ></p:commandButton>
-
-</p:panelGrid>
-
-</p:dialog>
-</h:form>
-
-
-
-
-
-
-
-
-	<!--=======AjouterChef Responsable================================-->
-
-<h:form id="ajouterChef">
-			<p:growl id="growlChef" sticky="true" showDetail="true" life="3000" />
-
-
-	<p:dialog header="ajouter Chef Responsable" id="daddChef" widgetVar="addChef"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="550px">         
-      
-        
-
-
-<p:panelGrid  columns="2" layout="grid" style="width: 510px;"  >
-
-									<p:outputLabel value="Nom(*):" style="width: 100px;" />
-			<p:inputText label="chefnom" value="#{chefResponsableBean.chefresponsable.nomChefResponsable}" required="true" validatorMessage="nom non valide" requiredMessage="il faut saisir le nom" style="width: 	200px;">
-		<f:validateLength minimum="2" maximum="150" />
-			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*"  />
-			
-			</p:inputText>
-			
-										<p:outputLabel value="Prenom(*):" style="width: 100px;" />
-			<p:inputText label="chefprenom" value="#{chefResponsableBean.chefresponsable.prenomChefResponsable}" required="true" validatorMessage="prenom non valide" requiredMessage="il faut saisir le prenom" style="width: 200px;">
-				<f:validateLength minimum="2" maximum="150" />
-			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*"  />
-			
-			</p:inputText>
-			
-										<p:outputLabel value="Adresse:" style="width: 100px;" />
-			<p:inputText label="chefAdd" value="#{chefResponsableBean.chefresponsable.adresse}" validatorMessage="adresse non valide" style="width: 200px;">
-			<f:validateLength minimum="2" maximum="150" />
-			<f:validateRegex pattern="[a-zA-Z0-9ùéèçàäöüÄÖÜ \\s]*"  />
-			
-			</p:inputText>
-			
-				
-										<p:outputLabel value="Email:" style="width: 100px;" />
-			<p:inputText label="chefEmail" value="#{chefResponsableBean.chefresponsable.email}" validatorMessage="email non valide" style="width: 200px;">
-			<f:validateLength minimum="2" maximum="100" />
-			 <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-			
-			</p:inputText>
-				
-										<p:outputLabel value="Téléphone:" style="width: 100px;" />
-			<p:inputText label="cheftel" value="#{chefResponsableBean.chefresponsable.telephone}" required="false" type="numbre" validatorMessage="numéro de téléphone non valide" style="width: 200px;" >
-	<f:validateLength minimum="8" maximum="8" />
-			
-			</p:inputText>
-			
-			
-		
-	
-			
-			
-			
-						<p:commandButton value="Enregistrer" actionListener="#{chefResponsableBean.ajout()}"   update="growlChef"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImageChef').show;}"> </p:commandButton>
-					<p:commandButton value="Annuler" oncomplete="PF('addChef').hide()" ></p:commandButton>
-				
-			
-			
-
-</p:panelGrid>
-
-
-</p:dialog>
-
-
-
-
-
-
-
-
-
-
-
-</h:form>
-
-
-
-	<!--=======Ajouter Contact================================-->
-
-
-
-	<h:form id="AjouterMorale" enctype="multipart/form-data">
-	<p:growl id="growl4" sticky="true" showDetail="true" life="3000" />
-
-<!--  dualog ajouter -->
-<p:dialog header="Ajout d'un nouvel contact" id="daddMorale" widgetVar="addmorale"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="1310px">         
-
-        
-
-
-<p:panelGrid id="panelAdd" columns="2" layout="grid" style="width: 1280px;"  >
-		
-
-<p:panelGrid id="pSecteur" columns="3" layout="grid" style="width: 600px;"  >
-
-<p:outputLabel value="Secteur(*):" style="width: 100px;"/>
-<p:selectOneMenu id="secteur" filter="true" filterMatchMode="startsWith"  required="true" requiredMessage="il faut sélectionner un secteur" value="#{moraleBean.secteur.idSecteur}"  style="width: 100px;">
-								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
-								<f:selectItems value="#{secteurBean.list_Secteur}" var="entry"
-									itemValue="#{entry.idSecteur}" itemLabel="#{entry.libelleSecteur}" />
-</p:selectOneMenu>
-
-
-<p:commandButton id="ajouterS" style="float:right"  icon="ui-icon-plus"  oncomplete="PF('addSecteur').show()"/>
-<!-- <p:commandButton id="ModifierS" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
-<!-- <p:growl id="deleteDialog" showDetail="true" /> -->
-
-
-<!-- <p:confirm header="Confirmation" message="Êtes-vous sûr pour supprimer le secteur ?"  icon="ui-icon-alert" -->
-<!-- /> -->
-<!-- </p:commandButton> -->
-
-</p:panelGrid>
-
-
-
-<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >
-				
-							<p:outputLabel value="Groupe:" style="width: 100px;" />
-										
-							<p:selectOneMenu id="groupe" value="#{moraleBean.groupe.idGroupe}" filter="true" filterMatchMode="startsWith"  style="width: 100px;">
-								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
-								<f:selectItems value="#{groupeContactBean.list_GroupeContact}" var="entry"
-									itemValue="#{entry.idGroupe}" itemLabel="#{entry.libelleGroupe}" />
-							</p:selectOneMenu>
-					
-<p:commandButton id="ajouterG" style="float:right"  icon="ui-icon-plus" oncomplete="PF('addGroupe2').show()" />
-<!-- <p:commandButton id="ModifierG" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
-<!-- <p:commandButton id="SuprimerG" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" /> -->
-
-</p:panelGrid>
-							
-			<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >			
-							<p:outputLabel value="Region(*):"   style="width: 100px;"/>
-									
-							<p:selectOneMenu id="region" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="il faut sélectionner une region" value="#{moraleBean.region.idRegion}" style="width: 100px;">
-								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
-								<f:selectItems value="#{regionBean.list_Region}" var="entry"
-									itemValue="#{entry.idRegion}" itemLabel="#{entry.libelleRegion}" />
-							</p:selectOneMenu>
-							
-				
-							<p:commandButton id="ajouterR" 
-style="float:right"  icon="
-ui-icon-plus" oncomplete="PF('addRegion').show()" />
-<!-- <p:commandButton id="ModifierR" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
-<!-- <p:commandButton id="SuprimerR" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" /> -->
-
-</p:panelGrid>
-
-							
-							
-						<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >	
-							
-									<p:outputLabel value="Chef Responsable:" style="width: 100px;"/>
-									
-									
-							<p:selectOneMenu id="chef" value="#{moraleBean.chef.idChefResponsable}" filter="true" converter="omnifaces.SelectItemsConverter" filterMatchMode="startsWith"   style="width: 100px;">
-								<f:selectItem itemLabel="Select..." itemValue="" noSelectionOption="true" />
-								<f:selectItems value="#{chefResponsableBean.list_ChefResponsable}" var="entry"
-									itemValue="#{entry.idChefResponsable}" itemLabel="#{entry.nomChefResponsable} #{entry.prenomChefResponsable} "  />
-									
-								
-
-									
-							</p:selectOneMenu>
-								
-														<p:commandButton id="ajouterChef" 
-style="float:right"  icon="ui-icon-plus" oncomplete="PF('addChef').show()" />
-<!-- <p:commandButton id="ModifierC" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
-<!-- <p:commandButton id="SuprimerC" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" /> -->
-</p:panelGrid>
-
-							<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >	
-											<p:outputLabel value="Activité:" style="width: 100px;"/>
-									
-							<p:selectOneMenu id="produit" value="#{moraleBean.produit.idProduit}"   filter="true" filterMatchMode="startsWith"  style="width: 100px;">
-								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
-								<f:selectItems value="#{produitBean.list_Produit}" var="entry"
-									itemValue="#{entry.idProduit}" itemLabel="#{entry.libelle}" />
-									
-									
-									
-							</p:selectOneMenu>
-				
-							<p:commandButton id="ajouterP" 
-style="float:right"  icon="ui-icon-plus" oncomplete="PF('addProduit').show()" />
-<!-- <p:commandButton id="ModifierP" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
-<!-- <p:commandButton id="SuprimerP" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" /> -->
-
-</p:panelGrid>
-				
-
-		<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >
-									<p:outputLabel value="Type(*):" style="width: 100px;"/>
-						
-							<p:selectOneMenu id="Type" value="#{moraleBean.type.idMoral}" required="true" requiredMessage="il faut sélectionner un type"  filter="true" filterMatchMode="startsWith"  style="width: 100px;">
-								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
-								<f:selectItems value="#{typeMoraleBean.list_TypeMoral}" var="entry"
-									itemValue="#{entry.idMoral}" itemLabel="#{entry.libelleMorale}" />
-							</p:selectOneMenu>
-					
-							<p:commandButton id="ajouterType" 
-style="float:right"  icon="ui-icon-plus" oncomplete="PF('addType').show()" />
-<!-- <p:commandButton id="ModifierT" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
-<!-- <p:commandButton id="SuprimerT" style="float:right"  icon="ui-icon-trash" oncomplete="PF('addSecteur').show()" /> -->
-
-</p:panelGrid>
-				
-
-		
-		
-
-
-					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  > 
-			<p:outputLabel value="Raison Social(*):" style="width: 100px;"/>
-			<p:inputText label="Nomraison Social " value="#{moraleBean.contact.nom}" required="true" requiredMessage="il faut saisir le nom de l'organisation" style="width: 150px;" >
-			<f:validateLength minimum="2" maximum="150" />
-			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*" />
-			</p:inputText>
-			
-			</p:panelGrid>
-			
-					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
-			
-			<p:outputLabel value="Addresse:" style="width: 100px;"/>
-			<p:inputText label="Adresse " value="#{moraleBean.contact.adresse}"  validatorMessage="adresse non valide" style="width: 150px;" >
-				<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*" />
-						<f:validateLength minimum="2" maximum="150" />
-				</p:inputText>
-			
-			</p:panelGrid>
-			
-			 		<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
-			
-			<p:outputLabel value="téléphone Mobile:" style="width: 100px;" /> 
-			<p:inputText label="Numero telephone mobile:" value="#{moraleBean.contact.mobile}" type="number" style="width: 150px;" >
-			<f:convertNumber integerOnly="true" type="number" />
-			<f:validateLength minimum="8" maximum="8" />
-			</p:inputText>
-			
-			</p:panelGrid>
-			
-					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
-				<p:outputLabel value="téléphone fixe:" style="width: 100px;" /> 
-			<p:inputText label="Numero telephone fixe/Fax " value="#{moraleBean.contact.telephonne}" type="number" style="width: 150px;" >
-			<f:convertNumber integerOnly="true" type="number" />
-			<f:validateLength minimum="8" maximum="8" />
-			</p:inputText>
-			
-			</p:panelGrid>
-			
-					<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
-					<p:outputLabel value="Code Postale:" style="width: 100px;"/> 
-			<p:inputText label="code postale " value="#{moraleBean.contact.codePostal}" type="number" style="width: 150px;" >
-			<f:convertNumber integerOnly="true" type="number" />
-			<f:validateLength minimum="4" maximum="4" />
-			</p:inputText>
-			
-</p:panelGrid>
-				
-								<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
-								<p:outputLabel value="Email(*):" style="width: 100px;" />
-			<p:inputText label="email(*):" value="#{moraleBean.contact.email}" required="true" requiredMessage="il faut saisir l'email" style="width: 150px;" >
-			<f:validateLength minimum="2" maximum="200" />
-			<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-			</p:inputText>
-			</p:panelGrid>
-			
-			<p:panelGrid  columns="2" layout="grid" style="width: 600px;"  >
-			
-										<p:outputLabel value="Ville:" style="width: 100px;"  />
-			<p:inputText label="ville" value="#{moraleBean.contact.ville}" style="width: 150px;" validatorMessage="ville non valide" >
-			<f:validateLength minimum="2" maximum="35" />
-					<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ]*" />
-			
-			</p:inputText>
-			</p:panelGrid>
-			
-			
-		
-			
-					
-
-			
-
-			
-
-<p:panelGrid  columns="3" layout="grid" style="width: 600px;"  >			
-	
-
- 
-
-						
-						
-			<p:commandButton value="enregistrer"  actionListener="#{moraleBean.ajout}"   update="growl4" 
-						oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImage').show();}" >
-						
-						
-							<p:confirm header="Confirmation"
-							message="Êtes-vous sûr de l'ajouter ?   #{moraleBean.contact.nom}"
-							icon="ui-icon-alert" />
-						
-						
-						</p:commandButton>
-						
-						<p:commandButton value="annuler"  
-						oncomplete="PF('addmorale').hide()" >
-						
-						
-						
-						
-						</p:commandButton>
-						
-							<p:commandButton value="reset"  type="reset"
-						></p:commandButton>
-						
-						
-						
-						
-						
-</p:panelGrid>
-			
-		</p:panelGrid>
-		
-		
-		
-		
-		<p:spacer height="30"/> 
-		
- 
-		</p:dialog>
-		
-
-	
-
-
-
-
-
-
-</h:form>
 
 
 

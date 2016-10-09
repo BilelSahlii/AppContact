@@ -13,10 +13,10 @@
   <PROCESS-ITEM ID="rules:#pages web#Accuile.xhtml:1" NAME="item1"
    PATH="/pages web/Accuile.xhtml" model-entity="JSFProcessItem">
    <PROCESS-ITEM-OUTPUT
-    ID="successM:#{moraleBean.modifierMorale()}:#pages web#ModifierMorale.xhtml"
-    NAME="output" PATH="/pages web/ModifierMorale.xhtml"
-    TARGET="rules:#pages web#ModifierMorale.xhtml"
-    TITLE="#{moraleBean.modifierMorale()}:successM" model-entity="JSFProcessItemOutput"/>
+    ID="successModifier:#{moraleBean.modifierMorale()}:#pages web#Ajout-ModifContactMorale.xhtml"
+    NAME="output" PATH="/pages web/Ajout-ModifContactMorale.xhtml"
+    TARGET="rules:#pages web#Ajout-ModifContactMorale.xhtml"
+    TITLE="#{moraleBean.modifierMorale()}:successModifier" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#pages web#Ajout-ModifContactMorale.xhtml"
@@ -28,17 +28,6 @@
     NAME="output" PATH="/pages web/Accuile.xhtml"
     TARGET="rules:#pages web#Accuile.xhtml"
     TITLE="#{ajoutermorale.ajout()}:successAjout" model-entity="JSFProcessItemOutput"/>
-  </PROCESS-ITEM>
- </PROCESS-ITEM>
- <PROCESS-ITEM NAME="rules:#pages web#ModifierMorale.xhtml"
-  PATH="/pages web/ModifierMorale.xhtml" SHAPE="256,177,0,0" model-entity="JSFProcessGroup">
-  <PROCESS-ITEM ID="rules:#pages web#ModifierMorale.xhtml:0" NAME="item"
-   PATH="/pages web/ModifierMorale.xhtml" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT
-    ID="successModif:#{moraleBean.modifier1()}:#pages web#Accuile.xhtml"
-    NAME="output" PATH="/pages web/Accuile.xhtml"
-    TARGET="rules:#pages web#Accuile.xhtml"
-    TITLE="#{moraleBean.modifier1()}:successModif" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
 </PROCESS>

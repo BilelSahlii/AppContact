@@ -36,12 +36,12 @@ import org.w3c.dom.events.EventException;
 import com.model.Groupecontact;
 import com.model.Morale;
 import com.model.Physique;
-import com.model.Produit;
+
 import com.model.Region;
 import com.idao.MoraleDao;
 import com.idao.GroupeContactDao;
 import com.idao.PhysiqueDao;
-import com.idao.ProduitDao;
+
 import com.idao.RegionDao;
 
 
@@ -89,8 +89,7 @@ public  void setRegion(Region region) {
 public void init()
  {
  	region=new Region();
-	 	region.setIdRegion(null);
- 	region.setLibelleRegion("");
+
 
 
  }

@@ -7,12 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
-import com.idao.ProduitDao;
+
+import com.idao.ActiviteDao;
 
 
-@Service("ProduitDao")
+
+@Service("ActiviteDao")
 @Transactional
-public class ProduitDaoImpl extends GenericDaoImpl implements ProduitDao {
+public class ActiviteDaoImpl extends GenericDaoImpl implements ActiviteDao {
 
 
 }

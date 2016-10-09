@@ -38,17 +38,17 @@ import org.springframework.stereotype.Component;
 import org.w3c.dom.events.EventException;
 
 import com.model.Chefresponsable;
-import com.model.Contact;
+
 import com.model.Groupecontact;
 import com.model.Morale;
 import com.model.Physique;
-import com.model.Produit;
+
 import com.model.Region;
 import com.idao.ChefResponsableDao;
 import com.idao.MoraleDao;
 import com.idao.GroupeContactDao;
 import com.idao.PhysiqueDao;
-import com.idao.ProduitDao;
+
 import com.idao.RegionDao;
 
 
@@ -82,13 +82,7 @@ static private Chefresponsable chefresponsable =new Chefresponsable();
  void initchef()
 {
 	 chefresponsable =new Chefresponsable();
-		chefresponsable.setIdChefResponsable(null);
-		chefresponsable.setAdresse("");
-		chefresponsable.setEmail("");
-
-		chefresponsable.setNomChefResponsable("");
-		chefresponsable.setPrenomChefResponsable("");
-		chefresponsable.setTelephone(null);
+	
 }
 
  

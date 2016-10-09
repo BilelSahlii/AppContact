@@ -19,8 +19,10 @@
     </navigation-rule>
     
     
+  
     
-    <navigation-rule>
+    
+        <navigation-rule>
      <from-view-id>/pages web/Ajout-ModifContactMorale.xhtml</from-view-id>
     <navigation-case>
         <from-action>#{ajoutermorale.ajout()}</from-action>
@@ -32,29 +34,29 @@
     </navigation-rule>
     
     
-       <navigation-rule>
+    
+            <navigation-rule>
      <from-view-id>/pages web/Accuile.xhtml</from-view-id>
     <navigation-case>
         <from-action>#{moraleBean.modifierMorale()}</from-action>
-        <from-outcome>successM</from-outcome>
-        <to-view-id>/pages web/ModifierMorale.xhtml</to-view-id>
+        <from-outcome>successModifier</from-outcome>
+        <to-view-id>/pages web/Ajout-ModifContactMorale.xhtml</to-view-id>
         <redirect></redirect>
     </navigation-case>
  
     </navigation-rule>
     
     
+
+
+
     
-           <navigation-rule>
-     <from-view-id>/pages web/ModifierMorale.xhtml</from-view-id>
-    <navigation-case>
-        <from-action>#{moraleBean.modifier1()}</from-action>
-        <from-outcome>successModif</from-outcome>
-        <to-view-id>/pages web/Accuile.xhtml</to-view-id>
-        <redirect></redirect>
-    </navigation-case>
- 
-    </navigation-rule>
+    
+
+    
+    
+    
+
     
     
  

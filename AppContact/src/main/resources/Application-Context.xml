@@ -12,7 +12,7 @@
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/appcontactmybuild?zeroDateTimeBehavior=convertToNull" />
+		<property name="url" value="jdbc:mysql://localhost:3306/appcontact?zeroDateTimeBehavior=convertToNull" />
 		<property name="username" value="root" />
 		<property name="password" value="" />
 	</bean>
@@ -23,11 +23,12 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>com.model.Chefresponsable</value>
-					<value>com.model.Contact</value>
+			
 						<value>com.model.Groupecontact</value>
 							<value>com.model.Morale</value>
 								<value>com.model.Physique</value>
-									<value>com.model.Produit</value>
+									<value>com.model.Activite</value>
+										<value>com.model.Produitactivite</value>
 										<value>com.model.Region</value>
 											<value>com.model.Secteur</value>
 												<value>com.model.Typemoral</value>

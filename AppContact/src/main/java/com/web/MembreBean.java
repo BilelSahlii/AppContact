@@ -40,13 +40,13 @@ import org.springframework.stereotype.Component;
 import org.w3c.dom.events.EventException;
 
 import com.model.Chefresponsable;
-import com.model.Contact;
+
 import com.model.Fonction;
 import com.model.Groupecontact;
 import com.model.Membre;
 import com.model.Morale;
 import com.model.Physique;
-import com.model.Produit;
+
 import com.idao.MembreDao;
 import com.idao.FonctionDao;
 
@@ -92,7 +92,7 @@ private static Membre selectmembre= new Membre();
 
 
 public  Membre getSelectmembre() {
-	try{ if(selectmembre.getIdmembre()!=null)
+	try{ if(selectmembre.getIdmembre()!=0)
 		return selectmembre;
 		
 	}catch(Exception e)
@@ -264,8 +264,7 @@ public void setList_Membre(List<Membre> list_Membre) {
 public List<Membre> getList_Membre_Morale() {
 	
 	Criterion critere1;
-//	critere1 = Restrictions.eq("idContact",membre.getMorale().getContact().getIdContact());
-//	morale.setGroupecontact((Groupecontact) groupecontactDao.findById(Groupecontact.class, groupe.getIdGroupe())); 
+
 	critere1 = Restrictions.eq("idContact",37);
 
 	List list= membreDao.findByCriteria(Membre.class, critere1,37) ;

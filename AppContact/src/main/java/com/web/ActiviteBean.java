@@ -36,60 +36,105 @@ import org.w3c.dom.events.EventException;
 import com.model.Groupecontact;
 import com.model.Morale;
 import com.model.Physique;
-import com.model.Produit;
+import com.model.Activite;
+import com.idao.ActiviteDao;
 import com.idao.MoraleDao;
 import com.idao.GroupeContactDao;
 import com.idao.PhysiqueDao;
-import com.idao.ProduitDao;
 
 
 
-@ManagedBean(name="produitBean")
+
+@ManagedBean(name="activiteBean")
 @SessionScoped
 @Scope(value="session")
 
 
 
-public class ProduitBean implements Serializable {
+public class ActiviteBean implements Serializable {
 private static final long serialVersionUID = -954873828500119177L;
-private	List <Produit> list_Produit;
-private	List <Produit> selectedlist_Produit;
+private	List <Activite> list_Activite;
+private	List <Activite> selectedlist_Activite;
 public static ClassPathXmlApplicationContext context=new ClassPathXmlApplicationContext("Application-Context.xml");;
-static	public ProduitDao produitDao=(ProduitDao) context.getBean("ProduitDao");
+static	public ActiviteDao activiteDao=(ActiviteDao) context.getBean("ActiviteDao");
 
- private static Produit produit= new Produit();
- private static Produit selectProduit=new Produit();
+ private static Activite activite= new Activite();
+ private static Activite selectActivite=new Activite();
  
 
  
  
- public Produit getProduit() {
-		return produit;
-	}
 
 
 
-	public List<Produit> getSelectedlist_Produit() {
-	return selectedlist_Produit;
+public List<Activite> getList_Activite() {
+	List list=activiteDao.findAll(Activite.class);
+return list;
 }
 
 
 
-public void setSelectedlist_Produit(List<Produit> selectedlist_Produit) {
-	this.selectedlist_Produit = selectedlist_Produit;
+
+
+public void setList_Activite(List<Activite> list_Activite) {
+	this.list_Activite = list_Activite;
 }
 
 
 
-	public  void setProduit(Produit produit) {
-		ProduitBean.produit = produit;
-	}
+
+
+public List<Activite> getSelectedlist_Activite() {
+	return selectedlist_Activite;
+}
+
+
+
+
+
+public void setSelectedlist_Activite(List<Activite> selectedlist_Activite) {
+	this.selectedlist_Activite = selectedlist_Activite;
+}
+
+
+
+
+
+public Activite getActivite() {
+	return activite;
+}
+
+
+
+
+
+public  void setActivite(Activite activite) {
+	activite = activite;
+}
+
+
+
+
+
+public Activite getSelectActivite() {
+	return selectActivite;
+}
+
+
+
+
+
+public void setSelectActivite(Activite selectActivite) {
+ActiviteBean.selectActivite = selectActivite;
+}
+
+
 
 
 
 public void initP()
 {
-	produit=new Produit();
+	activite=new Activite();
 
 	
 }
@@ -108,9 +153,9 @@ boolean add = false;
 
 
 try {
-	produitDao.saveOrUpdate(produit);
+	activiteDao.saveOrUpdate(activite);
 
-message = new FacesMessage(FacesMessage.SEVERITY_INFO, "l'activité "+produit.getLibelle()+" est bien enregistré", "");
+message = new FacesMessage(FacesMessage.SEVERITY_INFO, "l'activité "+activite.getLibelle()+" est bien enregistré", "");
 add = true;
 
 
@@ -137,36 +182,20 @@ initP();
 }
 
 
-public void suprimer(Produit produit)
+public void suprimer(Activite activite)
 {
-	produitDao.delete(produit);
-}
-
-
-
-public List<Produit> getList_Produit() {
-	List list=produitDao.findAll(Produit.class);
-return list;
-}
-
-
-
-public void setList_Produit(List<Produit> list_Produit) {
-	this.list_Produit = list_Produit;
+	activiteDao.delete(activite);
 }
 
 
 
 
-public  Produit getSelectProduit() {
-	return selectProduit;
-}
 
 
 
-public  void setSelectProduit(Produit selectProduit) {
-	ProduitBean.selectProduit = selectProduit;
-}
+
+
+
 
 
 

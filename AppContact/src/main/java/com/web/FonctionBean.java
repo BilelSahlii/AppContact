@@ -35,7 +35,7 @@ import com.model.Groupecontact;
 import com.model.Membre;
 import com.model.Fonction;
 import com.model.Physique;
-import com.model.Produit;
+
 import com.idao.FonctionDao;
 import com.idao.MembreDao;
 
