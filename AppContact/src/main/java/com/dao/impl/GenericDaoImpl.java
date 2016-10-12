@@ -52,10 +52,9 @@ public List <Membre> findByCriteria(Class clazz, Criterion critere,int id) {
 	List objects = null;
 	
 
-	  Query query = sessionFactory.getCurrentSession().createQuery(" FROM Membre where idContact="+ id );
+	  Query query = sessionFactory.getCurrentSession().createQuery(" FROM Membre where idMorale="+ id );
 	
-//	Criteria crit= sessionFactory.getCurrentSession().createCriteria(Morale.class).setFetchMode("Membre",FetchMode.JOIN).add(Restrictions.eq("idContact","37"));
-//	objects=crit.list();
+
 	  List elist = query.list();
 	  
 return elist;

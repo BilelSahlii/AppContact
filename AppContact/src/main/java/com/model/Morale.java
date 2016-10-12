@@ -33,11 +33,11 @@ public class Morale implements java.io.Serializable {
 	private Secteur secteur;
 	private Chefresponsable chefresponsable;
 	private String description;
-	private Integer fax;
+	private String fax;
 	private String ville;
-	private Integer codePostale;
-	private Integer telephone;
-	private Integer mobile;
+	private String codePostale;
+	private String telephone;
+	private String mobile;
 	private String email;
 	private String nom;
 	private String adresse;
@@ -50,9 +50,9 @@ public class Morale implements java.io.Serializable {
 
 	public Morale(Typemoral typemoral, Region region, Activite activite,
 			Groupecontact groupecontact, Secteur secteur,
-			Chefresponsable chefresponsable, String description, Integer fax,
-			String ville, Integer codePostale, Integer telephone,
-			Integer mobile, String email, String nom, String adresse,
+			Chefresponsable chefresponsable, String description, String fax,
+			String ville, String codePostale, String telephone,
+			String mobile, String email, String nom, String adresse,
 			Date date, Date datetime, Set<Membre> membres) {
 		this.typemoral = typemoral;
 		this.region = region;
@@ -155,11 +155,11 @@ public class Morale implements java.io.Serializable {
 	}
 
 	@Column(name = "fax")
-	public Integer getFax() {
+	public String getFax() {
 		return this.fax;
 	}
 
-	public void setFax(Integer fax) {
+	public void setFax(String fax) {
 		this.fax = fax;
 	}
 
@@ -173,29 +173,29 @@ public class Morale implements java.io.Serializable {
 	}
 
 	@Column(name = "codePostale")
-	public Integer getCodePostale() {
+	public String getCodePostale() {
 		return this.codePostale;
 	}
 
-	public void setCodePostale(Integer codePostale) {
+	public void setCodePostale(String codePostale) {
 		this.codePostale = codePostale;
 	}
 
 	@Column(name = "telephone")
-	public Integer getTelephone() {
+	public String getTelephone() {
 		return this.telephone;
 	}
 
-	public void setTelephone(Integer telephone) {
+	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
 
 	@Column(name = "mobile")
-	public Integer getMobile() {
+	public String getMobile() {
 		return this.mobile;
 	}
 
-	public void setMobile(Integer mobile) {
+	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
 

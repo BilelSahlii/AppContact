@@ -34,283 +34,882 @@
 
 
 
+		<h:form id="mennBar">
+			<p:growl id="messages" />
+
+			<p:menubar>
+				<p:submenu label="File" icon="ui-icon-document">
+					<p:submenu label="New" icon="ui-icon-contact">
+						<p:menuitem value="Project" url="#" />
+						<p:menuitem value="Other" url="#" />
+					</p:submenu>
+					<p:menuitem value="Open" url="#" />
+					<p:separator />
+					<p:menuitem value="Quit" url="#" />
+				</p:submenu>
+
+				<p:submenu label="Edit" icon="ui-icon-pencil">
+					<p:menuitem value="Undo" url="#"
+						icon="ui-icon-arrowreturnthick-1-w" />
+					<p:menuitem value="Redo" url="#"
+						icon="ui-icon-arrowreturnthick-1-e" />
+				</p:submenu>
+
+				<p:submenu label="Help" icon="ui-icon-help">
+					<p:menuitem value="Contents" url="#" />
+					<p:submenu label="Search" icon="ui-icon-search">
+						<p:submenu label="Text">
+							<p:menuitem value="Workspace" url="#" />
+						</p:submenu>
+						<p:menuitem value="File" url="#" />
+					</p:submenu>
+				</p:submenu>
+
+				<p:submenu label="Actions" icon="ui-icon-gear">
+					<p:submenu label="Ajax" icon="ui-icon-refresh">
+						<p:menuitem value="Save" icon="ui-icon-disk" update="messages" />
+						<p:menuitem value="Update" icon="ui-icon-arrowrefresh-1-w"
+							update="messages" />
+					</p:submenu>
+					<p:submenu label="Non-Ajax" icon="ui-icon-newwin">
+						<p:menuitem value="Delete" icon="ui-icon-close" update="messages"
+							ajax="false" />
+					</p:submenu>
+				</p:submenu>
+
+				<p:menuitem value="Quit" url="http://www.primefaces.org"
+					icon="ui-icon-close" />
 
 
-
-	<h:form id="ajoutImageChef" enctype="multipart/form-data">
-
-			<p:growl id="growlImageChef" sticky="true" showDetail="true" life="3000" />
-				<p:dialog header="upload image" width="800px"
-				id="IUploadImage" widgetVar="UploadImageChef" modal="true"
-				resizable="false" draggable="false" closable="true"
-				closeOnEscape="true">
-			
-		
-				
-				
-				
-				
-			
-    <p:fileUpload fileUploadListener="#{chefResponsableBean.handleFileUpload}"  mode="advanced" dragDropSupport="false" update="growlImageChef"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImageChef').hide();}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" validatorMessage="type d'image non valide" />
- 
-				
-	
-		</p:dialog>
-				 
-				</h:form>
-
-
-
-
-
-
-	<h:form id="ajoutImageMembre" enctype="multipart/form-data">
-
-			<p:growl id="growlImageMembre" sticky="true" showDetail="true" life="3000" />
-				<p:dialog header="upload image" width="800px"
-				id="IUploadImageMembre" widgetVar="UploadImageMmebre" modal="true"
-				resizable="false" draggable="false" closable="true"
-				closeOnEscape="true">
-			
-		
-				
-				<p:panelGrid  columns="2" layout="grid" style="width: 750px;"  >
-				
-		<p:outputLabel value="Vous pouvez ajouter une photo :" style="width: 100px;" />		
-			
-    <p:fileUpload fileUploadListener="#{membreBean.handleFileUpload}"  mode="advanced" dragDropSupport="false" update="growlImageMembre"  oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImageMembre').hide();}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" validatorMessage="type d'image non valide" />
- 
-				</p:panelGrid>
-	
-		</p:dialog>
-				 
-				</h:form>
-
-
-
-
-		<h:form id="formMorale">
+				<f:facet name="options">
 
 
 
 
 
 
-
-
-
-
-			<!--=======datatable================================-->
-
-
-
-			<p:dataTable var="m" value="#{moraleBean.list_Morale}" id="tab"
-				widgetVar="moraleTable" paginator="true" rows="14"
-				selectionMode="single" selection="#{moraleBean.morale}"
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowKey="#{m.idMorale}" scrollable="true" scrollHeight="300">
-
-
-				<f:facet name="header">
-<!-- <h3>Liste de Contact </h3> -->
-
-       <p:columnGroup>
-
-
-						<p:commandButton id="btEmailG" value="Email"
-							icon="fa fa-fw fa-envelope-o"
-							action="#{moraleBean.EmmailingGroupe}"
-							style="float:left ; height : 30px ">
-						</p:commandButton>
-
-
-
-						<p:spacer width="10" />
-
-						<p:commandButton  value="Xcl" icon="fa fa-fw fa-file-excel-o"
-							id="exel" ajax="false" style="float:left ; height : 30px ">
-							<!--          <p:graphicImage value="/images/excel-icon.png" />   -->
-							<p:dataExporter type="xls" target="tab" fileName="cars" />
-						</p:commandButton>
-
-						<p:spacer width="10" />
-
-						<p:commandButton value="Pdf" icon="fa fa-fw fa-file-pdf-o"
-							id="pdf" ajax="false" style="float:left ;height : 30px">
-
-							<p:dataExporter type="pdf" target="tab" fileName="cars" />
-						</p:commandButton>
-
-						<p:spacer width="10" />
-
-						<p:commandButton value="Xml" id="xml"
-							icon="fa fa-fw fa-file-code-o" ajax="false"
-							style="float:left ; height : 30px">
-							<!--          <p:graphicImage value="/images/xml-small.gif"/>   -->
-							<p:dataExporter type="xml" target="tab" fileName="cars" />
-						</p:commandButton>
-
-					</p:columnGroup>
-
-
-					<p:spacer width="10" />
-
-
-
-<p:growl id="AjoutDialog" showDetail="true" />
-
-			<p:button id="ajouter" value="Nouvel contact"   update="AjoutDialog"  action="#{ajoutermorale.navigation()}" 
-						style="float:right;height : 30px" />
-
-		<p:spacer width="10" />
-		
-					<p:commandButton id="toggler" type="button" value="Colonnes"
-						style="float:right ;height : 30px" icon="ui-icon-calculator" />
-		<p:spacer width="10" />
-
-					<p:inputText id="globalFilter" onkeyup="PF('moraleTable').filter()"
-						style="float:right ; width: 100px;" label="Recherche">
-					</p:inputText>
-						<p:commandButton id="shearch" type="button" 
-						style="float:right ;height : 30px" icon="ui-icon-search" />
-								<p:spacer width="10" />
-					
-	<center><h2>Liste de contact </h2></center>
-				
-		<p:spacer width="10" />
-					<p:columnToggler datasource="tab" trigger="toggler">
-			
-					</p:columnToggler>
+					<p:commandButton type="button" value="Logout"
+						icon="ui-icon-extlink" />
 
 				</f:facet>
 
 
 
 
-
-				<p:column headerText="Raison Social" sortBy="#{m.nom}"
-					filterBy="#{m.nom}"  filterMatchMode="contains">
-
-
-					<h:outputText value="#{m.nom}" />
-
-				</p:column>
-
-				<p:column headerText="Type" sortBy="#{m.typemoral.libelleMorale}"  filterBy="#{m.typemoral.libelleMorale}"  filterMatchMode="contains">
-
-
-					<h:outputText value="#{m.typemoral.libelleMorale}" />
-
-				</p:column>
-				
-								<p:column headerText="Secteur"
-					sortBy="#{m.secteur.libelleSecteur}"
-					filterBy="#{m.secteur.libelleSecteur}"  filterMatchMode="contains">
-					<h:outputText value="#{m.secteur.libelleSecteur}" />
-				</p:column>
-				
-				
-						<p:column headerText="Activité" 	sortBy="#{m.activite.libelle}" 
-					filterBy="#{m.activite.libelle}"  filterMatchMode="contains">
-
-					<h:outputText value="#{m.activite.libelle}" />
-
-
-
-				</p:column>
-						<p:column headerText="Groupe"
-					sortBy="#{m.groupecontact.libelleGroupe}"
-					filterBy="#{m.groupecontact.libelleGroupe}">
-					<h:outputText value="#{m.groupecontact.libelleGroupe}" />
-				</p:column>
-		
-
-
-				<p:column headerText="Region" 	sortBy="#{m.region.libelleRegion}"
-					filterBy="#{m.region.libelleRegion}"  filterMatchMode="contains">
-
-					<h:outputText value="#{m.region.libelleRegion}" />
-</p:column>
-
-
-
-				<p:column headerText="Logo" 
-					>
-
-								 <p:graphicImage width="50" height="50" value="/images/contact/#{m.idMorale}.jpg" />  </p:column>
-
-				
-				
-				<p:column headerText="Date" 	sortBy="#{m.date}"
-					filterBy="#{m.date}"  filterMatchMode="contains">
-
-					<h:outputText value="#{m.date}" />
-
-
-
-				</p:column>
-			
-
-
-
-				<p:column headerText="Operations" exportable="false">
-				
-									
-						<p:growl id="MembreDialog" showDetail="true" />
-					
- <p:commandButton icon="ui-icon-zoomin" id="btview"
-        actionListener="#{moraleBean.MembreContact}"    />
-        
-         <p:commandButton icon="ui-icon-pencil" id="btEdit"
-        action="#{moraleBean.modifierMorale()}"    >
-        
-        	<f:setPropertyActionListener value="#{m}"
-								target="#{moraleBean.morale}" />
-								
-								</p:commandButton>
-        
-        
-        
-				
-					<p:growl id="EmaileDialog" showDetail="true" />
-
-					<p:commandButton id="btEmail" icon="fa fa-fw fa-envelope-o"
-						actionListener="#{moraleBean.EmmailingSelectMorale}">
-					</p:commandButton>
-
-					<p:growl id="deleteDialog" showDetail="true" />
-
-					<p:commandButton icon="ui-icon-trash"
-						action="#{moraleBean.suprimer(m)}" update="tab">
-						
-						<p:confirm header="Confirmation"
-							message="Êtes-vous sûr de supprimer #{m.nom} "
-							icon="ui-icon-alert" />
-
-
-					</p:commandButton>
-
-
-				
-
-
-
-				</p:column>
-
-
-			</p:dataTable>
-
-
-
+			</p:menubar>
 		</h:form>
 
 
-		<!--     Dialog Suppression Un Contact Moral  -->
 
 
 
 
-					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		<p:spacer height="40px" />
+
+		<p:spacer width="20px" />
+		<p:tabView>
+
+
+
+
+			<!--=======ContactMoraler================================-->
+
+
+
+
+
+			<p:tab title="Contact morale">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<h:form id="ajoutImageChef" enctype="multipart/form-data">
+
+					<p:growl id="growlImageChef" sticky="true" showDetail="true"
+						life="3000" />
+					<p:dialog header="upload image" width="800px" id="IUploadImage"
+						widgetVar="UploadImageChef" modal="true" resizable="false"
+						draggable="false" closable="true" closeOnEscape="true">
+
+
+
+
+
+
+
+						<p:fileUpload
+							fileUploadListener="#{chefResponsableBean.handleFileUpload}"
+							mode="advanced" dragDropSupport="false" update="growlImageChef"
+							oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImageChef').hide();}"
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+							validatorMessage="type d'image non valide" />
+
+
+
+					</p:dialog>
+
+				</h:form>
+
+
+
+
+
+
+
+
+
+
+				<h:form id="formMorale">
+
+
+
+
+
+
+
+
+
+
+					<!--=======datatable================================-->
+
+
+
+					<p:dataTable var="m" value="#{moraleBean.list_Morale}" id="tab"
+						widgetVar="moraleTable" paginator="true" rows="14"
+						selectionMode="single"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowKey="#{m.idMorale}" scrollable="true" scrollHeight="300">
+
+
+						<f:facet name="header">
+
+
+							<p:columnGroup>
+
+
+								<p:commandButton id="btEmailG" value="Email"
+									icon="fa fa-fw fa-envelope-o"
+									action="#{moraleBean.EmmailingGroupe}"
+									style="float:left ; height : 30px ">
+								</p:commandButton>
+
+
+
+								<p:spacer width="10" />
+
+								<p:commandButton value="Xcl" icon="fa fa-fw fa-file-excel-o"
+									id="exel" ajax="false" style="float:left ; height : 30px ">
+									<!--          <p:graphicImage value="/images/excel-icon.png" />   -->
+									<p:dataExporter type="xls" target="tab" fileName="cars" />
+								</p:commandButton>
+
+								<p:spacer width="10" />
+
+								<p:commandButton value="Pdf" icon="fa fa-fw fa-file-pdf-o"
+									id="pdf" ajax="false" style="float:left ;height : 30px">
+
+									<p:dataExporter type="pdf" target="tab" fileName="cars" />
+								</p:commandButton>
+
+								<p:spacer width="10" />
+
+								<p:commandButton value="Xml" id="xml"
+									icon="fa fa-fw fa-file-code-o" ajax="false"
+									style="float:left ; height : 30px">
+									<!--          <p:graphicImage value="/images/xml-small.gif"/>   -->
+									<p:dataExporter type="xml" target="tab" fileName="cars" />
+								</p:commandButton>
+
+							</p:columnGroup>
+
+
+							<p:spacer width="10" />
+
+
+
+
+
+							<p:commandButton id="ajouter" value="Nouvel contact"
+								action="#{moraleBean.modifierMorale()}"
+								style="float:right;height : 30px" />
+
+							<p:spacer width="10" />
+
+							<p:commandButton id="toggler" type="button" value="Colonnes"
+								style="float:right ;height : 30px" icon="ui-icon-calculator" />
+							<p:spacer width="10" />
+
+							<p:inputText id="globalFilter"
+								onkeyup="PF('moraleTable').filter()"
+								style="float:right ; width: 100px;" label="Recherche">
+							</p:inputText>
+							<p:commandButton id="shearch" type="button"
+								style="float:right ;height : 30px" icon="ui-icon-search" />
+							<p:spacer width="10" />
+
+
+							<p:spacer width="10" />
+							<p:columnToggler datasource="tab" trigger="toggler">
+
+							</p:columnToggler>
+
+						</f:facet>
+
+
+
+
+
+						<p:column headerText="Raison Social" sortBy="#{m.nom}"
+							filterBy="#{m.nom}" filterMatchMode="contains">
+
+
+							<h:outputText value="#{m.nom}" />
+
+						</p:column>
+
+						<p:column headerText="Type" sortBy="#{m.typemoral.libelleMorale}"
+							filterBy="#{m.typemoral.libelleMorale}"
+							filterMatchMode="contains">
+
+
+							<h:outputText value="#{m.typemoral.libelleMorale}" />
+
+						</p:column>
+
+						<p:column headerText="Secteur"
+							sortBy="#{m.secteur.libelleSecteur}"
+							filterBy="#{m.secteur.libelleSecteur}" filterMatchMode="contains">
+							<h:outputText value="#{m.secteur.libelleSecteur}" />
+						</p:column>
+
+
+
+
+
+
+
+
+
+
+						<p:column headerText="Region" sortBy="#{m.region.libelleRegion}"
+							filterBy="#{m.region.libelleRegion}" filterMatchMode="contains">
+
+							<h:outputText value="#{m.region.libelleRegion}" />
+						</p:column>
+
+
+
+
+
+						<p:column headerText="Date" sortBy="#{m.date}"
+							filterBy="#{m.date}" filterMatchMode="contains">
+
+							<h:outputText value="#{m.date}" />
+
+
+
+						</p:column>
+
+
+
+
+						<p:column headerText="Operations" width="13%" exportable="false">
+							<p:columnGroup>
+
+								<p:growl id="MembreDialog" showDetail="true" />
+
+
+
+								<p:commandButton icon="ui-icon-zoomin" id="btview"
+									style="width:30px ;height:30px ;"
+									action="#{moraleBean.membreMorale()}">
+									<f:setPropertyActionListener value="#{m}"
+										target="#{moraleBean.morale}" />
+								</p:commandButton>
+
+								<p:commandButton icon="ui-icon-pencil" id="btEdit"
+									style="width:30px ;height:30px ;"
+									action="#{moraleBean.modifierMorale()}">
+
+									<f:setPropertyActionListener value="#{m}"
+										target="#{moraleBean.morale}" />
+
+								</p:commandButton>
+
+
+
+
+								<p:growl id="EmaileDialog" showDetail="true" />
+
+								<p:commandButton id="btEmail" icon="fa fa-fw fa-envelope-o"
+									style="width:30px ;height:30px ;"
+									actionListener="#{moraleBean.EmmailingSelectMorale}">
+									<f:setPropertyActionListener value="#{m}"
+										target="#{moraleBean.morale}" />
+								</p:commandButton>
+
+								<p:growl id="deleteDialog" showDetail="true" />
+
+								<p:commandButton icon="ui-icon-trash"
+									style="width:30px ;height:30px ;"
+									action="#{moraleBean.suprimer(m)}" update="tab">
+									<f:setPropertyActionListener value="#{m}"
+										target="#{moraleBean.morale}" />
+
+									<p:confirm header="Confirmation"
+										message="Êtes-vous sûr de supprimer #{m.nom} "
+										icon="ui-icon-alert" />
+
+
+								</p:commandButton>
+
+
+							</p:columnGroup>
+
+
+
+						</p:column>
+
+
+					</p:dataTable>
+
+
+
+				</h:form>
+
+
+				<!--     Dialog Suppression Un Contact Moral  -->
+
+
+
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Oui" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Non" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+
+
+
+
+				<!--     Dialog Email Groupe  -->
+
+				<h:form id="edmailGroupe">
+
+					<p:growl id="growl2" sticky="true" showDetail="true" life="3000" />
+
+					<p:dialog header="Envoyer Email" height="530px" width="600px"
+						id="dViewMembreG" widgetVar="ViewEmailG" modal="true"
+						resizable="false" draggable="false" closable="true"
+						closeOnEscape="true">
+  
+    
+            
+        
+ Destinateur(*):        
+   <center>
+							<p:selectManyMenu id="Email"
+								value="#{moraleBean.selected_list_Morale}" required="true"
+								requiredMessage="il faut sélectionner un email"
+								converter="omnifaces.SelectItemsConverter" scrollHeight="80"
+								var="t" filter="true" filterMatchMode="contains"
+								showCheckbox="true" style="  margin-right:10px ; width : 450px ">
+
+
+
+
+								<f:selectItems value="#{moraleBean.list_Morale}" var="theme"
+									itemLabel="#{theme.nom}#{theme.email}" itemValue="#{theme}" />
+
+
+								<p:column>
+									<h:outputText value="#{t.nom}" />
+								</p:column>
+
+								<p:column>
+									<h:outputText value="#{t.email}" />
+								</p:column>
+
+								<p:column>
+
+									<p:graphicImage width="50" height="50"
+										value="/images/contact/#{t.idMorale}.jpg"></p:graphicImage>
+								</p:column>
+
+							</p:selectManyMenu>
+						</center>
+
+						<p></p>
+  
+  
+        
+           Objet:   <center>
+							<p:inputText value="#{moraleBean.objet}"
+								style="  margin-right:10px ; width : 450px;height : 28px;" />
+						</center>
+
+
+
+
+
+
+						<p></p>
+						<center>
+							<p:editor id="editor" value="#{moraleBean.msg}" width="450" />
+						</center>
+						<p:spacer height="10px"></p:spacer>
+
+						<center>
+							<p:commandButton value="Envoyer"
+								actionListener="#{moraleBean.EnvoiGroupe}" update="growl2"
+								oncomplete="if((args.validationFailed) || (!args.envoyer)){} else{PF('ViewEmailG').hide();}"
+								icon="ui-icon-disk" />
+
+
+							<p:columnGroup>
+
+								<p:commandButton icon="fa fa-fw fa-font" type="button" />
+								<p:commandButton icon="fa fa-fw fa-ils" type="button" />
+								<p:commandButton icon="fa fa-fw fa-camera" type="button" />
+								<p:commandButton icon="fa fa-fw fa-smile-o" type="button" />
+								<p:commandButton icon="fa fa-fw fa-link" type="button" />
+
+							</p:columnGroup>
+						</center>
+
+					</p:dialog>
+
+
+					<!-- 			    <p:blockUI block="dViewMembreG" trigger="dViewMembreG"> -->
+					<!-- 			       LOADING<br /> -->
+					<!--         <p:graphicImage value="/images/ajaxloadingbar.gif"/> -->
+
+					<!-- 			    </p:blockUI> -->
+
+				</h:form>
+
+
+
+
+
+
+
+
+
+
+
+
+				<h:form id="SelectedmailContactMorale">
+
+					<p:growl id="growl3" sticky="true" showDetail="true" life="3000" />
+					<p:dialog header="Envoyer Email" height="400px" id="dViewMembre"
+						widgetVar="ViewEmail" modal="true" resizable="false"
+						draggable="false" closable="true" closeOnEscape="true">
+
+
+
+
+
+
+						<p:outputLabel
+							value="Destinataire: Raison social #{moraleBean.morale.nom}"
+							style=" margin-right:10px ; width : 250px; height : 28px;" />
+
+
+
+
+						<p></p>
+
+
+ Objet:<p:inputText value="#{moraleBean.objet}"
+							style="  margin-right:10px ; width : 250px;height : 28px;" />
+
+
+
+						<p></p>
+						<center>
+							<p:editor id="editor" value="#{moraleBean.msg}" width="350" />
+						</center>
+						<p:spacer height="10px"></p:spacer>
+
+						<p:commandButton value="Envoyer"
+							actionListener="#{moraleBean.EnvoiEmail}" update="growl3"
+							oncomplete="if((args.validationFailed) || (!args.envoyer)){} else{PF('ViewEmail').hide();}"
+							icon="ui-icon-disk" />
+
+
+						<p:columnGroup>
+
+							<p:commandButton icon="fa fa-fw fa-font" type="button" />
+							<p:commandButton icon="fa fa-fw fa-ils" type="button" />
+							<p:commandButton icon="fa fa-fw fa-camera" type="button" />
+							<p:commandButton icon="fa fa-fw fa-smile-o" type="button" />
+							<p:commandButton icon="fa fa-fw fa-link" type="button" />
+
+						</p:columnGroup>
+
+						<!--     </p:panelGrid> -->
+
+
+
+
+
+
+					</p:dialog>
+				</h:form>
+
+
+
+
+			</p:tab>
+
+
+
+
+
+
+			<p:tab title="Contact Physique">
+
+
+
+				<h:form id="SelectedmailContactMoralePh">
+
+					<p:growl id="growl3" sticky="true" showDetail="true" life="3000" />
+					<p:dialog header="Envoyer Email" height="400px" id="dViewMembrePh"
+						widgetVar="ViewEmailPh" modal="true" resizable="false"
+						draggable="false" closable="true" closeOnEscape="true">
+
+
+
+
+
+
+						<p:outputLabel
+							value="Destinataire:  #{physiqueBean.selectPhysique.nom}  #{physiqueBean.selectPhysique.prenom}"
+							style=" margin-right:10px ; width : 250px; height : 28px;" />
+
+
+
+
+						<p></p>
+
+
+ Objet:<p:inputText value="#{physiqueBean.objet}"
+							style="  margin-right:10px ; width : 250px;height : 28px;" />
+
+
+
+						<p></p>
+						<center>
+							<p:editor id="editor" value="#{physiqueBean.msg}" width="350" />
+						</center>
+						<p:spacer height="10px"></p:spacer>
+
+						<p:commandButton value="Envoyer"
+							actionListener="#{physiqueBean.EnvoiEmail}" update="growl3"
+							oncomplete="if((args.validationFailed) || (!args.envoyer)){} else{PF('ViewEmailPh').hide();}"
+							icon="ui-icon-disk" />
+
+
+						<p:columnGroup>
+
+							<p:commandButton icon="fa fa-fw fa-font" type="button" />
+							<p:commandButton icon="fa fa-fw fa-ils" type="button" />
+							<p:commandButton icon="fa fa-fw fa-camera" type="button" />
+							<p:commandButton icon="fa fa-fw fa-smile-o" type="button" />
+							<p:commandButton icon="fa fa-fw fa-link" type="button" />
+
+						</p:columnGroup>
+
+						<!--     </p:panelGrid> -->
+
+
+
+
+
+
+					</p:dialog>
+				</h:form>
+
+
+
+
+
+				<h:form id="edmailGroupePh">
+
+					<p:growl id="growl2" sticky="true" showDetail="true" life="3000" />
+
+					<p:dialog header="Envoyer Email" height="530px" width="600px"
+						id="dViewMembreGPh" widgetVar="ViewEmailGPh" modal="true"
+						resizable="false" draggable="false" closable="true"
+						closeOnEscape="true">
+  
+    
+            
+        
+ Destinateur(*):        
+   <center>
+							<p:selectManyMenu id="Email"
+								value="#{physiqueBean.selected_list_Physique}" required="true"
+								requiredMessage="il faut sélectionner un email"
+								converter="omnifaces.SelectItemsConverter" scrollHeight="80"
+								var="t" filter="true" filterMatchMode="contains"
+								showCheckbox="true" style="  margin-right:10px ; width : 450px ">
+
+
+
+
+								<f:selectItems value="#{physiqueBean.list_Physique}" var="theme"
+									itemLabel="#{theme.nom}#{theme.prenom}" itemValue="#{theme}" />
+
+
+								<p:column>
+									<h:outputText value="#{t.nom}" />
+								</p:column>
+								
+								
+
+								<p:column>
+									<h:outputText value="#{t.prenom}" />
+								</p:column>
+
+								<p:column>
+
+									<p:graphicImage width="50" height="50"
+										value="/images/contactPhysiqie/#{t.idPhysique}.jpg"></p:graphicImage>
+								</p:column>
+
+							</p:selectManyMenu>
+						</center>
+
+						<p></p>
+  
+  
+        
+           Objet:   <center>
+							<p:inputText value="#{physiqueBean.objet}"
+								style="  margin-right:10px ; width : 450px;height : 28px;" />
+						</center>
+
+
+
+
+
+
+						<p></p>
+						<center>
+							<p:editor id="editor" value="#{physiqueBean.msg}" width="450" />
+						</center>
+						<p:spacer height="10px"></p:spacer>
+
+						<center>
+							<p:commandButton value="Envoyer"
+								actionListener="#{physiqueBean.EnvoiGroupe}" update="growl2"
+								oncomplete="if((args.validationFailed) || (!args.envoyer)){} else{PF('ViewEmailGPH').hide();}"
+								icon="ui-icon-disk" />
+
+
+							<p:columnGroup>
+
+								<p:commandButton icon="fa fa-fw fa-font" type="button" />
+								<p:commandButton icon="fa fa-fw fa-ils" type="button" />
+								<p:commandButton icon="fa fa-fw fa-camera" type="button" />
+								<p:commandButton icon="fa fa-fw fa-smile-o" type="button" />
+								<p:commandButton icon="fa fa-fw fa-link" type="button" />
+
+							</p:columnGroup>
+						</center>
+
+					</p:dialog>
+
+
+					<!-- 			    <p:blockUI block="dViewMembreG" trigger="dViewMembreG"> -->
+					<!-- 			       LOADING<br /> -->
+					<!--         <p:graphicImage value="/images/ajaxloadingbar.gif"/> -->
+
+					<!-- 			    </p:blockUI> -->
+
+				</h:form>
+
+
+
+
+
+				<h:form id="formPh">
+					<p:growl id="messages" life="5000" />
+					<p:dataTable var="m" value="#{physiqueBean.list_Physique}" id="tab"  selectionMode="single" selection="#{physiqueBean.selectPhysique}" rowKey="#{m.idPhysique}"
+						paginator="true" rows="5"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						emptyMessage="aucun membre">
+
+						<f:facet name="header">
+Liste de Contact                 
+
+   <p:columnGroup>
+
+
+								<p:commandButton id="btEmailG" value="Email"
+									icon="fa fa-fw fa-envelope-o"
+actionListener="#{physiqueBean.EmmailingGroupe}"
+									style="float:left ; height : 30px ">
+								</p:commandButton>
+
+
+
+								<p:spacer width="10" />
+
+								<p:commandButton value="Xcl" icon="fa fa-fw fa-file-excel-o"
+									id="exel" ajax="false" style="float:left ; height : 30px ">
+									<!--          <p:graphicImage value="/images/excel-icon.png" />   -->
+									<p:dataExporter type="xls" target="tab" fileName="cars" />
+								</p:commandButton>
+
+								<p:spacer width="10" />
+
+								<p:commandButton value="Pdf" icon="fa fa-fw fa-file-pdf-o"
+									id="pdf" ajax="false" style="float:left ;height : 30px">
+
+									<p:dataExporter type="pdf" target="tab" fileName="cars" />
+								</p:commandButton>
+
+								<p:spacer width="10" />
+
+								<p:commandButton value="Xml" id="xml"
+									icon="fa fa-fw fa-file-code-o" ajax="false"
+									style="float:left ; height : 30px">
+									<!--          <p:graphicImage value="/images/xml-small.gif"/>   -->
+									<p:dataExporter type="xml" target="tab" fileName="cars" />
+								</p:commandButton>
+
+							</p:columnGroup>
+
+
+							<p:commandButton id="ajouter" value="Nouvel contact"  action="#{physiqueBean.versModifierAjout()}"
+								style="float:right" icon="ui-icon-plus" />
+
+							<p:commandButton id="toggler" type="button" value="Columns"
+								style="float:right" icon="ui-icon-calculator" />
+
+
+							<p:commandButton icon="ui-icon-search" style="float:right" />
+							<p:inputText style="float:right ; width: 200px;">
+							</p:inputText>
+
+							<p:columnToggler datasource="tab" trigger="toggler">
+					
+							</p:columnToggler>
+							<div style="clear: both" />
+						</f:facet>
+
+						<p:column headerText="Nom" sortBy="#{m.nom}" filterBy="#{m.nom}">
+							<h:outputText value="#{m.nom}" />
+						</p:column>
+
+						<p:column headerText="Prénom" sortBy="#{m.prenom}"
+							filterBy="#{m.prenom}">
+							<h:outputText value="#{m.prenom}" />
+						</p:column>
+
+
+				<p:column headerText="Secteur"
+							sortBy="#{m.secteur.libelleSecteur}"
+							filterBy="#{m.secteur.libelleSecteur}" filterMatchMode="contains">
+							<h:outputText value="#{m.secteur.libelleSecteur}" />
+						</p:column>
+
+
+
+
+
+
+
+
+
+
+						<p:column headerText="Region" sortBy="#{m.region.libelleRegion}"
+							filterBy="#{m.region.libelleRegion}" filterMatchMode="contains">
+
+							<h:outputText value="#{m.region.libelleRegion}" />
+						</p:column>
+
+
+
+
+
+						<p:column headerText="Date" sortBy="#{m.date}"
+							filterBy="#{m.date}" filterMatchMode="contains">
+
+							<h:outputText value="#{m.date}" />
+
+
+
+						</p:column>
+
+
+
+				
+
+
+
+
+						<p:column headerText="Operations">
+
+
+<p:commandButton icon="ui-icon-zoomin" id="btview"
+									style="width:30px ;height:30px ;"
+								oncomplete="PF('carOP').show()">
+									<f:setPropertyActionListener value="#{m}"
+										target="#{physiqueBean.physique}" />
+								</p:commandButton>
+
+								<p:commandButton icon="ui-icon-pencil" id="btEdit"
+									style="width:30px ;height:30px ;"
+									action="#{physiqueBean.versModifierAjout()}">
+
+									<f:setPropertyActionListener value="#{m}"
+										target="#{physiqueBean.physique}" />
+
+								</p:commandButton>
+
+
+
+
+								<p:growl id="EmaileDialog" showDetail="true" />
+
+								<p:commandButton id="btEmail" icon="fa fa-fw fa-envelope-o"
+									style="width:30px ;height:30px ;"
+								oncomplete="PF('ViewEmailPh').show()">
+									<f:setPropertyActionListener value="#{m}"
+										target="#{physiqueBean.physique}"/>
+										</p:commandButton>
+										
+							<p:commandButton icon="ui-icon-trash"
+								actionListener="#{physiqueBean.suprimer(m)}"  update="tab" style="width:30px ;height:30px ;">
+								<p:confirm header="Confirmation" message="Êtes-vous sûr?"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+
+
+						</p:column>
+
+					</p:dataTable>
+
+
+
+					<p:confirmDialog global="true">
 						<p:commandButton value="Oui" type="button"
 							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 						<p:commandButton value="Non" type="button"
@@ -321,536 +920,50 @@
 
 
 
-		<!--     Dialog Email Groupe  -->
-
-		<h:form id="edmailGroupe">
-
-			<p:growl id="growl2" sticky="true" showDetail="true" life="3000" />
-
-			<p:dialog header="Envoyer Email" height="530px" width="600px"
-				id="dViewMembreG" widgetVar="ViewEmailG" modal="true"
-				resizable="false" draggable="false" closable="true"
-				closeOnEscape="true">
-  
-    
-            
-        
- Destinateur(*):        
-   <center>
-					<p:selectManyMenu id="Email"
-						value="#{moraleBean.selected_list_Morale}" required="true"
-						requiredMessage="il faut sélectionner un email"
-						converter="omnifaces.SelectItemsConverter" scrollHeight="80"
-						var="t" filter="true" filterMatchMode="contains"
-						showCheckbox="true" style="  margin-right:10px ; width : 450px ">
-
-
-
-
-						<f:selectItems value="#{moraleBean.list_Morale}" var="theme"
-							itemLabel="#{theme.nom}#{theme.email}"
-							itemValue="#{theme}" />
-
-
-						<p:column>
-							<h:outputText value="#{t.nom}" />
-						</p:column>
-
-						<p:column>
-							<h:outputText value="#{t.email}" />
-						</p:column>
-						
-							<p:column>
-
-							<p:graphicImage width="50" height="50"   value="/images/contact/#{t.idMorale}.jpg"></p:graphicImage>
-						</p:column>
-
-					</p:selectManyMenu>
-				</center>
-		
-				<p></p>
-  
-  
-        
-           Objet:   <center>
-					<p:inputText value="#{moraleBean.objet}"
-						style="  margin-right:10px ; width : 450px;height : 28px;" />
-				</center>
-
-
-
-
-
-
-				<p></p>
-				<center>
-					<p:editor id="editor" value="#{moraleBean.msg}" width="450" />
-				</center>
-				<p:spacer height="10px"></p:spacer>
-
-				<center>
-					<p:commandButton value="Envoyer"
-						actionListener="#{moraleBean.EnvoiGroupe}" update="growl2"
-						oncomplete="if((args.validationFailed) || (!args.envoyer)){} else{PF('ViewEmailG').hide();}"
-						icon="ui-icon-disk" />
-
-
-					<p:columnGroup>
-
-						<p:commandButton icon="fa fa-fw fa-font" type="button" />
-						<p:commandButton icon="fa fa-fw fa-ils" type="button" />
-						<p:commandButton icon="fa fa-fw fa-camera" type="button" />
-						<p:commandButton icon="fa fa-fw fa-smile-o" type="button" />
-						<p:commandButton icon="fa fa-fw fa-link" type="button" />
-
-					</p:columnGroup>
-				</center>
-
-			</p:dialog>
-
-
-<!-- 			    <p:blockUI block="dViewMembreG" trigger="dViewMembreG"> -->
-<!-- 			       LOADING<br /> -->
-<!--         <p:graphicImage value="/images/ajaxloadingbar.gif"/> -->
-         
-<!-- 			    </p:blockUI> -->
-
-		</h:form>
-
-
-
-
-
-
-
-
-		<h:form id="SelectedmailContactMorale">
-
-			<p:growl id="growl3" sticky="true" showDetail="true" life="3000" />
-			<p:dialog header="Envoyer Email" height="400px" id="dViewMembre"
-				widgetVar="ViewEmail" modal="true" resizable="false"
-				draggable="false" closable="true" closeOnEscape="true">
-
-
-
-
-
-
-				<p:outputLabel
-					value="Destinataire: Raison social #{moraleBean.morale.nom}"
-					style=" margin-right:10px ; width : 250px; height : 28px;" />
-
-
-
-
-				<p></p>
-
-
- Objet:<p:inputText value="#{moraleBean.objet}"
-					style="  margin-right:10px ; width : 250px;height : 28px;" />
-
-
-
-				<p></p>
-				<center>
-					<p:editor id="editor" value="#{moraleBean.msg}" width="350" />
-				</center>
-				<p:spacer height="10px"></p:spacer>
-
-				<p:commandButton value="Envoyer" 
-					actionListener="#{moraleBean.EnvoiEmail}" update="growl3"
-					oncomplete="if((args.validationFailed) || (!args.envoyer)){} else{PF('ViewEmail').hide();}"
-					icon="ui-icon-disk"  />
-				
-
-				<p:columnGroup>
-
-					<p:commandButton icon="fa fa-fw fa-font" type="button" />
-					<p:commandButton icon="fa fa-fw fa-ils" type="button" />
-					<p:commandButton icon="fa fa-fw fa-camera" type="button" />
-					<p:commandButton icon="fa fa-fw fa-smile-o" type="button" />
-					<p:commandButton icon="fa fa-fw fa-link" type="button" />
-
-				</p:columnGroup>
-
-				<!--     </p:panelGrid> -->
-
-
-
-
-
-
-			</p:dialog>
-		</h:form>
-		
-		
-		
-<!-- 		les membres d'un contact morale -->
-
-
-		<h:form id="MembreMorale">
-		
-		
-		<p:dialog header="#{moraleBean.morale.nom}" width="1000" id="dViewMorale" widgetVar="Viewmorale"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true">
-
-
-
-<h:panelGrid columns="2"  style="color:White;text-align:justify;font-style:normal;background-color:White;border-style:hidden;border-color:White;font-weight:normal;border-width:medium;">
-
-
-           
-                
-    <h:panelGrid  columns="2"  title="Contact" style="color:White;text-align:justify;font-style:normal;background-color:White;border-style:solid;border-color:Black;font-weight:bold;border-width:medium;">
-         
-   
-
-
-
-                <h:outputLabel value=" Adresse:        " style="COLOR: #000000; BACKGROUND-COLOR: #ffffff; FONT-SIZE: small; FONT-WEIGHT: bold;"/>
-                <h:outputLabel value="#{moraleBean.morale.adresse}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
-      
-
-                <h:outputLabel value="Code Postale:     " style="FONT-WEIGHT: bold; FONT-SIZE: small; COLOR: #000000;"/>
-                <h:outputLabel value="#{moraleBean.morale.codePostale}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
-              
-                
-                   
-
-                <h:outputLabel value="Telephone Number:    " style="FONT-WEIGHT: bold; FONT-SIZE: small; COLOR: #000000;"/>
-                <h:outputLabel value="#{moraleBean.morale.telephone}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
+    <p:overlayPanel widgetVar="carOP" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
+        <p:outputPanel id="carDetail" style="text-align:center;">
+            <p:panelGrid  columns="2"  columnClasses="label,value">
+                <f:facet name="header">
+                    <p:graphicImage value="/images/contactPhysiqie/#{physiqueBean.physique.idPhysique}.jpg"/> 
+                </f:facet>
+ 
+                <h:outputText value="telephone:" />
+                <h:outputText value="#{physiqueBean.physique.telephone}" />
+                              <h:outputText value="mobile:" />
+                <h:outputText value="#{physiqueBean.physique.mobile}" />
+                              <h:outputText value="E-mail:" />
+                <h:outputText value="#{physiqueBean.physique.email}" />
+                                         <h:outputText value="ville:" />
+                <h:outputText value="#{physiqueBean.physique.ville}" />
                 
  
- 
-                <h:outputLabel value="Mobile Number:      " style="COLOR: #000000; FONT-WEIGHT: bold; FONT-SIZE: small;"/>
-                <h:outputLabel value="#{moraleBean.morale.mobile}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
-            
-                
-
-                <h:outputLabel value="Email:             " style="COLOR: #000000; FONT-WEIGHT: bold; FONT-SIZE: small;"/>
-                <h:outputLabel value="#{moraleBean.morale.email}" style="text-align:justify;color:Black;font-style:normal;font-size: small;background-color:White;font-weight:normal;"/>
-                
-              
-                
-                </h:panelGrid>
-                
-                           <h:graphicImage  value="/images/contact/#{moraleBean.morale.idMorale}.jpg" width="200" height="200" style="height : 143px; width : 316px;"/>
-                
-                
-                </h:panelGrid>
-         
-                  <p:dataTable var="membre" value="#{moraleBean.list_Membre_Morale}"      id="tabMembre" paginator="true" rows="4" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-   rowKey="#{m.idContact}" scrollable="true"  scrollHeight="100"  
              
-                emptyMessage="aucun membre"  >
- 
- 
- <f:facet name="header">
-Liste de Membre
-
-       <p:columnGroup>
-     <p:commandButton  icon="fa fa-fw fa-file-excel-o" id="exel" ajax="false" style="float:left;height : 20px" >  
-<!--          <p:graphicImage value="/images/excel-icon.png" />   -->
-        <p:dataExporter  type="xls" target="tabMembre" fileName="membre"/>
-     </p:commandButton> 
-  
-     <p:spacer width="10"/>  
-  
-     <p:commandButton icon="fa fa-fw fa-file-pdf-o" id="pdf" ajax="false" style="float:left;height : 20px"  >  
-
-         <p:dataExporter type="pdf" target="tabMembre" fileName="membre"/>
-</p:commandButton> 
-     
-          <p:spacer width="10"/>  
-  
-     <p:commandButton id="xml" icon="fa fa-fw fa-file-code-o" ajax="false" style="float:left;height : 20px" >  
-         <p:dataExporter  type="xml" target="tabMembre" fileName="membre"/>
-</p:commandButton> 
-</p:columnGroup>
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:overlayPanel>
 
 
 
 
-<p:commandButton id="ajouterM"  value="Nouvel Membre" actionListener="#{membreBean.AjouterMembreContact}"
-style="float:right"  icon="ui-icon-plus" />
-
-<p:commandButton id="toggler1" type="button" value="Columns"
-style="float:right;"  icon="ui-icon-calculator" />
-
-
- <p:commandButton icon="ui-icon-search"  style="float:right" 
-      />
-          <p:inputText  style="float:right ; width: 200px;"   >
-</p:inputText>
-
-<p:columnToggler datasource="tabMembre"  trigger="toggler1" >
-
-   </p:columnToggler>
-
-</f:facet>
-
- 
-
- 
-
- 
-    <p:column headerText="Nom"  sortBy="#{membre.nom}" filterBy="#{membre.nom}">
-    
-
-        <h:outputText value="#{membre.nom}" />
-    
-    
-
-    </p:column>
- 
-    <p:column headerText="Prénom" sortBy="#{membre.prenom}" filterBy="#{membre.prenom}">
-    
-  
-
-    
-        <h:outputText value="#{membre.prenom}" />
-       
-         
-         </p:column>
-         
-         
-
-
-         
-         
-         
- 
-         
-         
-                      <p:column style="width:200px;"  headerText="Fonction" sortBy="#{membre.fonction.libelleFonction}" filterBy="#{membre.fonction.libelleFonction}">
-    
-  
-
-    
-        <h:outputText value="#{membre.fonction.libelleFonction}" style="text-align:justify;font-style:normal;font-size: small;font-weight:normal;"/>
-       
-         
-         </p:column>
-         
-         
-                 
-                      <p:column style="width:200px;" headerText="Email" sortBy="#{membre.email}"  filterBy="#{membre.email}">
-    
-  
-
-    
-        <h:outputText value="#{membre.email}" style="text-align:justify;font-style:normal;font-size: small;font-weight:normal;"/>
-       
-         
-         </p:column>
-
-
-                      <p:column headerText="Telephone" sortBy="#{membre.telephone}" filterBy="#{membre.telephone}">
-    
-  
-
-    
-        <h:outputText  value="#{membre.telephone}" style="text-align:justify;font-style:normal;font-size: small;font-weight:normal;"/>
-       
-         
-         </p:column>
-    
-
-    <p:column headerText="Oprération"   exportable="false">
-
- 
-
-    
-     <p:commandButton id="btviewMembreCon" icon="ui-icon-pencil" actionListener="#{membreBean.selectmembre}"    > 
-    
-     
-    </p:commandButton>
-    
-     <p:commandButton icon="ui-icon-trash" > 
-            <p:confirm header="Confirmation" message="Êtes-vous sûr?" icon="ui-icon-alert"  />
-    </p:commandButton>
- 
-        </p:column>
-    
-</p:dataTable>
-         
-         
-  	
-  		
-  		
-
-  		    
-        
-        </p:dialog>
-
-
-
-
-</h:form>
-
-
-
-
-
-
-
-	<h:form id="AjouterMoraleMembre" enctype="multipart/form-data">
-	<p:growl id="growl4" sticky="true" showDetail="true" life="3000" />
-
-<!--  dualog ajouter -->
-<p:dialog header="Ajout d'un nouvel contact" id="daddMoraleMembre" widgetVar="addmoraleMembre"  modal="true" resizable="false" draggable="false" closable="true" closeOnEscape="true" width="1100px">         
-
-        
-
-
-<p:panelGrid id="panelAddMembre" columns="2" layout="grid" style="width: 1000px;"  >
-		
-
-<p:panelGrid id="pFonction" columns="3" layout="grid" style="width: 500px;"  >
-
-<p:outputLabel value="Fonction(*):" style="width: 100px;"/>
-<p:selectOneMenu id="fonction" filter="true" filterMatchMode="startsWith"  required="true" requiredMessage="il faut sélectionner une Fonction" value="#{membreBean.fonction.idFonction}"  style="width: 100px;">
-								<f:selectItem itemLabel="Select..." noSelectionOption="true" />
-								<f:selectItems value="#{fonctionBean.list_Fonction}" var="entry"
-									itemValue="#{entry.idFonction}" itemLabel="#{entry.libelleFonction}" />
-</p:selectOneMenu>
-
-
-<p:commandButton id="ajouterF" style="float:right"  icon="ui-icon-plus"  oncomplete="PF('addFonction').show()"/>
-<!-- <p:commandButton id="ModifierS" style="float:right"  icon="ui-icon-pencil" oncomplete="PF('addSecteur').show()" /> -->
-<!-- <p:growl id="deleteDialog" showDetail="true" /> -->
-
-
-<!-- <p:confirm header="Confirmation" message="Êtes-vous sûr pour supprimer le secteur ?"  icon="ui-icon-alert" -->
-<!-- /> -->
-<!-- </p:commandButton> -->
-
-</p:panelGrid>
-
-
-
-
-
-		
-		
-
-
-					<p:panelGrid  columns="2" layout="grid" style="width: 500px;"  > 
-			<p:outputLabel value="Nom(*):" style="width: 100px;"/>
-			<p:inputText label="nom" value="#{membreBean.membre.nom}" required="true" requiredMessage="il faut saisir le nom " style="width: 150px;" >
-			<f:validateLength minimum="2" maximum="150" />
-			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*" />
-			</p:inputText>
-			
-			</p:panelGrid>
-			
-			
-						
-					<p:panelGrid  columns="2" layout="grid" style="width: 500px;"  >
-					<p:outputLabel value="Prenom(*):" style="width: 100px;"/> 
-			<p:inputText label="pre" value="#{membreBean.membre.prenom}" required="true" requiredMessage="il faut saisir le prenom " style="width: 150px;" >
-			<f:validateLength minimum="2" maximum="150" />
-			<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*" />
-			</p:inputText>
-			
-</p:panelGrid>
-			
-			
-					<p:panelGrid  columns="2" layout="grid" style="width: 500px;"  >
-			
-			<p:outputLabel value="Adresse:" style="width: 100px;"/>
-			<p:inputText label="Adresse " value="#{membreBean.membre.adresse}"  validatorMessage="adresse non valide" style="width: 150px;" >
-				<f:validateRegex pattern="^[a-zA-ZùéèçàäöüÄÖÜ ]*" />
-						<f:validateLength minimum="2" maximum="150" />
-				</p:inputText>
-			
-			</p:panelGrid>
-			
-			 		<p:panelGrid  columns="2" layout="grid" style="width: 500px;"  >
-			
-			<p:outputLabel value="téléphone Mobile:" style="width: 100px;" /> 
-			<p:inputText label="Numero telephone mobile:" value="#{membreBean.membre.telephone}" type="number" style="width: 150px;" >
-			<f:convertNumber integerOnly="true" type="number" />
-			<f:validateLength minimum="8" maximum="8" />
-			</p:inputText>
-			
-			</p:panelGrid>
-			
-	
-
+				</h:form>
 				
-								<p:panelGrid  columns="2" layout="grid" style="width: 500px;"  >
-								<p:outputLabel value="Email(*):" style="width: 100px;" />
-			<p:inputText label="email(*):" value="#{membreBean.membre.email}" required="true" requiredMessage="il faut saisir l'email" style="width: 150px;" >
-			<f:validateLength minimum="2" maximum="200" />
-			<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-			</p:inputText>
-			</p:panelGrid>
-			
-	
-			
-			
-		
-			
-					
-
-			
-
-			
-
-<p:panelGrid  columns="3" layout="grid" style="width: 500px;"  >			
-	
-
- 
-
-						
-						
-			<p:commandButton value="enregistrer"  actionListener="#{membreBean.ajout}"   update="growl4" 
-						oncomplete="if((args.validationFailed) || (!args.add)){} else{PF('UploadImageMembre').show();}" >
-						
-						
-							<p:confirm header="Confirmation"
-							message="Êtes-vous sûr de l'ajouter ?   "
-							icon="ui-icon-alert" />
-						
-						
-						</p:commandButton>
-						
-						<p:commandButton value="annuler"  
-						oncomplete="PF('addmoraleMembre').hide()" >
-						
-						
-						
-						
-						</p:commandButton>
-						
-							<p:commandButton value="reset"  type="reset"
-						></p:commandButton>
-						
-						
-						
-						
-						
-</p:panelGrid>
-			
-		</p:panelGrid>
-		
-		
-		
-		
-		<p:spacer height="30"/> 
-		
- 
-		</p:dialog>
+				
+				
 		
 
-	
 
 
 
 
+		
+				
+				
+
+			</p:tab>
 
 
-</h:form>
+
+		</p:tabView>
 
 
 	</h:body>

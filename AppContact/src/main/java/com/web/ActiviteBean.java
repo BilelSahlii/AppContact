@@ -184,6 +184,8 @@ initP();
 
 public void suprimer(Activite activite)
 {
+	
+	
 	activiteDao.delete(activite);
 }
 

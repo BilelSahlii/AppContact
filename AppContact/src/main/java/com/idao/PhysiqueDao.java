@@ -1,5 +1,8 @@
 package com.idao;
 
-public interface PhysiqueDao extends GenericIDao {
+import java.io.File;
+import java.io.InputStream;
 
+public interface PhysiqueDao extends GenericIDao {
+	public void saveFile(InputStream inputstream,File file) ;
 }

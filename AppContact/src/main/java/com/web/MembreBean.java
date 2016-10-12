@@ -25,6 +25,7 @@ import org.primefaces.event.RowEditEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.UploadedFile;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -40,15 +41,14 @@ import org.springframework.stereotype.Component;
 import org.w3c.dom.events.EventException;
 
 import com.model.Chefresponsable;
-
 import com.model.Fonction;
 import com.model.Groupecontact;
 import com.model.Membre;
 import com.model.Morale;
 import com.model.Physique;
-
 import com.idao.MembreDao;
 import com.idao.FonctionDao;
+import com.idao.MoraleDao;
 
 
 
@@ -66,24 +66,27 @@ private	List <Membre> list_Membre_Morale;
 
 public static ClassPathXmlApplicationContext context=new ClassPathXmlApplicationContext("Application-Context.xml");;
 static	public MembreDao membreDao=(MembreDao) context.getBean("MembreDao");
-static	public FonctionDao  fonctionDao=(FonctionDao) context.getBean("FonctionDao");
+static public MoraleDao moraleDao = (MoraleDao) context
+.getBean("MoraleDao");
 
-static private  Fonction fonction= new Fonction();
+
+static private UploadedFile file;
 
  static  private  Membre membre= new Membre();
  
- public  Fonction getFonction() {
-	return fonction;
-}
 
-public void setFonction(Fonction fonction) {
-	MembreBean.fonction = fonction;
-}
 
 private static Membre selectmembre= new Membre();
  
  
  
+public UploadedFile getFile() {
+	return file;
+}
+
+public void setFile(UploadedFile file) {
+	this.file = file;
+}
 
 
  
@@ -108,7 +111,9 @@ public  void setSelectmembre(Membre selectmembre) {
 
 public void initP()
 {
-	membre=new Membre();
+
+	membre=null;
+	file=null;
 
 	
 }
@@ -131,66 +136,71 @@ public void AjouterMembreContact() throws IOException {
 	RequestContext context = RequestContext.getCurrentInstance();
 	context.update("AjouterMoraleMembre");
 	context.execute("PF('addmoraleMembre').show();");
-	initP();
+
 	
 }
 
 
 
-
-public void handleFileUpload(FileUploadEvent event) throws IOException {
+public void handleFileUploadMembre(FileUploadEvent event) throws IOException {
 	RequestContext context = RequestContext.getCurrentInstance();
 	FacesMessage message = null;
 	boolean add = false;
-	
-	if(event.getFile()!= null) {
-    	try {
-    		
-   
-    	     int Idct=membreDao.findAll(Membre.class).size();
-    	   		Membre ct=(Membre)membreDao.findAll(Membre.class).get(Idct-1);
-    	   		int id=ct.getIdmembre();
 
-    		File file2=new File("c:\\Users\\bilel\\git\\localToolsRepository\\AppContact\\src\\main\\webapp\\images\\membre\\"+id+".jpg");
+	if (event.getFile() != null) {
+		try {
 
+			file = event.getFile();
 
+			message = new FacesMessage("la photo ", file.getFileName()
+					+ "est enregistrée ");
 
-    
-			InputStream inputstream= event.getFile().getInputstream() ;
-			membreDao.saveFile(inputstream, file2);
-			
-//	 message = new FacesMessage("la photo ", file.getFileName() + "est enregistrée ");
+		} catch (Exception e)
 
+		{
 
-} 
-catch (Exception e)
+			add = false;
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Ajout d'mage erroné", "");
 
-{
+		}
 
-add = false;
-	message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout d'mage erroné", "");
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		context.addCallbackParam("add", add);
+		context.update("AjouterMorale:panelAdd");
+
+	}
 
 }
 
-//
-//
-//FacesContext.getCurrentInstance().addMessage(null, message);
-context.addCallbackParam("add",add);
-context.update("MembreMorale:Viewmorale");
+void insererImageMembre(Membre contactImg) throws IOException {
 
-AjouterMembreContactsansInit();
-}
+	File file2 = new File(
+			"c:\\Users\\bilel\\git\\localToolsRepository\\AppContact\\src\\main\\webapp\\images\\contact\\membre\\"
+					+ contactImg.getIdmembre() + ".jpg");
 
-	        
+	try {
+
+		InputStream inputstream = file.getInputstream();
+	membreDao.saveFile(inputstream, file2);
+
+
+	} catch (Exception e)
+
+	{
+
+	}
+
+}	        
 	
 	
 
-}
 
 
 
 
-public void ajout()
+
+public void ajoutMembre(int id)
 
 {RequestContext context = RequestContext.getCurrentInstance();
 FacesMessage message = null;
@@ -199,16 +209,17 @@ boolean add = false;
 	
 	try{
 		
-		if((fonction!=null)&&(fonction.getIdFonction()!=0))
-		{
-membre.setFonction((Fonction)fonctionDao.findById(Fonction.class,fonction.getIdFonction()));
-		}
-		else
-			{fonction=null;}
+		java.util.Date date = new java.util.Date();
+		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+		membre.setDate(sqlDate);
+	Morale	morale= (Morale) moraleDao.findById(Morale.class, id);
 			
-		
+		membre.setMorale(morale);
+
 		membreDao.saveOrUpdate(membre);
-	message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le membre"+membre.getNom()+" est bien enregistré", "");
+		
+		insererImageMembre(membre);
+	message = new FacesMessage(FacesMessage.SEVERITY_INFO, "le membre "+membre.getNom()+" est bien enregistré", "");
 	add = true;
 	}
 	catch (Exception e)
@@ -231,7 +242,7 @@ membre.setFonction((Fonction)fonctionDao.findById(Fonction.class,fonction.getIdF
 
 
 
-initP();
+//initP();
 
 }
 
@@ -240,6 +251,34 @@ initP();
 public void suprimer(Membre membre)
 {
 	membreDao.delete(membre);
+	
+	RequestContext context = RequestContext.getCurrentInstance();
+	FacesMessage message = null;
+	boolean deleted = false;
+
+	try {
+
+
+			membreDao.delete(membre);
+
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					"Supprimé", membre.getNom());
+			deleted = true;
+
+
+	} catch (Exception e)
+
+	{
+		deleted = false;
+		message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+				"Supression erroné", "");
+	}
+
+	FacesContext.getCurrentInstance().addMessage(null, message);
+	context.addCallbackParam("deleted", deleted);
+	context.update("MembreMorale:tabMembre");
+
+
 }
 
 

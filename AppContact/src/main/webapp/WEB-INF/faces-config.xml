@@ -46,12 +46,47 @@
  
     </navigation-rule>
     
+        
+            <navigation-rule>
+     <from-view-id>/pages web/Accuile.xhtml</from-view-id>
+    <navigation-case>
+        <from-action>#{physiqueBean.versModifierAjout()}</from-action>
+        <from-outcome>successPhysique</from-outcome>
+        <to-view-id>/pages web/Ajout-ModifContactPhysique.xhtml</to-view-id>
+        <redirect></redirect>
+    </navigation-case>
+ 
+    </navigation-rule>
+    
+    
+    
+            <navigation-rule>
+     <from-view-id>/pages web/Accuile.xhtml</from-view-id>
+    <navigation-case>
+        <from-action>#{moraleBean.membreMorale()}</from-action>
+        <from-outcome>successMembre</from-outcome>
+        <to-view-id>/pages web/membreMorale.xhtml</to-view-id>
+        <redirect></redirect>
+    </navigation-case>
+ 
+    </navigation-rule>
+    
     
 
 
+        <navigation-rule>
+     <from-view-id>/pages web/Ajout-ModifContactPhysique.xhtml</from-view-id>
+    <navigation-case>
+        <from-action>#{physiqueBean.ajout}</from-action>
+        <from-outcome>successAcceuil</from-outcome>
+        <to-view-id>/pages web/Accuile.xhtml</to-view-id>
+        <redirect></redirect>
+    </navigation-case>
+ 
+    </navigation-rule>
+    
+    
 
-    
-    
 
     
     

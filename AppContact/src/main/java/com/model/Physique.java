@@ -34,9 +34,9 @@ public class Physique implements java.io.Serializable {
 	private String ville;
 	private String adresse;
 	private String email;
-	private Integer codePostale;
-	private Integer telephone;
-	private Integer mobile;
+	private String codePostale;
+	private String telephone;
+	private String mobile;
 	private Date date;
 	private Date dateTime;
 
@@ -46,8 +46,8 @@ public class Physique implements java.io.Serializable {
 	public Physique(Region region, Groupecontact groupecontact,
 			Fonction fonction, Secteur secteur, String prenom, String age,
 			String civilite, String nom, String ville, String adresse,
-			String email, Integer codePostale, Integer telephone,
-			Integer mobile, Date date, Date dateTime) {
+			String email, String codePostale, String telephone,
+			String mobile, Date date, Date dateTime) {
 		this.region = region;
 		this.groupecontact = groupecontact;
 		this.fonction = fonction;
@@ -181,29 +181,29 @@ public class Physique implements java.io.Serializable {
 	}
 
 	@Column(name = "codePostale")
-	public Integer getCodePostale() {
+	public String getCodePostale() {
 		return this.codePostale;
 	}
 
-	public void setCodePostale(Integer codePostale) {
+	public void setCodePostale(String codePostale) {
 		this.codePostale = codePostale;
 	}
 
 	@Column(name = "telephone")
-	public Integer getTelephone() {
+	public String getTelephone() {
 		return this.telephone;
 	}
 
-	public void setTelephone(Integer telephone) {
+	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
 
 	@Column(name = "mobile")
-	public Integer getMobile() {
+	public String getMobile() {
 		return this.mobile;
 	}
 
-	public void setMobile(Integer mobile) {
+	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
 

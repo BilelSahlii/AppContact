@@ -29,7 +29,7 @@ public class Membre implements java.io.Serializable {
 	private String prenom;
 	private String adresse;
 	private String email;
-	private Integer telephone;
+	private String telephone;
 	private Date date;
 	private Date datetime;
 
@@ -37,7 +37,7 @@ public class Membre implements java.io.Serializable {
 	}
 
 	public Membre(Morale morale, Fonction fonction, String nom, String prenom,
-			String adresse, String email, Integer telephone, Date date,
+			String adresse, String email, String telephone, Date date,
 			Date datetime) {
 		this.morale = morale;
 		this.fonction = fonction;
@@ -118,11 +118,11 @@ public class Membre implements java.io.Serializable {
 	}
 
 	@Column(name = "telephone")
-	public Integer getTelephone() {
+	public String getTelephone() {
 		return this.telephone;
 	}
 
-	public void setTelephone(Integer telephone) {
+	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
 

@@ -7,6 +7,7 @@ import java.util.List;
 
 import  org.primefaces.*;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -35,7 +36,6 @@ import com.model.Groupecontact;
 import com.model.Membre;
 import com.model.Fonction;
 import com.model.Physique;
-
 import com.idao.FonctionDao;
 import com.idao.MembreDao;
 
@@ -65,14 +65,53 @@ static	public FonctionDao fonctionDao=(FonctionDao) context.getBean("FonctionDao
 public void initP()
 {
 	fonction=new Fonction();
+	
+	
 
 	
 }
 
 public void ajout()
 
-{	fonctionDao.saveOrUpdate(fonction);
+{	
+
+
+
+
+RequestContext context = RequestContext.getCurrentInstance();
+FacesMessage message = null;
+boolean add = false;
+
+
+try {
+	fonctionDao.saveOrUpdate(fonction);
+
+message = new FacesMessage(FacesMessage.SEVERITY_INFO, "la fonction "+fonction.getLibelleFonction()+" est bien enregistré", "");
+add = true;
+
+
+
+
+
+} 
+catch (Exception e)
+
+{
+
+add = false;
+message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout erroné", "");
 initP();
+
+}
+
+FacesContext.getCurrentInstance().addMessage(null, message);
+context.addCallbackParam("add",add);
+context.update("AjouterMoraleMembre:panelAddMembre");
+
+initP();
+
+
+
 
 }
 
